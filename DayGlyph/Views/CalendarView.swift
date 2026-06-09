@@ -62,12 +62,7 @@ struct CalendarView: View {
     }
 
     private var weekdayHeader: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("日 一 二 三 四 五 六")
-                .font(.footnote.weight(.semibold))
-                .foregroundStyle(DayGlyphStyle.mutedInk)
-                .frame(maxWidth: .infinity, alignment: .leading)
-
+        VStack(alignment: .leading, spacing: 4) {
             HStack {
                 ForEach(["日", "一", "二", "三", "四", "五", "六"], id: \.self) { day in
                     Text(day)
