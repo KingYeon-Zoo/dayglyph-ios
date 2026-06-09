@@ -48,7 +48,23 @@ enum DayTheme: String, CaseIterable, Codable, Identifiable {
         case .family: "家庭"
         case .health: "健康"
         case .creativity: "创造"
-        case .unknown: "未知"
+        case .unknown: "日常"
+        }
+    }
+}
+
+enum AnalysisSource: String, Codable, CaseIterable, Identifiable {
+    case foundationModel
+    case localRules
+    case fallback
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .foundationModel: "Apple Intelligence"
+        case .localRules: "本地理解"
+        case .fallback: "本地回退"
         }
     }
 }
@@ -58,4 +74,25 @@ struct EmotionAnalysis: Equatable {
     var theme: DayTheme
     var energy: Double
     var keywords: [String]
+    var confidence: Double
+    var explanation: String
+    var source: AnalysisSource
+
+    init(
+        emotion: DayEmotion,
+        theme: DayTheme,
+        energy: Double,
+        keywords: [String],
+        confidence: Double = 0.55,
+        explanation: String = "根据文字中的状态和语气做出的本地理解。",
+        source: AnalysisSource = .localRules
+    ) {
+        self.emotion = emotion
+        self.theme = theme
+        self.energy = min(max(energy, 0), 1)
+        self.keywords = Array(keywords.prefix(4))
+        self.confidence = min(max(confidence, 0), 1)
+        self.explanation = explanation
+        self.source = source
+    }
 }
