@@ -8,9 +8,11 @@ struct TodayView: View {
     @State private var entryText = ""
     @State private var latestEntry: DayEntry?
     @State private var saveMessage = ""
+    @State private var isAnalyzing = false
+    @State private var errorMessage = ""
     @FocusState private var isEditorFocused: Bool
 
-    private let analyzer = EmotionAnalyzer()
+    private let analyzer = UnifiedEmotionAnalyzer()
     private let softLimit = 280
 
     var body: some View {
@@ -19,6 +21,11 @@ struct TodayView: View {
                 header
                 editor
                 generateButton
+                if !errorMessage.isEmpty {
+                    Text(errorMessage)
+                        .font(.footnote)
+                        .foregroundStyle(.red)
+                }
 
                 if let latestEntry {
                     resultCard(for: latestEntry)
@@ -94,14 +101,14 @@ struct TodayView: View {
 
     private var generateButton: some View {
         Button(action: generateTodayGlyph) {
-            Label("生成今日一划", systemImage: "wand.and.sparkles")
+            Label(isAnalyzing ? "正在理解今天" : "生成今日一划", systemImage: "wand.and.sparkles")
                 .font(.headline)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 15)
         }
         .buttonStyle(.borderedProminent)
         .tint(DayGlyphStyle.ink)
-        .disabled(entryText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+        .disabled(isAnalyzing || entryText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
     }
 
     private func resultCard(for entry: DayEntry) -> some View {
@@ -122,6 +129,15 @@ struct TodayView: View {
                     CapsuleLabel(text: entry.theme.title, color: signature.secondaryColor)
                     CapsuleLabel(text: "\(Int(entry.energy * 100))%", color: .white)
                 }
+
+                Text(entry.explanation)
+                    .font(.footnote)
+                    .foregroundStyle(DayGlyphStyle.mutedInk)
+                    .multilineTextAlignment(.center)
+
+                Text(entry.analysisSource.title)
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(DayGlyphStyle.mutedInk)
             }
         }
         .frame(maxWidth: .infinity)
@@ -142,34 +158,38 @@ struct TodayView: View {
         let trimmed = entryText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
         isEditorFocused = false
+        isAnalyzing = true
+        errorMessage = ""
 
-        let analysis = analyzer.analyze(trimmed)
-        let seed = GlyphSignature.seed(for: trimmed, date: .now)
-
-        if let existing = entries.first(where: { Calendar.current.isDate($0.date, inSameDayAs: .now) }) {
-            existing.update(text: trimmed, analysis: analysis, glyphSeed: seed)
-            latestEntry = existing
-        } else {
-            let entry = DayEntry(
-                date: .now,
-                text: trimmed,
-                emotion: analysis.emotion,
-                energy: analysis.energy,
-                theme: analysis.theme,
-                keywords: analysis.keywords,
-                glyphSeed: seed
-            )
-            modelContext.insert(entry)
-            latestEntry = entry
+        Task {
+            let analysis = await analyzer.analyze(trimmed)
+            do {
+                let entry = try DayEntryStore.saveEntry(
+                    text: trimmed,
+                    analysis: analysis,
+                    context: modelContext
+                )
+                latestEntry = entry
+                saveMessage = "已保存为今天的一划"
+                isAnalyzing = false
+            } catch {
+                errorMessage = error.localizedDescription
+                isAnalyzing = false
+            }
         }
-
-        try? modelContext.save()
-        saveMessage = "已保存为今天的一划"
     }
 
     private func signature(for entry: DayEntry) -> GlyphSignature {
         GlyphSignature(
-            analysis: EmotionAnalysis(emotion: entry.emotion, theme: entry.theme, energy: entry.energy, keywords: entry.keywords),
+            analysis: EmotionAnalysis(
+                emotion: entry.emotion,
+                theme: entry.theme,
+                energy: entry.energy,
+                keywords: entry.keywords,
+                confidence: entry.confidence,
+                explanation: entry.explanation,
+                source: entry.analysisSource
+            ),
             seed: entry.glyphSeed
         )
     }

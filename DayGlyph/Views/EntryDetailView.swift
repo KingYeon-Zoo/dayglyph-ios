@@ -21,6 +21,15 @@ struct EntryDetailView: View {
                         CapsuleLabel(text: entry.theme.title, color: signature.secondaryColor)
                         CapsuleLabel(text: "\(Int(entry.energy * 100))%", color: .white)
                     }
+
+                    Text(entry.explanation)
+                        .font(.callout)
+                        .foregroundStyle(DayGlyphStyle.mutedInk)
+                        .multilineTextAlignment(.center)
+
+                    Text("理解来源：\(entry.analysisSource.title) · 置信度 \(Int(entry.confidence * 100))%")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(DayGlyphStyle.mutedInk)
                 }
 
                 Text(entry.text)
@@ -48,7 +57,15 @@ struct EntryDetailView: View {
 
     private var signature: GlyphSignature {
         GlyphSignature(
-            analysis: EmotionAnalysis(emotion: entry.emotion, theme: entry.theme, energy: entry.energy, keywords: entry.keywords),
+            analysis: EmotionAnalysis(
+                emotion: entry.emotion,
+                theme: entry.theme,
+                energy: entry.energy,
+                keywords: entry.keywords,
+                confidence: entry.confidence,
+                explanation: entry.explanation,
+                source: entry.analysisSource
+            ),
             seed: entry.glyphSeed
         )
     }

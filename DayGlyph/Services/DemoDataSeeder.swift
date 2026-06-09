@@ -23,18 +23,14 @@ enum DemoDataSeeder {
             guard let date = calendar.date(byAdding: .day, value: -offset, to: .now) else { continue }
             let text = samples[offset % samples.count]
             let analysis = analyzer.analyze(text)
-            let seed = GlyphSignature.seed(for: text, date: date, calendar: calendar)
-            let entry = DayEntry(
-                date: date,
+            _ = try? DayEntryStore.saveEntry(
                 text: text,
-                emotion: analysis.emotion,
-                energy: analysis.energy,
-                theme: analysis.theme,
-                keywords: analysis.keywords,
-                glyphSeed: seed,
+                date: date,
+                analysis: analysis,
+                context: context,
+                calendar: calendar,
                 isDemo: true
             )
-            context.insert(entry)
         }
         try? context.save()
     }
