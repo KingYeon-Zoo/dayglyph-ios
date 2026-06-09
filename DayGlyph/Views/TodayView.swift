@@ -59,7 +59,7 @@ struct TodayView: View {
                 .foregroundStyle(DayGlyphStyle.mutedInk)
 
             TextEditor(text: $entryText)
-                .frame(minHeight: 168)
+                .frame(minHeight: 132)
                 .padding(12)
                 .scrollContentBackground(.hidden)
                 .background(.white.opacity(0.68), in: RoundedRectangle(cornerRadius: 18))
@@ -95,9 +95,9 @@ struct TodayView: View {
     private func resultCard(for entry: DayEntry) -> some View {
         let signature = signature(for: entry)
 
-        return VStack(spacing: 18) {
+        return VStack(spacing: 12) {
             GlyphCanvasView(signature: signature, lineWidth: 5)
-                .frame(maxWidth: 260)
+                .frame(maxWidth: 178)
                 .padding(.top, 6)
 
             VStack(spacing: 10) {
