@@ -8,6 +8,7 @@ struct TodayView: View {
     @State private var entryText = ""
     @State private var latestEntry: DayEntry?
     @State private var saveMessage = ""
+    @FocusState private var isEditorFocused: Bool
 
     private let analyzer = EmotionAnalyzer()
     private let softLimit = 280
@@ -26,8 +27,18 @@ struct TodayView: View {
             .padding(22)
             .padding(.bottom, 96)
         }
+        .scrollDismissesKeyboard(.interactively)
         .background(DayGlyphStyle.background.ignoresSafeArea())
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button("完成") {
+                    isEditorFocused = false
+                }
+                .font(.headline)
+            }
+        }
         .onAppear(perform: loadToday)
         .onChange(of: entries.count) {
             loadToday()
@@ -59,6 +70,7 @@ struct TodayView: View {
                 .foregroundStyle(DayGlyphStyle.mutedInk)
 
             TextEditor(text: $entryText)
+                .focused($isEditorFocused)
                 .frame(minHeight: 132)
                 .padding(12)
                 .scrollContentBackground(.hidden)
@@ -129,6 +141,7 @@ struct TodayView: View {
     private func generateTodayGlyph() {
         let trimmed = entryText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
+        isEditorFocused = false
 
         let analysis = analyzer.analyze(trimmed)
         let seed = GlyphSignature.seed(for: trimmed, date: .now)
