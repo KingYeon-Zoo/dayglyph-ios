@@ -32,6 +32,7 @@ struct CalendarView: View {
                 }
             }
             .padding(22)
+            .padding(.bottom, 96)
         }
         .background(DayGlyphStyle.background.ignoresSafeArea())
         .navigationTitle("情绪月历")

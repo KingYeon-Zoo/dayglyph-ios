@@ -24,6 +24,7 @@ struct TodayView: View {
                 }
             }
             .padding(22)
+            .padding(.bottom, 96)
         }
         .background(DayGlyphStyle.background.ignoresSafeArea())
         .navigationBarTitleDisplayMode(.inline)
