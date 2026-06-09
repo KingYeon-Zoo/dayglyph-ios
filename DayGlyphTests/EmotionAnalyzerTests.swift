@@ -2,6 +2,25 @@ import Testing
 @testable import DayGlyph
 
 struct EmotionAnalyzerTests {
+    @Test func detectsCompletionReliefWithoutUnknown() {
+        let result = EmotionAnalyzer().analyze("今天很早就把那个事情搞完了，整个人松了一口气。")
+
+        #expect(result.emotion == .calm || result.emotion == .joy)
+        #expect(result.theme == .work)
+        #expect(result.confidence >= 0.55)
+        #expect(result.explanation.isEmpty == false)
+        #expect(result.source == .localRules)
+    }
+
+    @Test func detectsFoggyMixedState() {
+        let result = EmotionAnalyzer().analyze("说不上来，脑子很乱，但还是把今天撑过去了。")
+
+        #expect(result.emotion == .anxious || result.emotion == .mixed)
+        #expect(result.theme.title.isEmpty == false)
+        #expect(result.confidence >= 0.45)
+        #expect(result.energy >= 0.45)
+    }
+
     @Test func detectsGratefulWorkEntry() {
         let result = EmotionAnalyzer().analyze("今天终于完成了项目，特别感谢同事帮我一起收尾。")
 
@@ -19,6 +38,14 @@ struct EmotionAnalyzerTests {
         #expect(result.energy < 0.5)
     }
 
+    @Test func ordinaryTextDoesNotFallBackToUnknownEmotion() {
+        let result = EmotionAnalyzer().analyze("今天去拿了快递，回来的路上买了杯热咖啡。")
+
+        #expect(result.emotion != .mixed || result.confidence >= 0.4)
+        #expect(result.theme.title.isEmpty == false)
+        #expect(result.explanation.isEmpty == false)
+    }
+
     @Test func emptyTextFallsBackToMixedUnknown() {
         let result = EmotionAnalyzer().analyze("   ")
 
@@ -26,5 +53,6 @@ struct EmotionAnalyzerTests {
         #expect(result.theme == .unknown)
         #expect(result.energy == 0.3)
         #expect(result.keywords.isEmpty)
+        #expect(result.source == .fallback)
     }
 }
