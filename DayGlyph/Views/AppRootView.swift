@@ -25,7 +25,8 @@ struct AppRootView: View {
                 Label("设置", systemImage: "slider.horizontal.3")
             }
         }
-        .tint(DayGlyphStyle.ink)
+        .tint(DayGlyphStyle.jade)
+        .environment(\.locale, Locale(identifier: "zh_CN"))
     }
 }
 

@@ -33,16 +33,16 @@ enum AppleIntelligenceStatus: Equatable {
             return "DayGlyph 会优先使用设备端模型理解记录。"
         case .appleIntelligenceNotEnabled:
 #if targetEnvironment(simulator)
-            return "模拟器依赖宿主 Mac 的 Apple Intelligence；当前继续使用本地分析。"
+            return "模拟器依赖宿主 Mac 的 Apple Intelligence；启用前暂不生成新印记。"
 #else
-            return "请在系统设置中开启 Apple Intelligence；当前继续使用本地分析。"
+            return "请在系统设置中开启 Apple Intelligence；启用前暂不生成新印记。"
 #endif
         case .modelNotReady:
-            return "系统模型仍在准备或下载；当前继续使用本地分析。"
+            return "系统模型仍在准备或下载；准备完成前暂不生成新印记。"
         case .deviceNotEligible:
-            return "设备、地区或系统资格不满足要求；当前继续使用本地分析。"
+            return "设备、地区或系统资格不满足要求，当前无法生成新印记。"
         case .unknown:
-            return "系统没有返回可识别的状态；当前继续使用本地分析。"
+            return "系统没有返回可识别的状态，当前无法生成新印记。"
         }
     }
 

@@ -10,12 +10,13 @@ struct AppleIntelligenceStatusTests {
         #expect(status.title == "Apple Intelligence 已就绪")
     }
 
-    @Test func deviceNotEligibleExplainsLocalFallback() {
+    @Test func deviceNotEligibleExplainsGenerationIsUnavailable() {
         let status = AppleIntelligenceStatus.deviceNotEligible
 
         #expect(status.canUseFoundationModels == false)
         #expect(status.title == "此设备不符合运行条件")
-        #expect(status.detail.contains("本地分析"))
+        #expect(status.detail.contains("无法生成"))
+        #expect(status.detail.contains("本地分析") == false)
     }
 
     @Test func modelNotReadyDoesNotClaimAvailability() {

@@ -31,14 +31,8 @@ enum DayEntryStore {
         let entry = DayEntry(
             date: startOfDay,
             text: trimmed,
-            emotion: analysis.emotion,
-            energy: analysis.energy,
-            theme: analysis.theme,
-            keywords: analysis.keywords,
+            analysis: analysis,
             glyphSeed: seed,
-            confidence: analysis.confidence,
-            analysisSource: analysis.source,
-            explanation: analysis.explanation,
             isDemo: isDemo
         )
         context.insert(entry)

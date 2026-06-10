@@ -1,15 +1,18 @@
 import SwiftData
 import SwiftUI
+import UIKit
 
 struct TodayView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Query(sort: \DayEntry.date, order: .reverse) private var entries: [DayEntry]
 
     @State private var entryText = ""
     @State private var latestEntry: DayEntry?
-    @State private var saveMessage = ""
+    @State private var isEditing = true
     @State private var isAnalyzing = false
     @State private var errorMessage = ""
+    @State private var revealProgress = 1.0
     @FocusState private var isEditorFocused: Bool
 
     private let analyzer = UnifiedEmotionAnalyzer()
@@ -18,26 +21,33 @@ struct TodayView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 22) {
+            VStack(alignment: .leading, spacing: 24) {
                 header
-                editor
-                intelligenceStatus
-                generateButton
+
+                Group {
+                    if let latestEntry, !isEditing {
+                        result(for: latestEntry)
+                            .transition(.blurReplace.combined(with: .opacity))
+                    } else {
+                        editor
+                            .transition(.blurReplace.combined(with: .opacity))
+                    }
+                }
+                .animation(.spring(response: 0.62, dampingFraction: 0.86), value: isEditing)
+
                 if !errorMessage.isEmpty {
-                    Text(errorMessage)
+                    Label(errorMessage, systemImage: "exclamationmark.circle.fill")
                         .font(.footnote)
                         .foregroundStyle(.red)
-                }
-
-                if let latestEntry {
-                    resultCard(for: latestEntry)
+                        .padding(.horizontal, 4)
                 }
             }
-            .padding(22)
-            .padding(.bottom, 96)
+            .padding(.horizontal, 20)
+            .padding(.top, 10)
+            .padding(.bottom, 112)
         }
         .scrollDismissesKeyboard(.interactively)
-        .background(DayGlyphStyle.background.ignoresSafeArea())
+        .background(DayGlyphBackground())
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
@@ -55,172 +65,222 @@ struct TodayView: View {
     }
 
     private var header: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text("一划")
-                    .font(.title2.weight(.bold))
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(alignment: .center) {
+                Label("DAYGLYPH", systemImage: "scribble.variable")
+                    .font(.caption.weight(.bold))
+                    .tracking(1.4)
+                    .foregroundStyle(DayGlyphStyle.jade)
+
                 Spacer()
+
                 Text(.now, format: .dateTime.month().day().weekday())
-                    .font(.subheadline.weight(.semibold))
+                    .font(.caption.weight(.semibold))
                     .foregroundStyle(DayGlyphStyle.mutedInk)
             }
 
-            Text("今天留下些什么？")
-                .font(.system(size: 38, weight: .bold, design: .serif))
+            Text(isEditing ? "今天留下些什么？" : "今天，成为这一划")
+                .font(.system(size: 36, weight: .bold, design: .serif))
                 .foregroundStyle(DayGlyphStyle.ink)
-                .fixedSize(horizontal: false, vertical: true)
+                .contentTransition(.numericText())
+
+            Text(isEditing ? "写下真实感受，模型会把情绪结构转译成独一无二的印记。" : "颜色表达情绪气候，结构记录它如何发生。")
+                .font(.subheadline)
+                .foregroundStyle(DayGlyphStyle.mutedInk)
+                .lineSpacing(3)
         }
     }
 
     private var editor: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("一句话也可以，一小段也很好。")
-                .font(.headline)
-                .foregroundStyle(DayGlyphStyle.mutedInk)
+        VStack(spacing: 16) {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    Text("今日记录")
+                        .font(.headline)
+                    Spacer()
+                    modelStatusPill
+                }
 
-            TextEditor(text: $entryText)
-                .focused($isEditorFocused)
-                .frame(minHeight: 132)
-                .padding(12)
-                .scrollContentBackground(.hidden)
-                .background(.white.opacity(0.68), in: RoundedRectangle(cornerRadius: 18))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 18)
-                        .stroke(.white.opacity(0.7), lineWidth: 1)
-                )
+                ZStack(alignment: .topLeading) {
+                    if entryText.isEmpty {
+                        Text("一句话也可以。比如：会议结束后松了一口气，但仍有一点不安。")
+                            .font(.body)
+                            .foregroundStyle(DayGlyphStyle.mutedInk.opacity(0.7))
+                            .padding(.horizontal, 5)
+                            .padding(.vertical, 8)
+                            .allowsHitTesting(false)
+                    }
 
-            HStack {
-                Text("\(entryText.count)/\(softLimit)")
-                Spacer()
-                if entryText.count > softLimit {
-                    Text("可以更轻一点")
+                    TextEditor(text: $entryText)
+                        .focused($isEditorFocused)
+                        .frame(minHeight: 164)
+                        .scrollContentBackground(.hidden)
+                        .font(.body)
+                        .lineSpacing(5)
+                }
+
+                HStack {
+                    Text("文字仅在设备上分析")
+                        .font(.caption)
+                        .foregroundStyle(DayGlyphStyle.mutedInk)
+                    Spacer()
+                    Text("\(entryText.count)/\(softLimit)")
+                        .font(.caption.monospacedDigit())
+                        .foregroundStyle(entryText.count > softLimit ? .orange : DayGlyphStyle.mutedInk)
                 }
             }
-            .font(.footnote)
-            .foregroundStyle(entryText.count > softLimit ? .orange : DayGlyphStyle.mutedInk)
+            .padding(18)
+            .paperCard(cornerRadius: DayGlyphStyle.largeRadius)
+
+            generateButton
         }
+    }
+
+    private var modelStatusPill: some View {
+        HStack(spacing: 6) {
+            Image(systemName: appleIntelligenceStatus.symbolName)
+            Text(appleIntelligenceStatus.canUseFoundationModels ? "结构化理解" : "暂不可用")
+        }
+        .font(.caption.weight(.semibold))
+        .foregroundStyle(appleIntelligenceStatus.canUseFoundationModels ? DayGlyphStyle.jade : .orange)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 7)
+        .glassEffect(
+            .regular.tint((appleIntelligenceStatus.canUseFoundationModels ? DayGlyphStyle.jade : Color.orange).opacity(0.09)),
+            in: .capsule
+        )
     }
 
     private var generateButton: some View {
         Button(action: generateTodayGlyph) {
-            Label(isAnalyzing ? "正在理解今天" : "生成今日一划", systemImage: "wand.and.sparkles")
-                .font(.headline)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 15)
-        }
-        .buttonStyle(.borderedProminent)
-        .tint(DayGlyphStyle.ink)
-        .disabled(isAnalyzing || entryText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-    }
-
-    private var intelligenceStatus: some View {
-        HStack(alignment: .top, spacing: 10) {
-            Image(systemName: appleIntelligenceStatus.symbolName)
-                .font(.title3.weight(.semibold))
-                .foregroundStyle(
-                    appleIntelligenceStatus.canUseFoundationModels
-                        ? DayGlyphStyle.ink
-                        : Color.orange
-                )
-                .frame(width: 26)
-
-            VStack(alignment: .leading, spacing: 3) {
-                Text(appleIntelligenceStatus.title)
-                    .font(.footnote.weight(.semibold))
-                    .foregroundStyle(DayGlyphStyle.ink)
-                Text(appleIntelligenceStatus.detail)
-                    .font(.caption)
-                    .foregroundStyle(DayGlyphStyle.mutedInk)
-                    .fixedSize(horizontal: false, vertical: true)
+            HStack(spacing: 10) {
+                if isAnalyzing {
+                    ProgressView()
+                        .tint(.white)
+                } else {
+                    Image(systemName: "wand.and.sparkles")
+                }
+                Text(isAnalyzing ? "正在理解情绪结构" : "生成今日一划")
             }
-
-            Spacer(minLength: 0)
+            .font(.headline)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 4)
         }
-        .padding(12)
-        .background(.white.opacity(0.48), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .buttonStyle(.glassProminent)
+        .tint(DayGlyphStyle.ink)
+        .controlSize(.large)
+        .disabled(isAnalyzing || entryText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+        .accessibilityHint("使用设备端模型分析文字并生成情绪印记")
     }
 
-    private func resultCard(for entry: DayEntry) -> some View {
-        let signature = signature(for: entry)
+    private func result(for entry: DayEntry) -> some View {
+        let signature = GlyphSignature(analysis: entry.analysis, seed: entry.glyphSeed)
 
-        return VStack(spacing: 12) {
-            GlyphCanvasView(signature: signature, lineWidth: 5)
-                .frame(maxWidth: 178)
-                .padding(.top, 6)
+        return VStack(spacing: 20) {
+            GlyphCanvasView(
+                signature: signature,
+                lineWidth: 5,
+                mode: .hero,
+                revealProgress: revealProgress
+            )
+            .frame(maxWidth: 262)
+            .padding(.top, 2)
 
-            VStack(spacing: 10) {
-                Text("已保存为今天的一划")
-                    .font(.headline)
-                    .foregroundStyle(DayGlyphStyle.ink)
-
-                HStack {
-                    CapsuleLabel(text: entry.emotion.title, color: signature.primaryColor)
-                    CapsuleLabel(text: entry.theme.title, color: signature.secondaryColor)
-                    CapsuleLabel(text: "\(Int(entry.energy * 100))%", color: .white)
+            VStack(spacing: 12) {
+                HStack(spacing: 7) {
+                    ForEach(entry.analysis.topEmotionWeights) { weight in
+                        CapsuleLabel(
+                            text: "\(weight.anchor.title) \(Int(weight.value * 100))%",
+                            color: signature.palette.primary
+                        )
+                    }
                 }
 
                 Text(entry.explanation)
-                    .font(.footnote)
-                    .foregroundStyle(DayGlyphStyle.mutedInk)
+                    .font(.body.weight(.medium))
+                    .foregroundStyle(DayGlyphStyle.ink)
                     .multilineTextAlignment(.center)
+                    .lineSpacing(4)
 
-                Text(entry.analysisSource.title)
-                    .font(.caption.weight(.semibold))
+                Text("\(entry.theme.title) · \(entry.analysisSource.title)")
+                    .font(.caption)
                     .foregroundStyle(DayGlyphStyle.mutedInk)
             }
+
+            GlyphExplanationView(analysis: entry.analysis, signature: signature)
+
+            GlassEffectContainer(spacing: 12) {
+                HStack(spacing: 12) {
+                    Button {
+                        isEditing = true
+                        errorMessage = ""
+                        isEditorFocused = true
+                    } label: {
+                        Label("编辑文字", systemImage: "square.and.pencil")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.glass)
+
+                    NavigationLink {
+                        EntryDetailView(entry: entry)
+                    } label: {
+                        Label("查看详情", systemImage: "arrow.up.right")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.glassProminent)
+                    .tint(DayGlyphStyle.jade)
+                }
+            }
+            .font(.subheadline.weight(.semibold))
         }
-        .frame(maxWidth: .infinity)
         .padding(18)
-        .background(.white.opacity(0.56), in: RoundedRectangle(cornerRadius: 24))
+        .paperCard(cornerRadius: 34)
     }
 
     private func loadToday() {
-        if let today = entries.first(where: { Calendar.current.isDate($0.date, inSameDayAs: .now) }) {
-            latestEntry = today
-            if entryText.isEmpty {
-                entryText = today.text
-            }
+        guard let today = entries.first(where: { Calendar.current.isDate($0.date, inSameDayAs: .now) }) else {
+            isEditing = true
+            return
         }
+        latestEntry = today
+        entryText = today.text
+        isEditing = false
+        revealProgress = 1
     }
 
     private func generateTodayGlyph() {
         let trimmed = entryText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
+
         isEditorFocused = false
         isAnalyzing = true
         errorMessage = ""
 
         Task {
-            let analysis = await analyzer.analyze(trimmed)
             do {
+                let analysis = try await analyzer.analyze(trimmed)
                 let entry = try DayEntryStore.saveEntry(
                     text: trimmed,
                     analysis: analysis,
                     context: modelContext
                 )
                 latestEntry = entry
-                saveMessage = "已保存为今天的一划"
-                isAnalyzing = false
+                revealProgress = reduceMotion ? 1 : 0
+                withAnimation(.spring(response: 0.65, dampingFraction: 0.88)) {
+                    isEditing = false
+                }
+                if !reduceMotion {
+                    withAnimation(.easeInOut(duration: 1.25)) {
+                        revealProgress = 1
+                    }
+                }
+                UINotificationFeedbackGenerator().notificationOccurred(.success)
             } catch {
                 errorMessage = error.localizedDescription
-                isAnalyzing = false
+                UINotificationFeedbackGenerator().notificationOccurred(.error)
             }
+            isAnalyzing = false
         }
-    }
-
-    private func signature(for entry: DayEntry) -> GlyphSignature {
-        GlyphSignature(
-            analysis: EmotionAnalysis(
-                emotion: entry.emotion,
-                theme: entry.theme,
-                energy: entry.energy,
-                keywords: entry.keywords,
-                confidence: entry.confidence,
-                explanation: entry.explanation,
-                source: entry.analysisSource
-            ),
-            seed: entry.glyphSeed
-        )
     }
 }
 

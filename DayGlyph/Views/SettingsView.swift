@@ -75,7 +75,9 @@ struct SettingsView: View {
             }
         }
         .scrollContentBackground(.hidden)
-        .background(DayGlyphStyle.background.ignoresSafeArea())
+        .listSectionSpacing(18)
+        .background(DayGlyphBackground())
+        .tint(DayGlyphStyle.jade)
         .navigationTitle("设置")
         .task {
             reminderDate = dateFromStoredTime()

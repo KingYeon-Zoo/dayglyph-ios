@@ -55,4 +55,14 @@ struct EmotionAnalyzerTests {
         #expect(result.keywords.isEmpty)
         #expect(result.source == .fallback)
     }
+
+    @Test func legacyAnalyzerProducesNormalizedEmotionWeights() {
+        let result = EmotionAnalyzer().analyze("今天很累，也有一点焦虑。")
+
+        #expect(abs(result.emotionWeights.reduce(0) { $0 + $1.value } - 1) < 0.000_001)
+        #expect(result.topEmotionWeights.isEmpty == false)
+        #expect((-1...1).contains(result.valence))
+        #expect((0...1).contains(result.arousal))
+        #expect((-1...1).contains(result.dominance))
+    }
 }

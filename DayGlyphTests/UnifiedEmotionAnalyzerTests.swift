@@ -8,17 +8,17 @@ struct UnifiedEmotionAnalyzerTests {
     }
 
     @MainActor
-    @Test func fallsBackToLocalRulesWhenFoundationAnalyzerUnavailable() async {
+    @Test func propagatesFoundationModelFailureInsteadOfUsingKeywordRules() async {
         let analyzer = UnifiedEmotionAnalyzer(
-            foundationAnalyzer: UnavailableFoundationAnalyzer(),
-            localAnalyzer: EmotionAnalyzer()
+            foundationAnalyzer: UnavailableFoundationAnalyzer()
         )
 
-        let result = await analyzer.analyze("今天很早就把事情搞完了，松了一口气。")
-
-        #expect(result.source == .localRules || result.source == .fallback)
-        #expect(result.emotion != .mixed || result.confidence >= 0.45)
-        #expect(result.explanation.isEmpty == false)
+        do {
+            _ = try await analyzer.analyze("今天很早就把事情搞完了，松了一口气。")
+            Issue.record("Foundation Models 失败时不应静默退回关键词规则。")
+        } catch {
+            #expect(error is FoundationEmotionAnalyzerError)
+        }
     }
 }
 

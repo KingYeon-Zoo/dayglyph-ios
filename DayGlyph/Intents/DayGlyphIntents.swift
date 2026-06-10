@@ -22,10 +22,10 @@ struct RecordTodayGlyphIntent: AppIntent {
         let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
         let container = try ModelContainer(for: schema, configurations: [configuration])
         let context = ModelContext(container)
-        let analysis = await UnifiedEmotionAnalyzer().analyze(trimmed)
+        let analysis = try await UnifiedEmotionAnalyzer().analyze(trimmed)
         _ = try DayEntryStore.saveEntry(text: trimmed, analysis: analysis, context: context)
 
-        return .result(dialog: "已记录今天的一划，理解为\(analysis.emotion.title)。")
+        return .result(dialog: "已记录今天的一划，主要情绪为\(analysis.primaryEmotion.title)。")
     }
 }
 

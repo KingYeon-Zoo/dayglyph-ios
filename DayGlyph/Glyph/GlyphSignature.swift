@@ -1,24 +1,6 @@
 import Foundation
 import SwiftUI
 
-enum GlyphBaseShape: String, Equatable {
-    case calmRing
-    case warmOrbit
-    case lowPool
-    case offsetOrbit
-    case radiantSeal
-    case quietBlock
-    case heldArc
-    case layered
-}
-
-enum GlyphAccentShape: String, Equatable {
-    case dot
-    case capsule
-    case arc
-    case notch
-}
-
 struct GlyphPalette: Equatable {
     var background: Color
     var primary: Color
@@ -26,31 +8,102 @@ struct GlyphPalette: Equatable {
     var accent: Color
 }
 
+struct GlyphBoundarySignature: Equatable {
+    var closure: Double
+    var roundness: Double
+    var eccentricity: Double
+    var thickness: Double
+    var angularity: Double
+}
+
+struct GlyphTrajectorySignature: Equatable {
+    var verticalBias: Double
+    var openness: Double
+    var curvature: Double
+    var oscillation: Double
+    var crossing: Double
+}
+
+struct GlyphCoreSignature: Equatable {
+    var scale: Double
+    var offsetX: Double
+    var offsetY: Double
+    var isolation: Double
+}
+
+struct GlyphRhythmSignature: Equatable {
+    var count: Int
+    var regularity: Double
+    var radialSpread: Double
+    var burst: Double
+}
+
 struct GlyphSignature: Equatable {
-    var emotion: DayEmotion
-    var theme: DayTheme
+    var primaryEmotion: EmotionAnchor
     var energy: Double
     var confidence: Double
     var seed: Int
-    var baseShape: GlyphBaseShape
-    var accentShape: GlyphAccentShape
-    var density: Double
-    var accentCount: Int
-    var rotation: Double
+    var boundary: GlyphBoundarySignature
+    var trajectory: GlyphTrajectorySignature
+    var core: GlyphCoreSignature
+    var rhythm: GlyphRhythmSignature
+    var microRotation: Double
+    var microOffset: Double
     var palette: GlyphPalette
 
     init(analysis: EmotionAnalysis, seed: Int) {
-        let clampedEnergy = min(max(analysis.energy, 0), 1)
-        self.emotion = analysis.emotion
-        self.theme = analysis.theme
+        let clampedEnergy = analysis.arousal
+        let dominance = (analysis.dominance + 1) / 2
+        let calm = Self.weight(.calm, in: analysis)
+        let relief = Self.weight(.relief, in: analysis)
+        let hopeful = Self.weight(.hopeful, in: analysis)
+        let excited = Self.weight(.excited, in: analysis)
+        let angry = Self.weight(.angry, in: analysis)
+        let anxious = Self.weight(.anxious, in: analysis)
+        let sad = Self.weight(.sad, in: analysis)
+        let tired = Self.weight(.tired, in: analysis)
+        let lonely = Self.weight(.lonely, in: analysis)
+        let confused = Self.weight(.confused, in: analysis)
+
+        var random = SeededRandom(seed: seed)
+        let microRotation = (random.next() - 0.5) * 6
+        let microOffset = (random.next() - 0.5) * 0.04
+
+        self.primaryEmotion = analysis.primaryEmotion
         self.energy = clampedEnergy
-        self.confidence = min(max(analysis.confidence, 0), 1)
+        self.confidence = analysis.confidence
         self.seed = seed
-        self.baseShape = Self.baseShape(for: analysis.emotion)
-        self.accentShape = Self.accentShape(for: analysis.theme)
-        self.density = 0.22 + clampedEnergy * 0.68
-        self.accentCount = min(max(2 + Int((clampedEnergy * 7).rounded()), 2), 9)
-        self.rotation = Double(abs(seed % 360))
+        self.boundary = GlyphBoundarySignature(
+            closure: Self.clamp(0.54 + analysis.dominance * 0.16 + angry * 0.18 - relief * 0.20),
+            roundness: Self.clamp(0.78 + calm * 0.18 + relief * 0.08 - angry * 0.55 - confused * 0.18),
+            eccentricity: Self.clamp(0.06 + (1 - dominance) * 0.14 + anxious * 0.48 + confused * 0.18 - calm * 0.05),
+            thickness: Self.clamp(0.34 + clampedEnergy * 0.28 + angry * 0.22 + tired * 0.16),
+            angularity: Self.clamp(0.06 + angry * 0.78 + confused * 0.22)
+        )
+        self.trajectory = GlyphTrajectorySignature(
+            verticalBias: Self.clampSigned(
+                analysis.valence * 0.45 + excited * 0.35 + hopeful * 0.30 - sad * 0.45 - tired * 0.18
+            ),
+            openness: Self.clamp(0.42 + max(analysis.valence, 0) * 0.22 + relief * 0.34 + hopeful * 0.18 - sad * 0.22),
+            curvature: Self.clamp(0.68 + calm * 0.20 + relief * 0.12 - angry * 0.42),
+            oscillation: Self.clamp(0.06 + clampedEnergy * 0.12 + anxious * 0.65 + confused * 0.42),
+            crossing: Self.clamp(0.04 + confused * 0.72 + anxious * 0.12)
+        )
+        self.core = GlyphCoreSignature(
+            scale: Self.clamp(0.18 + dominance * 0.10 + angry * 0.08 - lonely * 0.06),
+            offsetX: Self.clampSigned(microOffset + anxious * 0.30 + confused * 0.12),
+            offsetY: Self.clampSigned(sad * 0.38 + tired * 0.18 - excited * 0.18 - hopeful * 0.12),
+            isolation: Self.clamp(0.18 + lonely * 0.72 + sad * 0.12)
+        )
+        let rhythmCount = 2 + Int((clampedEnergy * 7).rounded()) + Int((excited * 2).rounded()) - Int((tired * 2).rounded())
+        self.rhythm = GlyphRhythmSignature(
+            count: min(max(rhythmCount, 2), 12),
+            regularity: Self.clamp(0.84 + calm * 0.12 - anxious * 0.56 - confused * 0.38),
+            radialSpread: Self.clamp(0.42 + clampedEnergy * 0.24 + excited * 0.12 - lonely * 0.12),
+            burst: Self.clamp(0.08 + clampedEnergy * 0.18 + angry * 0.65 + excited * 0.55 - tired * 0.10)
+        )
+        self.microRotation = microRotation
+        self.microOffset = microOffset
         self.palette = Self.palette(for: analysis.emotion)
     }
 
@@ -62,29 +115,6 @@ struct GlyphSignature: Equatable {
         }
         hash = hash &+ Int(day)
         return abs(hash)
-    }
-
-    static func baseShape(for emotion: DayEmotion) -> GlyphBaseShape {
-        switch emotion {
-        case .calm: .calmRing
-        case .joy: .warmOrbit
-        case .low: .lowPool
-        case .anxious: .offsetOrbit
-        case .excited: .radiantSeal
-        case .tired: .quietBlock
-        case .grateful: .heldArc
-        case .mixed: .layered
-        }
-    }
-
-    static func accentShape(for theme: DayTheme) -> GlyphAccentShape {
-        switch theme {
-        case .work, .growth: .capsule
-        case .relationship, .family: .arc
-        case .health, .rest: .dot
-        case .creativity: .notch
-        case .unknown: .dot
-        }
     }
 
     static func palette(for emotion: DayEmotion) -> GlyphPalette {
@@ -150,4 +180,16 @@ struct GlyphSignature: Equatable {
 
     var primaryColor: Color { palette.primary }
     var secondaryColor: Color { palette.secondary }
+
+    private static func weight(_ anchor: EmotionAnchor, in analysis: EmotionAnalysis) -> Double {
+        analysis.emotionWeights.first(where: { $0.anchor == anchor })?.value ?? 0
+    }
+
+    private static func clamp(_ value: Double) -> Double {
+        min(max(value, 0), 1)
+    }
+
+    private static func clampSigned(_ value: Double) -> Double {
+        min(max(value, -1), 1)
+    }
 }
