@@ -62,9 +62,9 @@ enum AnalysisSource: String, Codable, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .foundationModel: "Apple Intelligence"
+        case .foundationModel: "Apple Intelligence 已参与理解"
         case .localRules: "本地理解"
-        case .fallback: "本地回退"
+        case .fallback: "Apple Intelligence 不可用 · 已本地回退"
         }
     }
 }

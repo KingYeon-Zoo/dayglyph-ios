@@ -20,6 +20,7 @@ struct TodayView: View {
             VStack(alignment: .leading, spacing: 22) {
                 header
                 editor
+                intelligenceStatus
                 generateButton
                 if !errorMessage.isEmpty {
                     Text(errorMessage)
@@ -109,6 +110,29 @@ struct TodayView: View {
         .buttonStyle(.borderedProminent)
         .tint(DayGlyphStyle.ink)
         .disabled(isAnalyzing || entryText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+    }
+
+    private var intelligenceStatus: some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: "apple.intelligence")
+                .font(.title3.weight(.semibold))
+                .foregroundStyle(DayGlyphStyle.ink)
+                .frame(width: 26)
+
+            VStack(alignment: .leading, spacing: 3) {
+                Text("Apple Intelligence 优先理解")
+                    .font(.footnote.weight(.semibold))
+                    .foregroundStyle(DayGlyphStyle.ink)
+                Text("当前设备或模拟器不可用时，会自动本地回退，不影响生成。")
+                    .font(.caption)
+                    .foregroundStyle(DayGlyphStyle.mutedInk)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            Spacer(minLength: 0)
+        }
+        .padding(12)
+        .background(.white.opacity(0.48), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
     }
 
     private func resultCard(for entry: DayEntry) -> some View {
