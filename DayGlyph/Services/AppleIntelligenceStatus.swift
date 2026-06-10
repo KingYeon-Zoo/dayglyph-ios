@@ -42,6 +42,40 @@ enum AppleIntelligenceStatus: Equatable {
         }
     }
 
+    var suggestion: String {
+        switch self {
+        case .available:
+            "无需额外设置。"
+        case .appleIntelligenceNotEnabled:
+            "请前往系统设置开启 Apple Intelligence。"
+        case .modelNotReady:
+            "请保持设备联网并连接电源，等待系统模型准备完成。"
+        case .deviceNotEligible:
+            "请在符合条件且已启用 Apple Intelligence 的 Mac 模拟器或实体设备上验证。"
+        case .unknown:
+            "请检查系统版本和 Apple Intelligence 设置后重试。"
+        }
+    }
+
+    var symbolName: String {
+        switch self {
+        case .available:
+            "apple.intelligence"
+        case .modelNotReady:
+            "arrow.trianglehead.2.clockwise.rotate.90"
+        case .appleIntelligenceNotEnabled, .deviceNotEligible, .unknown:
+            "exclamationmark.triangle"
+        }
+    }
+
+    static var environmentTitle: String {
+#if targetEnvironment(simulator)
+        "iOS 模拟器 · 使用宿主 Mac 的系统模型"
+#else
+        "实体设备 · 使用本机系统模型"
+#endif
+    }
+
     static var current: Self {
         switch SystemLanguageModel.default.availability {
         case .available:

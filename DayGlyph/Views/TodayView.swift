@@ -13,6 +13,7 @@ struct TodayView: View {
     @FocusState private var isEditorFocused: Bool
 
     private let analyzer = UnifiedEmotionAnalyzer()
+    private let appleIntelligenceStatus = AppleIntelligenceStatus.current
     private let softLimit = 280
 
     var body: some View {
@@ -114,16 +115,20 @@ struct TodayView: View {
 
     private var intelligenceStatus: some View {
         HStack(alignment: .top, spacing: 10) {
-            Image(systemName: "apple.intelligence")
+            Image(systemName: appleIntelligenceStatus.symbolName)
                 .font(.title3.weight(.semibold))
-                .foregroundStyle(DayGlyphStyle.ink)
+                .foregroundStyle(
+                    appleIntelligenceStatus.canUseFoundationModels
+                        ? DayGlyphStyle.ink
+                        : Color.orange
+                )
                 .frame(width: 26)
 
             VStack(alignment: .leading, spacing: 3) {
-                Text("Apple Intelligence 优先理解")
+                Text(appleIntelligenceStatus.title)
                     .font(.footnote.weight(.semibold))
                     .foregroundStyle(DayGlyphStyle.ink)
-                Text("当前设备或模拟器不可用时，会自动本地回退，不影响生成。")
+                Text(appleIntelligenceStatus.detail)
                     .font(.caption)
                     .foregroundStyle(DayGlyphStyle.mutedInk)
                     .fixedSize(horizontal: false, vertical: true)

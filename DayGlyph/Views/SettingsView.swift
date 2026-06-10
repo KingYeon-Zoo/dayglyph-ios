@@ -12,8 +12,32 @@ struct SettingsView: View {
     @StateObject private var reminderService = ReminderService()
     @State private var reminderDate = Date()
 
+    private let appleIntelligenceStatus = AppleIntelligenceStatus.current
+
     var body: some View {
         Form {
+            Section("Apple Intelligence") {
+                Label(
+                    appleIntelligenceStatus.title,
+                    systemImage: appleIntelligenceStatus.symbolName
+                )
+                .font(.headline)
+
+                Text(appleIntelligenceStatus.detail)
+                    .foregroundStyle(DayGlyphStyle.mutedInk)
+
+                LabeledContent("运行环境", value: AppleIntelligenceStatus.environmentTitle)
+
+                Text(appleIntelligenceStatus.suggestion)
+                    .font(.footnote)
+                    .foregroundStyle(DayGlyphStyle.mutedInk)
+
+                Link(
+                    "查看 Apple 官方可用性说明",
+                    destination: URL(string: "https://support.apple.com/zh-cn/121115")!
+                )
+            }
+
             Section("每日提醒") {
                 Toggle("每日提醒", isOn: $reminderEnabled)
                     .onChange(of: reminderEnabled) {

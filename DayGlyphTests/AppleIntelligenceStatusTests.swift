@@ -24,4 +24,9 @@ struct AppleIntelligenceStatusTests {
         #expect(status.canUseFoundationModels == false)
         #expect(status.detail.contains("准备"))
     }
+
+    @Test func statusProvidesActionableSuggestion() {
+        #expect(AppleIntelligenceStatus.appleIntelligenceNotEnabled.suggestion.contains("系统设置"))
+        #expect(AppleIntelligenceStatus.deviceNotEligible.suggestion.contains("符合条件"))
+    }
 }
