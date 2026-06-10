@@ -2,6 +2,11 @@ import Testing
 @testable import DayGlyph
 
 struct UnifiedEmotionAnalyzerTests {
+    @Test func fallbackCopyDoesNotClaimAppleIntelligenceParticipation() {
+        #expect(AnalysisSource.fallback.title == "已使用本地回退")
+        #expect(AnalysisSource.fallback.title.contains("已参与") == false)
+    }
+
     @MainActor
     @Test func fallsBackToLocalRulesWhenFoundationAnalyzerUnavailable() async {
         let analyzer = UnifiedEmotionAnalyzer(

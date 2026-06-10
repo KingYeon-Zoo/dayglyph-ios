@@ -24,14 +24,12 @@ struct FoundationEmotionAnalyzer: FoundationEmotionAnalyzing {
             throw FoundationEmotionAnalyzerError.invalidOutput
         }
 
-        let model = SystemLanguageModel.default
-        switch model.availability {
-        case .available:
-            break
-        case .unavailable(let reason):
-            throw FoundationEmotionAnalyzerError.unavailable(String(describing: reason))
+        let status = AppleIntelligenceStatus.current
+        guard status.canUseFoundationModels else {
+            throw FoundationEmotionAnalyzerError.unavailable(status.detail)
         }
 
+        let model = SystemLanguageModel.default
         let session = LanguageModelSession(
             model: model,
             instructions: """
