@@ -29,4 +29,13 @@ struct AppleIntelligenceStatusTests {
         #expect(AppleIntelligenceStatus.appleIntelligenceNotEnabled.suggestion.contains("系统设置"))
         #expect(AppleIntelligenceStatus.deviceNotEligible.suggestion.contains("符合条件"))
     }
+
+#if targetEnvironment(simulator)
+    @Test func simulatorExplainsThatAppleIntelligenceCannotBeEnabledSeparately() {
+        let status = AppleIntelligenceStatus.appleIntelligenceNotEnabled
+
+        #expect(status.suggestion.contains("模拟器无法单独开启"))
+        #expect(status.suggestion.contains("宿主 Mac"))
+    }
+#endif
 }

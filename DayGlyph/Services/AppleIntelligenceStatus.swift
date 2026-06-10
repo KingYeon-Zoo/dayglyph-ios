@@ -30,30 +30,38 @@ enum AppleIntelligenceStatus: Equatable {
     var detail: String {
         switch self {
         case .available:
-            "DayGlyph 会优先使用设备端模型理解记录。"
+            return "DayGlyph 会优先使用设备端模型理解记录。"
         case .appleIntelligenceNotEnabled:
-            "请在系统设置中开启 Apple Intelligence；当前继续使用本地分析。"
+#if targetEnvironment(simulator)
+            return "模拟器依赖宿主 Mac 的 Apple Intelligence；当前继续使用本地分析。"
+#else
+            return "请在系统设置中开启 Apple Intelligence；当前继续使用本地分析。"
+#endif
         case .modelNotReady:
-            "系统模型仍在准备或下载；当前继续使用本地分析。"
+            return "系统模型仍在准备或下载；当前继续使用本地分析。"
         case .deviceNotEligible:
-            "设备、地区或系统资格不满足要求；当前继续使用本地分析。"
+            return "设备、地区或系统资格不满足要求；当前继续使用本地分析。"
         case .unknown:
-            "系统没有返回可识别的状态；当前继续使用本地分析。"
+            return "系统没有返回可识别的状态；当前继续使用本地分析。"
         }
     }
 
     var suggestion: String {
         switch self {
         case .available:
-            "无需额外设置。"
+            return "无需额外设置。"
         case .appleIntelligenceNotEnabled:
-            "请前往系统设置开启 Apple Intelligence。"
+#if targetEnvironment(simulator)
+            return "模拟器无法单独开启；请先确认宿主 Mac 符合资格，并在 Mac 系统设置中开启 Apple Intelligence。"
+#else
+            return "请前往系统设置开启 Apple Intelligence。"
+#endif
         case .modelNotReady:
-            "请保持设备联网并连接电源，等待系统模型准备完成。"
+            return "请保持设备联网并连接电源，等待系统模型准备完成。"
         case .deviceNotEligible:
-            "请在符合条件且已启用 Apple Intelligence 的 Mac 模拟器或实体设备上验证。"
+            return "请在符合条件且已启用 Apple Intelligence 的 Mac 模拟器或实体设备上验证。"
         case .unknown:
-            "请检查系统版本和 Apple Intelligence 设置后重试。"
+            return "请检查系统版本和 Apple Intelligence 设置后重试。"
         }
     }
 
