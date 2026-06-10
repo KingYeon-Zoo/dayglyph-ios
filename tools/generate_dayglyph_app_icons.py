@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "DayGlyph" / "Assets.xcassets" / "AppIcon.appiconset"
 SIZE = 1024
 SAMPLES = 2
+TAU = math.pi * 2
 
 
 def hex_to_rgb(value: str) -> tuple[int, int, int]:
@@ -16,71 +17,84 @@ def hex_to_rgb(value: str) -> tuple[int, int, int]:
     return tuple(int(value[index : index + 2], 16) for index in (0, 2, 4))
 
 
-def blend(bottom: tuple[int, int, int], top: tuple[int, int, int], alpha: float) -> tuple[int, int, int]:
+def blend(
+    bottom: tuple[int, int, int],
+    top: tuple[int, int, int],
+    alpha: float,
+) -> tuple[int, int, int]:
     alpha = max(0.0, min(alpha, 1.0))
-    return tuple(int(bottom[i] * (1 - alpha) + top[i] * alpha) for i in range(3))
+    return tuple(round(bottom[i] * (1 - alpha) + top[i] * alpha) for i in range(3))
 
 
-def inside_rotated_round_rect(
+def smooth_coverage(distance: float, half_width: float) -> float:
+    edge = 1.5
+    return max(0.0, min(1.0, (half_width + edge - distance) / (edge * 2)))
+
+
+def background_color(
     x: float,
     y: float,
-    cx: float,
-    cy: float,
-    width: float,
-    height: float,
-    radius: float,
-    rotation: float,
-) -> bool:
-    cos_v = math.cos(-rotation)
-    sin_v = math.sin(-rotation)
+    start: tuple[int, int, int],
+    end: tuple[int, int, int],
+) -> tuple[int, int, int]:
+    progress = max(0.0, min(1.0, (x + y) / (SIZE * 2)))
+    return blend(start, end, progress)
+
+
+def spiral_distance(x: float, y: float) -> tuple[float, tuple[float, float]]:
+    cx = cy = SIZE / 2
     dx = x - cx
     dy = y - cy
-    rx = dx * cos_v - dy * sin_v
-    ry = dx * sin_v + dy * cos_v
-    qx = abs(rx) - width / 2 + radius
-    qy = abs(ry) - height / 2 + radius
-    outside_x = max(qx, 0)
-    outside_y = max(qy, 0)
-    inside_distance = min(max(qx, qy), 0)
-    return math.hypot(outside_x, outside_y) + inside_distance <= radius
+    radius = math.hypot(dx, dy)
+    angle = math.atan2(dy, dx) % TAU
+
+    start_angle = math.radians(166)
+    end_angle = start_angle + TAU * 1.55
+    outer_radius = 236.0
+    inner_radius = 104.0
+    best_distance = float("inf")
+
+    for turn in range(3):
+        unwrapped = angle + TAU * turn
+        if start_angle <= unwrapped <= end_angle:
+            progress = (unwrapped - start_angle) / (end_angle - start_angle)
+            expected_radius = outer_radius + (inner_radius - outer_radius) * progress
+            best_distance = min(best_distance, abs(radius - expected_radius))
+
+    start_point = (
+        cx + math.cos(start_angle) * outer_radius,
+        cy + math.sin(start_angle) * outer_radius,
+    )
+    end_point = (
+        cx + math.cos(end_angle) * inner_radius,
+        cy + math.sin(end_angle) * inner_radius,
+    )
+    best_distance = min(
+        best_distance,
+        math.hypot(x - start_point[0], y - start_point[1]),
+        math.hypot(x - end_point[0], y - end_point[1]),
+    )
+    return best_distance, end_point
 
 
-def angle_between(angle: float, start: float, end: float) -> bool:
-    angle = angle % (math.pi * 2)
-    start = start % (math.pi * 2)
-    end = end % (math.pi * 2)
-    if start <= end:
-        return start <= angle <= end
-    return angle >= start or angle <= end
+def pixel_color(
+    x: float,
+    y: float,
+    colors: dict[str, tuple[int, int, int]],
+) -> tuple[int, int, int]:
+    color = background_color(x, y, colors["bg_start"], colors["bg_end"])
+    distance, end_point = spiral_distance(x, y)
 
+    stroke_alpha = smooth_coverage(distance, 31)
+    if stroke_alpha > 0:
+        color = blend(color, colors["stroke"], stroke_alpha)
 
-def pixel_color(x: float, y: float, colors: dict[str, tuple[int, int, int]]) -> tuple[int, int, int]:
-    cx = cy = SIZE / 2
-    color = colors["bg"]
-
-    dist = math.hypot(x - cx, y - cy)
-    ring_alpha = max(0.0, 1.0 - abs(dist - 250) / 44)
-    if ring_alpha > 0:
-        color = blend(color, colors["primary"], ring_alpha)
-
-    arc_angle = math.atan2(y - cy, x - cx)
-    arc_dist = math.hypot(x - cx, y - cy)
-    if angle_between(arc_angle, math.radians(36), math.radians(166)):
-        arc_alpha = max(0.0, 1.0 - abs(arc_dist - 210) / 38)
-        if arc_alpha > 0:
-            color = blend(color, colors["secondary"], arc_alpha)
-
-    if inside_rotated_round_rect(x, y, 512, 458, 88, 420, 44, math.radians(36)):
-        color = colors["accent"]
-
-    dot_dist = math.hypot(x - 670, y - 656)
-    dot_alpha = max(0.0, 1.0 - abs(dot_dist) / 58)
+    dot_distance = math.hypot(x - end_point[0], y - end_point[1])
+    dot_alpha = smooth_coverage(dot_distance, 22)
     if dot_alpha > 0:
-        color = blend(color, colors["dot"], min(dot_alpha * 1.25, 1.0))
+        color = blend(color, colors["dot"], dot_alpha)
 
-    # Soft inner highlight keeps the mark from feeling flat at large sizes.
-    highlight = max(0.0, 1.0 - math.hypot(x - 360, y - 270) / 620)
-    return blend(color, (255, 255, 255), highlight * colors["highlight"])
+    return color
 
 
 def write_png(path: Path, pixels: list[tuple[int, int, int]]) -> None:
@@ -89,7 +103,7 @@ def write_png(path: Path, pixels: list[tuple[int, int, int]]) -> None:
         start = row * SIZE
         scanline = bytearray([0])
         for red, green, blue in pixels[start : start + SIZE]:
-            scanline.extend((red, green, blue, 255))
+            scanline.extend((red, green, blue))
         raw_rows.append(bytes(scanline))
 
     def chunk(kind: bytes, data: bytes) -> bytes:
@@ -103,16 +117,15 @@ def write_png(path: Path, pixels: list[tuple[int, int, int]]) -> None:
     payload = b"".join(raw_rows)
     png = (
         b"\x89PNG\r\n\x1a\n"
-        + chunk(b"IHDR", struct.pack(">IIBBBBB", SIZE, SIZE, 8, 6, 0, 0, 0))
+        + chunk(b"IHDR", struct.pack(">IIBBBBB", SIZE, SIZE, 8, 2, 0, 0, 0))
         + chunk(b"IDAT", zlib.compress(payload, level=9))
         + chunk(b"IEND", b"")
     )
     path.write_bytes(png)
 
 
-def render_icon(path: Path, palette: dict[str, str], highlight: float) -> None:
+def render_icon(path: Path, palette: dict[str, str]) -> None:
     colors = {key: hex_to_rgb(value) for key, value in palette.items()}
-    colors["highlight"] = highlight
     pixels: list[tuple[int, int, int]] = []
     for y in range(SIZE):
         for x in range(SIZE):
@@ -126,49 +139,43 @@ def render_icon(path: Path, palette: dict[str, str], highlight: float) -> None:
                             colors,
                         )
                     )
-            pixels.append(tuple(sum(sample[i] for sample in samples) // len(samples) for i in range(3)))
+            pixels.append(
+                tuple(
+                    sum(sample[channel] for sample in samples) // len(samples)
+                    for channel in range(3)
+                )
+            )
     write_png(path, pixels)
 
 
 VARIANTS = {
-    "dayglyph-icon-default.png": (
-        {
-            "bg": "#F9F6EE",
-            "primary": "#174C43",
-            "secondary": "#D9B45F",
-            "accent": "#C95147",
-            "dot": "#174C43",
-        },
-        0.12,
-    ),
-    "dayglyph-icon-dark.png": (
-        {
-            "bg": "#101614",
-            "primary": "#D8EEE6",
-            "secondary": "#D8B762",
-            "accent": "#E06A5F",
-            "dot": "#F3F0E8",
-        },
-        0.04,
-    ),
-    "dayglyph-icon-tinted.png": (
-        {
-            "bg": "#F7F7F7",
-            "primary": "#171717",
-            "secondary": "#5D5D5D",
-            "accent": "#2D2D2D",
-            "dot": "#171717",
-        },
-        0.08,
-    ),
+    "dayglyph-icon-default.png": {
+        "bg_start": "#FBFAF4",
+        "bg_end": "#E1EDE5",
+        "stroke": "#1C6852",
+        "dot": "#EF725D",
+    },
+    "dayglyph-icon-dark.png": {
+        "bg_start": "#12322C",
+        "bg_end": "#091B18",
+        "stroke": "#E6F1E8",
+        "dot": "#FF806B",
+    },
+    "dayglyph-icon-tinted.png": {
+        "bg_start": "#F4F4F4",
+        "bg_end": "#DADADA",
+        "stroke": "#242424",
+        "dot": "#707070",
+    },
 }
 
 
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    for name, (palette, highlight) in VARIANTS.items():
-        render_icon(OUT / name, palette, highlight)
-    print(f"Generated {len(VARIANTS)} app icons in {OUT}")
+    for name, palette in VARIANTS.items():
+        path = OUT / name
+        render_icon(path, palette)
+        print(path)
 
 
 if __name__ == "__main__":
