@@ -8,6 +8,7 @@
 import Testing
 @testable import DayGlyph
 
+@MainActor
 struct DayGlyphTests {
 
     @Test func projectLoads() async throws {
