@@ -12,8 +12,7 @@ struct EntryDetailView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 22) {
-                hero
-                GlyphExplanationView(analysis: entry.analysis, signature: signature)
+                CocktailResultView(entry: entry, mode: .history)
                 originalText
                 deleteButton
             }
@@ -22,7 +21,7 @@ struct EntryDetailView: View {
             .padding(.bottom, 112)
         }
         .background(DayGlyphBackground())
-        .navigationTitle("一划详情")
+        .navigationTitle("记录详情")
         .navigationBarTitleDisplayMode(.inline)
         .confirmationDialog(
             "删除这一天？",
@@ -34,53 +33,6 @@ struct EntryDetailView: View {
         } message: {
             Text("删除后无法恢复。")
         }
-    }
-
-    private var signature: GlyphSignature {
-        GlyphSignature(analysis: entry.analysis, seed: entry.glyphSeed)
-    }
-
-    private var hero: some View {
-        VStack(spacing: 18) {
-            GlyphCanvasView(
-                signature: signature,
-                lineWidth: 5.5,
-                mode: .detail
-            )
-            .frame(maxWidth: 286)
-
-            VStack(spacing: 10) {
-                Text(entry.date, format: .dateTime.year().month().day().weekday())
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(DayGlyphStyle.mutedInk)
-
-                Text(entry.primaryEmotion.title)
-                    .font(.system(size: 32, weight: .bold, design: .serif))
-                    .foregroundStyle(DayGlyphStyle.ink)
-
-                HStack(spacing: 7) {
-                    ForEach(entry.analysis.topEmotionWeights) { weight in
-                        CapsuleLabel(
-                            text: "\(weight.anchor.title) \(Int(weight.value * 100))%",
-                            color: signature.palette.primary
-                        )
-                    }
-                }
-
-                Text(entry.explanation)
-                    .font(.body.weight(.medium))
-                    .foregroundStyle(DayGlyphStyle.ink)
-                    .multilineTextAlignment(.center)
-                    .lineSpacing(4)
-
-                Text("\(entry.theme.title) · \(entry.analysisSource.title) · 置信度 \(Int(entry.confidence * 100))%")
-                    .font(.caption)
-                    .foregroundStyle(DayGlyphStyle.mutedInk)
-            }
-        }
-        .frame(maxWidth: .infinity)
-        .padding(18)
-        .paperCard(cornerRadius: 34)
     }
 
     private var originalText: some View {

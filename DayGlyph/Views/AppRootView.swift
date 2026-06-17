@@ -6,9 +6,7 @@ struct AppRootView: View {
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            NavigationStack {
-                TodayHomeView()
-            }
+            TodayHomeView()
             .tabItem {
                 Label(AppTab.today.title, systemImage: AppTab.today.systemImage)
             }
