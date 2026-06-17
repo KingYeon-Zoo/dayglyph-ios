@@ -1,6 +1,6 @@
 # DayGlyph iOS
 
-DayGlyph 是一个本地优先的 iOS 情绪记录产品原型。用户写下当天的感受后，应用通过设备端 Apple Intelligence 理解情绪结构，并将结果转化为可回顾的视觉印记。
+DayGlyph 是一个本地优先的 iOS 情绪记录产品原型。用户写下当天的感受后，应用通过设备端 Apple Intelligence 理解情绪结构，并将结果转化为可回顾的情绪配方、鸡尾酒视觉与日星球。
 
 > 当前仓库用于产品评审与原型协作，暂不代表正式发布版本。
 
@@ -9,8 +9,8 @@ DayGlyph 是一个本地优先的 iOS 情绪记录产品原型。用户写下当
 - 每日文字记录与本地持久化
 - 基于 Foundation Models 的设备端情绪分析
 - 情绪权重、主题、能量与解释文案
-- 确定性生成的每日情绪 Glyph
-- 情绪月历与历史记录详情
+- 确定性生成的情绪配方、鸡尾酒视觉与日星球基础数据
+- 四 Tab 应用壳与 Today 情绪鸡尾酒核心流程
 - 每日提醒与演示数据
 - App Intents / Shortcuts 入口
 - 单元测试与 Apple Intelligence 环境诊断
@@ -19,13 +19,13 @@ DayGlyph 是一个本地优先的 iOS 情绪记录产品原型。用户写下当
 
 ## 当前产品方向
 
-当前可运行版本仍以“每日一划”和情绪 Glyph 为核心视觉。
+当前可运行版本正在切换到“情绪鸡尾酒”和“情绪宇宙”的 v2 体验。
 
-产品团队正在评审下一阶段体验：以“情绪鸡尾酒”替代 Glyph，并扩展情绪宇宙、微行动、行动回声、时间来信与共情海。相关设计稿见：
+产品团队正在评审下一阶段体验：扩展情绪宇宙、微行动、行动回声、时间来信与共情海。相关设计稿见：
 
 - [`docs/superpowers/specs/2026-06-14-dayglyph-emotional-support-expansion-design.zh-CN.md`](docs/superpowers/specs/2026-06-14-dayglyph-emotional-support-expansion-design.zh-CN.md)
 
-上述下一阶段功能尚未在当前代码中实现。
+宇宙、回声、我的等后续模块目前保留为占位入口，会按阶段逐步实现。
 
 ## 技术栈
 

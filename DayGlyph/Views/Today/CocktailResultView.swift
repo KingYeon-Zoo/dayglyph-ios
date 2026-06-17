@@ -128,25 +128,41 @@ struct CocktailResultView: View {
     }
 
     private var actions: some View {
-        HStack(spacing: 12) {
-            Button(action: toggleFavorite) {
-                Label(
-                    CocktailResultCopy.favoriteButtonTitle(isFavorite: entry.isFavorite),
-                    systemImage: entry.isFavorite ? "heart.fill" : "heart"
-                )
-                .frame(maxWidth: .infinity)
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: 12) {
+                favoriteButton
+                saveImageButton
             }
-            .buttonStyle(.glassProminent)
-            .tint(DayGlyphStyle.today)
 
-            Button(action: showImageToast) {
-                Label("保存图片", systemImage: "square.and.arrow.down")
-                    .frame(maxWidth: .infinity)
+            VStack(spacing: 10) {
+                favoriteButton
+                saveImageButton
             }
-            .buttonStyle(.glass)
         }
         .font(.subheadline.weight(.semibold))
         .padding(.horizontal, mode == .history ? 0 : 4)
+    }
+
+    private var favoriteButton: some View {
+        Button(action: toggleFavorite) {
+            Label(
+                CocktailResultCopy.favoriteButtonTitle(isFavorite: entry.isFavorite),
+                systemImage: entry.isFavorite ? "heart.fill" : "heart"
+            )
+            .frame(maxWidth: .infinity)
+            .frame(minHeight: 44)
+        }
+        .buttonStyle(.glassProminent)
+        .tint(DayGlyphStyle.today)
+    }
+
+    private var saveImageButton: some View {
+        Button(action: showImageToast) {
+            Label("保存图片", systemImage: "square.and.arrow.down")
+                .frame(maxWidth: .infinity)
+                .frame(minHeight: 44)
+        }
+        .buttonStyle(.glass)
     }
 
     private func toggleFavorite() {

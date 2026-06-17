@@ -46,7 +46,7 @@ struct CalendarView: View {
     private func monthHeader(for month: CalendarMonth) -> some View {
         HStack(alignment: .center) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("情绪星图")
+                Text("情绪宇宙")
                     .font(.caption.weight(.bold))
                     .tracking(1.2)
                     .foregroundStyle(DayGlyphStyle.jade)
@@ -185,7 +185,7 @@ struct CalendarView: View {
                     Text(selectedDate, format: .dateTime.month().day().weekday())
                         .font(.headline)
                         .foregroundStyle(DayGlyphStyle.ink)
-                    Text("这一天还没有留下情绪印记。")
+                    Text("这一天还没有留下情绪配方。")
                         .font(.subheadline)
                         .foregroundStyle(DayGlyphStyle.mutedInk)
                 }

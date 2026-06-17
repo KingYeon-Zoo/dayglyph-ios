@@ -61,7 +61,7 @@ struct GlyphCanvasView: View {
             }
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(signature.primaryEmotion.title)情绪印记")
+        .accessibilityLabel("\(signature.primaryEmotion.title)情绪结构图")
         .accessibilityValue("唤醒度 \(Int(signature.energy * 100))%，置信度 \(Int(signature.confidence * 100))%")
     }
 

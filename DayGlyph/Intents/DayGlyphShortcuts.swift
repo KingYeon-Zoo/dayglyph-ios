@@ -7,10 +7,10 @@ struct DayGlyphShortcuts: AppShortcutsProvider {
         AppShortcut(
             intent: RecordTodayGlyphIntent(),
             phrases: [
-                "用\(.applicationName)记录今天的一划",
+                "用\(.applicationName)记录今日情绪",
                 "在\(.applicationName)写下今天"
             ],
-            shortTitle: "记录一划",
+            shortTitle: "记录情绪",
             systemImageName: "sparkles"
         )
 
@@ -18,7 +18,7 @@ struct DayGlyphShortcuts: AppShortcutsProvider {
             intent: OpenTodayIntent(),
             phrases: [
                 "打开\(.applicationName)",
-                "查看\(.applicationName)今日一划"
+                "查看\(.applicationName)今日情绪"
             ],
             shortTitle: "打开今日",
             systemImageName: "square.and.pencil"
@@ -27,10 +27,10 @@ struct DayGlyphShortcuts: AppShortcutsProvider {
         AppShortcut(
             intent: OpenGlyphCalendarIntent(),
             phrases: [
-                "查看\(.applicationName)情绪月历",
-                "打开\(.applicationName)月历"
+                "查看\(.applicationName)情绪宇宙",
+                "打开\(.applicationName)宇宙"
             ],
-            shortTitle: "情绪月历",
+            shortTitle: "情绪宇宙",
             systemImageName: "calendar"
         )
     }

@@ -3,8 +3,8 @@ import Foundation
 import SwiftData
 
 struct RecordTodayGlyphIntent: AppIntent {
-    static var title: LocalizedStringResource = "记录今天的一划"
-    static var description = IntentDescription("写下一段今天的记录，并生成或更新今天的一划。")
+    static var title: LocalizedStringResource = "记录今日情绪"
+    static var description = IntentDescription("写下一段今天的记录，并生成或更新今日情绪配方。")
     static var supportedModes: IntentModes = .background
     static var authenticationPolicy: IntentAuthenticationPolicy = .alwaysAllowed
 
@@ -25,12 +25,12 @@ struct RecordTodayGlyphIntent: AppIntent {
         let analysis = try await UnifiedEmotionAnalyzer().analyze(trimmed)
         _ = try DayEntryStore.saveEntry(text: trimmed, analysis: analysis, context: context)
 
-        return .result(dialog: "已记录今天的一划，主要情绪为\(analysis.primaryEmotion.title)。")
+        return .result(dialog: "已记录今日情绪，主要情绪为\(analysis.primaryEmotion.title)。")
     }
 }
 
 struct OpenTodayIntent: AppIntent {
-    static var title: LocalizedStringResource = "打开今日一划"
+    static var title: LocalizedStringResource = "打开今日情绪"
     static var description = IntentDescription("打开 DayGlyph 的今日记录页面。")
     static var supportedModes: IntentModes = .foreground(.immediate)
     static var authenticationPolicy: IntentAuthenticationPolicy = .alwaysAllowed
@@ -42,8 +42,8 @@ struct OpenTodayIntent: AppIntent {
 }
 
 struct OpenGlyphCalendarIntent: AppIntent {
-    static var title: LocalizedStringResource = "打开情绪月历"
-    static var description = IntentDescription("打开 DayGlyph 的情绪月历。")
+    static var title: LocalizedStringResource = "打开情绪宇宙"
+    static var description = IntentDescription("打开 DayGlyph 的情绪宇宙。")
     static var supportedModes: IntentModes = .foreground(.immediate)
     static var authenticationPolicy: IntentAuthenticationPolicy = .alwaysAllowed
 

@@ -15,7 +15,7 @@ struct GlyphExplanationView: View {
             }
             .padding(.top, 14)
         } label: {
-            Label("为什么是这一划", systemImage: "point.3.connected.trianglepath.dotted")
+            Label("为什么是这种结构", systemImage: "point.3.connected.trianglepath.dotted")
                 .font(.headline)
                 .foregroundStyle(DayGlyphStyle.ink)
         }

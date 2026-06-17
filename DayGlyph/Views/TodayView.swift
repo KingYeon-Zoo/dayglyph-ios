@@ -79,12 +79,12 @@ struct TodayView: View {
                     .foregroundStyle(DayGlyphStyle.mutedInk)
             }
 
-            Text(isEditing ? "今天留下些什么？" : "今天，成为这一划")
+            Text(isEditing ? "今天留下些什么？" : "今日情绪鸡尾酒")
                 .font(.system(size: 36, weight: .bold, design: .serif))
                 .foregroundStyle(DayGlyphStyle.ink)
                 .contentTransition(.numericText())
 
-            Text(isEditing ? "写下真实感受，模型会把情绪结构转译成独一无二的印记。" : "颜色表达情绪气候，结构记录它如何发生。")
+            Text(isEditing ? "写下真实感受，模型会把情绪结构转译成今日配方。" : "颜色表达情绪气候，结构记录它如何发生。")
                 .font(.subheadline)
                 .foregroundStyle(DayGlyphStyle.mutedInk)
                 .lineSpacing(3)
@@ -152,7 +152,7 @@ struct TodayView: View {
     }
 
     private var generateButton: some View {
-        Button(action: generateTodayGlyph) {
+        Button(action: generateTodayMood) {
             HStack(spacing: 10) {
                 if isAnalyzing {
                     ProgressView()
@@ -160,7 +160,7 @@ struct TodayView: View {
                 } else {
                     Image(systemName: "wand.and.sparkles")
                 }
-                Text(isAnalyzing ? "正在理解情绪结构" : "生成今日一划")
+                Text(isAnalyzing ? "正在理解情绪结构" : "调制今日情绪")
             }
             .font(.headline)
             .frame(maxWidth: .infinity)
@@ -170,7 +170,7 @@ struct TodayView: View {
         .tint(DayGlyphStyle.ink)
         .controlSize(.large)
         .disabled(isAnalyzing || entryText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-        .accessibilityHint("使用设备端模型分析文字并生成情绪印记")
+        .accessibilityHint("使用设备端模型分析文字并生成情绪配方")
     }
 
     private func result(for entry: DayEntry) -> some View {
@@ -248,7 +248,7 @@ struct TodayView: View {
         revealProgress = 1
     }
 
-    private func generateTodayGlyph() {
+    private func generateTodayMood() {
         let trimmed = entryText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
 

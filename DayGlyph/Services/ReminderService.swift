@@ -26,8 +26,8 @@ final class ReminderService: ObservableObject {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["dayglyph.daily"])
 
         let content = UNMutableNotificationContent()
-        content.title = "今天的一划"
-        content.body = "留一点今天给自己。"
+        content.title = "今天的情绪"
+        content.body = "留一句今天给自己。"
         content.sound = .default
 
         var components = DateComponents()
