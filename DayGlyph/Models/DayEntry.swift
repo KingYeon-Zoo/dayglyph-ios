@@ -17,6 +17,12 @@ final class DayEntry {
     var dominance: Double = 0
     var emotionWeightsData: Data = Data()
     var analysisVersion: Int = 1
+    var emotionRecipeData: Data = Data()
+    var cocktailVisualData: Data = Data()
+    var planetVisualData: Data = Data()
+    var moodWeatherData: Data = Data()
+    var visualVersion: Int = 0
+    var isFavorite: Bool = false
     var createdAt: Date
     var updatedAt: Date
     var isDemo: Bool
@@ -47,6 +53,8 @@ final class DayEntry {
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.isDemo = isDemo
+        let visuals = EmotionVisualFactory.makeVisuals(text: text, date: self.date, analysis: analysis)
+        applyVisuals(visuals)
     }
 
     var emotion: DayEmotion {
@@ -101,6 +109,26 @@ final class DayEntry {
         )
     }
 
+    var emotionRecipe: EmotionRecipe {
+        decode(EmotionRecipe.self, from: emotionRecipeData)
+            ?? EmotionVisualFactory.makeVisuals(text: text, date: date, analysis: analysis).recipe
+    }
+
+    var cocktailVisual: CocktailVisual {
+        decode(CocktailVisual.self, from: cocktailVisualData)
+            ?? EmotionVisualFactory.makeVisuals(text: text, date: date, analysis: analysis).cocktail
+    }
+
+    var planetVisual: PlanetVisual {
+        decode(PlanetVisual.self, from: planetVisualData)
+            ?? EmotionVisualFactory.makeVisuals(text: text, date: date, analysis: analysis).planet
+    }
+
+    var moodWeather: MoodWeather {
+        decode(MoodWeather.self, from: moodWeatherData)
+            ?? EmotionVisualFactory.makeVisuals(text: text, date: date, analysis: analysis).weather
+    }
+
     func update(text: String, analysis: EmotionAnalysis, glyphSeed: Int, date: Date = .now) {
         self.text = text
         self.emotionRawValue = analysis.primaryEmotion.rawValue
@@ -116,6 +144,16 @@ final class DayEntry {
         self.emotionWeightsData = Self.encodeWeights(analysis.emotionWeights)
         self.analysisVersion = 2
         self.updatedAt = date
+        let visuals = EmotionVisualFactory.makeVisuals(text: text, date: self.date, analysis: analysis)
+        applyVisuals(visuals)
+    }
+
+    func applyVisuals(_ visuals: EntryVisuals) {
+        emotionRecipeData = encode(visuals.recipe)
+        cocktailVisualData = encode(visuals.cocktail)
+        planetVisualData = encode(visuals.planet)
+        moodWeatherData = encode(visuals.weather)
+        visualVersion = visuals.visualVersion
     }
 
     private var legacyAnchor: EmotionAnchor {
@@ -126,5 +164,14 @@ final class DayEntry {
 
     private static func encodeWeights(_ weights: [EmotionWeight]) -> Data {
         (try? JSONEncoder().encode(weights)) ?? Data()
+    }
+
+    private func encode<T: Encodable>(_ value: T) -> Data {
+        (try? JSONEncoder().encode(value)) ?? Data()
+    }
+
+    private func decode<T: Decodable>(_ type: T.Type, from data: Data) -> T? {
+        guard data.isEmpty == false else { return nil }
+        return try? JSONDecoder().decode(type, from: data)
     }
 }

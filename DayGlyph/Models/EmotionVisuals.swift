@@ -1,6 +1,6 @@
 import Foundation
 
-enum EmotionVisualAnchor: String, CaseIterable, Codable, Equatable, Hashable, Identifiable {
+nonisolated enum EmotionVisualAnchor: String, CaseIterable, Codable, Equatable, Hashable, Identifiable {
     case joy
     case calm
     case anticipation
@@ -50,7 +50,7 @@ enum EmotionVisualAnchor: String, CaseIterable, Codable, Equatable, Hashable, Id
     }
 }
 
-struct EntryVisuals: Codable, Equatable {
+nonisolated struct EntryVisuals: Codable, Equatable {
     var recipe: EmotionRecipe
     var cocktail: CocktailVisual
     var planet: PlanetVisual
@@ -58,7 +58,7 @@ struct EntryVisuals: Codable, Equatable {
     var visualVersion: Int
 }
 
-struct EmotionRecipe: Codable, Equatable {
+nonisolated struct EmotionRecipe: Codable, Equatable {
     var primary: EmotionVisualAnchor
     var secondary: [EmotionVisualAnchor]
     var parts: [RecipePart]
@@ -68,20 +68,20 @@ struct EmotionRecipe: Codable, Equatable {
     var supportCopy: String
 }
 
-struct RecipePart: Codable, Equatable, Identifiable {
+nonisolated struct RecipePart: Codable, Equatable, Identifiable {
     var anchor: EmotionVisualAnchor
     var parts: Int
 
     var id: EmotionVisualAnchor { anchor }
 }
 
-enum ConfidenceBand: String, Codable, Equatable {
+nonisolated enum ConfidenceBand: String, Codable, Equatable {
     case low
     case medium
     case high
 }
 
-struct CocktailVisual: Codable, Equatable {
+nonisolated struct CocktailVisual: Codable, Equatable {
     var glassType: String
     var liquidLayers: [String]
     var bubbleLevel: Double
@@ -89,7 +89,7 @@ struct CocktailVisual: Codable, Equatable {
     var backgroundSeed: Int
 }
 
-struct PlanetVisual: Codable, Equatable {
+nonisolated struct PlanetVisual: Codable, Equatable {
     var seed: Int
     var baseHue: Double
     var secondaryHue: Double
@@ -100,7 +100,7 @@ struct PlanetVisual: Codable, Equatable {
     var rotationSpeed: Double
 }
 
-struct MoodWeather: Codable, Equatable {
+nonisolated struct MoodWeather: Codable, Equatable {
     var type: String
     var intensityBand: String
     var animationSeed: Int
