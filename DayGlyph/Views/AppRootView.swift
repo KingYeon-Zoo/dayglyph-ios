@@ -2,30 +2,43 @@ import SwiftUI
 import SwiftData
 
 struct AppRootView: View {
+    @State private var selectedTab: AppTab = .today
+
     var body: some View {
-        TabView {
+        TabView(selection: $selectedTab) {
             NavigationStack {
-                TodayView()
+                TodayHomeView()
             }
             .tabItem {
-                Label("今日", systemImage: "sparkle")
+                Label(AppTab.today.title, systemImage: AppTab.today.systemImage)
             }
+            .tag(AppTab.today)
 
             NavigationStack {
-                CalendarView()
+                UniversePlaceholderView()
             }
             .tabItem {
-                Label("月历", systemImage: "calendar")
+                Label(AppTab.universe.title, systemImage: AppTab.universe.systemImage)
             }
+            .tag(AppTab.universe)
 
             NavigationStack {
-                SettingsView()
+                EchoPlaceholderView()
             }
             .tabItem {
-                Label("设置", systemImage: "slider.horizontal.3")
+                Label(AppTab.echo.title, systemImage: AppTab.echo.systemImage)
             }
+            .tag(AppTab.echo)
+
+            NavigationStack {
+                MineHomePlaceholderView()
+            }
+            .tabItem {
+                Label(AppTab.mine.title, systemImage: AppTab.mine.systemImage)
+            }
+            .tag(AppTab.mine)
         }
-        .tint(DayGlyphStyle.jade)
+        .tint(selectedTab.tint)
         .environment(\.locale, Locale(identifier: "zh_CN"))
     }
 }
