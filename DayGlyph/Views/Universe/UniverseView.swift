@@ -1,5 +1,6 @@
 import SwiftData
 import SwiftUI
+import UIKit
 
 struct UniverseView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -9,6 +10,7 @@ struct UniverseView: View {
 
     @State private var selectedMonthStart: Date?
     @State private var selectedDay: UniverseDaySummary?
+    @State private var sceneFailed = false
 
     var body: some View {
         ZStack {
@@ -112,9 +114,7 @@ struct UniverseView: View {
             VStack(spacing: 18) {
                 monthHeader(month)
 
-                UniversePlanetView(visual: month.visual)
-                    .contentShape(Rectangle())
-                    .gesture(monthSwipeGesture)
+                planetExperience(month)
 
                 VStack(alignment: .leading, spacing: 12) {
                     Text(UniversePresentation.monthSummary(recordCount: month.recordCount))
@@ -199,6 +199,39 @@ struct UniverseView: View {
                 )
                 if offset != 0 { moveMonth(by: offset) }
             }
+    }
+
+    @ViewBuilder
+    private func planetExperience(_ month: MonthlyUniverseSummary) -> some View {
+        switch UniverseRenderingPolicy.mode(
+            voiceOver: UIAccessibility.isVoiceOverRunning,
+            reduceMotion: reduceMotion,
+            lowPower: ProcessInfo.processInfo.isLowPowerModeEnabled,
+            sceneFailed: sceneFailed
+        ) {
+        case .realityKit:
+            UniverseRealityView(
+                visual: month.visual,
+                onSelectDate: { date in
+                    selectedDay = month.days.first { $0.date == date }
+                },
+                onSceneFailure: { sceneFailed = true }
+            )
+            .id(month.id)
+            .frame(height: 330)
+            .overlay(alignment: .bottom) {
+                Text("拖动旋转 · 双指缩放 · 点击光点查看日期")
+                    .font(.caption)
+                    .foregroundStyle(.white.opacity(0.62))
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 7)
+                    .background(.black.opacity(0.24), in: Capsule())
+            }
+        case .accessible2D:
+            UniversePlanetView(visual: month.visual)
+                .contentShape(Rectangle())
+                .gesture(monthSwipeGesture)
+        }
     }
 
     private func moveMonth(by offset: Int) {
