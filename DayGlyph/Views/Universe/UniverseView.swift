@@ -132,7 +132,7 @@ struct UniverseView: View {
                         .tint(DayGlyphStyle.universe)
 
                         NavigationLink {
-                            UniverseTrendsPlaceholderView(month: month)
+                            UniverseTrendsView(entries: entries, initialDate: month.monthStart)
                         } label: {
                             Label("查看趋势", systemImage: "chart.xyaxis.line")
                                 .frame(maxWidth: .infinity, minHeight: 48)
@@ -306,18 +306,6 @@ struct UniverseView: View {
             return nil
         }
         return { selectedDay = adjacent }
-    }
-}
-
-private struct UniverseTrendsPlaceholderView: View {
-    var month: MonthlyUniverseSummary
-
-    var body: some View {
-        Text("趋势统计将在 Stage 3C 接入")
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(DayGlyphStyle.universeBackground.ignoresSafeArea())
-            .navigationTitle(month.monthStart.formatted(.dateTime.year().month()))
     }
 }
 
