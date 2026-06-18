@@ -23,23 +23,46 @@ final class ReminderService: ObservableObject {
     }
 
     func scheduleDailyReminder(hour: Int, minute: Int) async {
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["dayglyph.daily"])
-
-        let content = UNMutableNotificationContent()
-        content.title = "今天的情绪"
-        content.body = "留一句今天给自己。"
-        content.sound = .default
-
-        var components = DateComponents()
-        components.hour = hour
-        components.minute = minute
-
-        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
-        let request = UNNotificationRequest(identifier: "dayglyph.daily", content: content, trigger: trigger)
-        try? await UNUserNotificationCenter.current().add(request)
+        await schedule(NotificationScheduler.dailyPlan(hour: hour, minute: minute))
     }
 
     func cancelDailyReminder() {
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["dayglyph.daily"])
+        cancel(identifiers: [NotificationScheduler.dailyIdentifier])
+    }
+
+    func scheduleActionEcho(id: UUID, title: String, date: Date) async {
+        await schedule(NotificationScheduler.actionEchoPlan(id: id, title: title, date: date))
+    }
+
+    func scheduleTimeLetter(id: UUID, date: Date) async {
+        await schedule(NotificationScheduler.timeLetterPlan(id: id, date: date))
+    }
+
+    func cancel(identifiers: [String]) {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiers)
+    }
+
+    private func schedule(_ plan: NotificationPlan) async {
+        cancel(identifiers: [plan.identifier])
+        let content = UNMutableNotificationContent()
+        content.title = plan.title
+        content.body = plan.body
+        content.sound = .default
+
+        let trigger: UNNotificationTrigger
+        if let date = plan.date {
+            trigger = UNCalendarNotificationTrigger(
+                dateMatching: Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date),
+                repeats: plan.repeats
+            )
+        } else {
+            var components = DateComponents()
+            components.hour = plan.hour
+            components.minute = plan.minute
+            trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: plan.repeats)
+        }
+        try? await UNUserNotificationCenter.current().add(
+            UNNotificationRequest(identifier: plan.identifier, content: content, trigger: trigger)
+        )
     }
 }

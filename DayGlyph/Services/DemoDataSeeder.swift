@@ -127,6 +127,65 @@ enum DemoDataSeeder {
         try? context.save()
     }
 
+    static func clearAllLocalData(
+        entries: [DayEntry],
+        actions: [ActionInstance],
+        responses: [ActionResponse],
+        letters: [TimeLetter],
+        empathyCopies: [EmpathyCopy],
+        in context: ModelContext
+    ) {
+        entries.forEach(context.delete)
+        actions.forEach(context.delete)
+        responses.forEach(context.delete)
+        letters.forEach(context.delete)
+        empathyCopies.forEach(context.delete)
+        try? context.save()
+    }
+
+    static func seedSupportData(into context: ModelContext, now: Date = .now) {
+        clearDemoSupportData(in: context)
+        let fixtures: [(MicroAction, ActionResponseKind?)] = [
+            (MicroActionCatalog.all[0], .moreSettled),
+            (MicroActionCatalog.all[1], .unchanged),
+            (MicroActionCatalog.all[5], .moreSettled),
+            (MicroActionCatalog.all[2], nil)
+        ]
+        for (index, fixture) in fixtures.enumerated() {
+            let completedAt = now.addingTimeInterval(Double(-(index + 1) * 86_400))
+            let instance = ActionInstance(
+                actionId: fixture.0.id,
+                entryId: nil,
+                actionTitle: fixture.0.title,
+                category: fixture.0.category,
+                createdAt: completedAt.addingTimeInterval(-300),
+                startedAt: completedAt.addingTimeInterval(-240),
+                completedAt: completedAt,
+                followUpAt: fixture.1 == nil ? now.addingTimeInterval(-60) : completedAt.addingTimeInterval(10_800),
+                state: .completed,
+                isDemo: true
+            )
+            context.insert(instance)
+            if let kind = fixture.1 {
+                context.insert(ActionResponse(
+                    actionInstanceId: instance.id,
+                    kind: kind,
+                    createdAt: completedAt.addingTimeInterval(10_900),
+                    isDemo: true
+                ))
+            }
+        }
+        try? context.save()
+    }
+
+    static func clearDemoSupportData(in context: ModelContext) {
+        let actionDescriptor = FetchDescriptor<ActionInstance>(predicate: #Predicate { $0.isDemo == true })
+        let responseDescriptor = FetchDescriptor<ActionResponse>(predicate: #Predicate { $0.isDemo == true })
+        ((try? context.fetch(actionDescriptor)) ?? []).forEach(context.delete)
+        ((try? context.fetch(responseDescriptor)) ?? []).forEach(context.delete)
+        try? context.save()
+    }
+
     private static func sample(
         _ text: String,
         valence: Double,

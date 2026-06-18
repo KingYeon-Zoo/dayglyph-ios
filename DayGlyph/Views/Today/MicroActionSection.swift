@@ -5,6 +5,11 @@ struct MicroActionSection: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \ActionInstance.createdAt, order: .reverse) private var instances: [ActionInstance]
 
+    @AppStorage("prefersIndoorActions") private var prefersIndoorActions = false
+    @AppStorage("prefersSoloActions") private var prefersSoloActions = false
+    @AppStorage("echoRemindersEnabled") private var echoRemindersEnabled = false
+    @StateObject private var reminderService = ReminderService()
+
     var entry: DayEntry?
 
     @State private var candidates: [MicroAction] = []
@@ -158,8 +163,19 @@ struct MicroActionSection: View {
 
     private func completeButton(_ instance: ActionInstance) -> some View {
         Button {
-            instance.complete()
+            let completionDate = Date.now
+            instance.complete(at: completionDate)
+            instance.followUpAt = Calendar.current.date(byAdding: .hour, value: 3, to: completionDate)
             try? modelContext.save()
+            if echoRemindersEnabled, let followUpAt = instance.followUpAt {
+                Task {
+                    await reminderService.scheduleActionEcho(
+                        id: instance.id,
+                        title: instance.actionTitle,
+                        date: followUpAt
+                    )
+                }
+            }
         } label: {
             Label("完成了", systemImage: "checkmark")
                 .frame(maxWidth: .infinity, minHeight: 44)
@@ -190,7 +206,7 @@ struct MicroActionSection: View {
     private func loadCandidates() {
         candidates = MicroActionCatalog.recommendations(
             for: entry?.emotionRecipe.primary,
-            disabledCategories: [],
+            disabledCategories: disabledCategories,
             seed: entry?.planetVisual.seed ?? calendar.ordinality(of: .day, in: .era, for: .now) ?? 0
         )
     }
@@ -201,7 +217,7 @@ struct MicroActionSection: View {
                 for: current,
                 anchor: entry?.emotionRecipe.primary,
                 excluding: Set(candidates.map(\.id)),
-                disabledCategories: [],
+                disabledCategories: disabledCategories,
                 seed: entry?.planetVisual.seed ?? 0
               ) else { return }
         candidates[0] = replacement
@@ -211,6 +227,8 @@ struct MicroActionSection: View {
         let instance = ActionInstance(
             actionId: action.id,
             entryId: entry?.entryID,
+            actionTitle: action.title,
+            category: action.category,
             startedAt: .now,
             state: .started
         )
@@ -239,5 +257,12 @@ struct MicroActionSection: View {
         case .social: "message"
         case .outdoors: "leaf"
         }
+    }
+
+    private var disabledCategories: Set<MicroActionCategory> {
+        var categories: Set<MicroActionCategory> = []
+        if prefersIndoorActions { categories.insert(.outdoors) }
+        if prefersSoloActions { categories.insert(.social) }
+        return categories
     }
 }

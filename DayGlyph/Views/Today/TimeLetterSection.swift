@@ -6,6 +6,9 @@ struct TimeLetterSection: View {
     @Query(sort: \TimeLetter.notBefore) private var letters: [TimeLetter]
     @Query(sort: \DayEntry.date, order: .reverse) private var entries: [DayEntry]
 
+    @AppStorage("letterRemindersEnabled") private var letterRemindersEnabled = false
+    @StateObject private var reminderService = ReminderService()
+
     var entry: DayEntry?
 
     @State private var showsComposer = false
@@ -194,6 +197,11 @@ struct TimeLetterSection: View {
         ) else { return }
         modelContext.insert(letter)
         try? modelContext.save()
+        if letterRemindersEnabled {
+            Task {
+                await reminderService.scheduleTimeLetter(id: letter.id, date: letter.notBefore)
+            }
+        }
         draft = ""
         showsComposer = false
         savedMessage = "已经收好，会在未来某天出现"

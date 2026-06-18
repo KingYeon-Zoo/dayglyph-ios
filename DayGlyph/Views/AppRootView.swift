@@ -2,6 +2,7 @@ import SwiftUI
 import SwiftData
 
 struct AppRootView: View {
+    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
     @State private var selectedTab: AppTab = .today
     @State private var todayRecordRequest = 0
 
@@ -25,7 +26,7 @@ struct AppRootView: View {
             .tag(AppTab.universe)
 
             NavigationStack {
-                EchoPlaceholderView()
+                EchoHomeView()
             }
             .tabItem {
                 Label(AppTab.echo.title, systemImage: AppTab.echo.systemImage)
@@ -33,7 +34,7 @@ struct AppRootView: View {
             .tag(AppTab.echo)
 
             NavigationStack {
-                MineHomePlaceholderView()
+                MineHomeView()
             }
             .tabItem {
                 Label(AppTab.mine.title, systemImage: AppTab.mine.systemImage)
@@ -42,6 +43,12 @@ struct AppRootView: View {
         }
         .tint(selectedTab.tint)
         .environment(\.locale, Locale(identifier: "zh_CN"))
+        .fullScreenCover(isPresented: Binding(
+            get: { !hasCompletedOnboarding },
+            set: { if !$0 { hasCompletedOnboarding = true } }
+        )) {
+            OnboardingView { hasCompletedOnboarding = true }
+        }
     }
 }
 

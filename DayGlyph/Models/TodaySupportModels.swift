@@ -69,15 +69,21 @@ final class ActionInstance {
     var completedAt: Date?
     var followUpAt: Date?
     var stateRawValue: String
+    var actionTitle: String = "一项小行动"
+    var categoryRawValue: String?
+    var isDemo: Bool = false
 
     init(
         actionId: String,
         entryId: UUID?,
+        actionTitle: String = "一项小行动",
+        category: MicroActionCategory? = nil,
         createdAt: Date = .now,
         startedAt: Date?,
         completedAt: Date? = nil,
         followUpAt: Date? = nil,
-        state: ActionInstanceState
+        state: ActionInstanceState,
+        isDemo: Bool = false
     ) {
         self.actionId = actionId
         self.entryId = entryId
@@ -85,12 +91,19 @@ final class ActionInstance {
         self.startedAt = startedAt
         self.completedAt = completedAt
         self.followUpAt = followUpAt
+        self.actionTitle = actionTitle
+        self.categoryRawValue = category?.rawValue
         self.stateRawValue = state.rawValue
+        self.isDemo = isDemo
     }
 
     var state: ActionInstanceState {
         get { ActionInstanceState(rawValue: stateRawValue) ?? .started }
         set { stateRawValue = newValue.rawValue }
+    }
+
+    var category: MicroActionCategory? {
+        categoryRawValue.flatMap(MicroActionCategory.init(rawValue:))
     }
 
     func complete(at date: Date = .now) {
