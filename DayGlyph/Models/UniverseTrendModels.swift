@@ -48,8 +48,13 @@ nonisolated struct UniverseExportMetadata: Equatable {
     var sourceNotice: String
 
     init(summary: UniverseTrendSummary, calendar: Calendar = .current) {
-        let start = summary.startDate.formatted(.dateTime.year().month().day())
-        let end = summary.endDate.formatted(.dateTime.year().month().day())
+        let chineseDate = Date.FormatStyle(
+            date: .long,
+            time: .omitted,
+            locale: Locale(identifier: "zh_CN")
+        )
+        let start = summary.startDate.formatted(chineseDate)
+        let end = summary.endDate.formatted(chineseDate)
         title = "情绪宇宙 · \(summary.range.title)度回顾"
         sampleDescription = "基于 \(start) 至 \(end) 的 \(summary.recordDayCount) 个记录日"
         sourceNotice = "仅基于你的记录"

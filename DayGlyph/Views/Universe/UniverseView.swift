@@ -135,9 +135,11 @@ struct UniverseView: View {
                             UniverseTrendsView(entries: entries, initialDate: month.monthStart)
                         } label: {
                             Label("查看趋势", systemImage: "chart.xyaxis.line")
+                                .foregroundStyle(.white)
                                 .frame(maxWidth: .infinity, minHeight: 48)
                         }
                         .buttonStyle(.glass)
+                        .tint(.white.opacity(0.14))
                     }
                 }
                 .padding(18)
@@ -183,6 +185,7 @@ struct UniverseView: View {
             moveMonth(by: offset)
         } label: {
             Image(systemName: systemName)
+                .foregroundStyle(.white)
                 .frame(width: 44, height: 44)
         }
         .buttonStyle(.glass)

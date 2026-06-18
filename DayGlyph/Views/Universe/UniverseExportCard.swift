@@ -36,6 +36,9 @@ struct UniverseExportCard: View {
                             .foregroundStyle(.white.opacity(0.78))
                     }
                 }
+                .chartXScale(
+                    domain: 0 ... max((summary.emotionComposition.first?.proportion ?? 1) * 1.22, 0.24)
+                )
                 .chartXAxis(.hidden)
                 .chartYAxis {
                     AxisMarks { _ in

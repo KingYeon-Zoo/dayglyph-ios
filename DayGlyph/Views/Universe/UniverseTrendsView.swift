@@ -105,7 +105,9 @@ struct UniverseTrendsView: View {
                             .foregroundStyle(.white.opacity(0.78))
                     }
                 }
-                .chartXScale(domain: 0 ... max(summary.emotionComposition.first?.proportion ?? 1, 0.2))
+                .chartXScale(
+                    domain: 0 ... max((summary.emotionComposition.first?.proportion ?? 1) * 1.22, 0.24)
+                )
                 .chartXAxis(.hidden)
                 .chartYAxis {
                     AxisMarks { _ in
@@ -259,7 +261,7 @@ struct UniverseTrendsView: View {
 
         do {
             let url = FileManager.default.temporaryDirectory
-                .appendingPathComponent("DayGlyph-宇宙回顾-\(range.rawValue).png")
+                .appendingPathComponent("DayGlyph-宇宙回顾-\(range.title).png")
             try data.write(to: url, options: .atomic)
             shareItem = UniverseShareItem(url: url)
         } catch {

@@ -64,6 +64,7 @@ struct UniverseTrendAggregatorTests {
         #expect(summary.hasEnoughDataForPatterns)
         #expect(metadata.sourceNotice == "仅基于你的记录")
         #expect(metadata.sampleDescription.contains("8 个记录日"))
+        #expect(metadata.sampleDescription.contains("2026年6月1日"))
     }
 
     private func date(_ year: Int, _ month: Int, _ day: Int) throws -> Date {
