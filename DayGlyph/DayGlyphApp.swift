@@ -15,6 +15,7 @@ struct DayGlyphApp: App {
             DayEntry.self,
             ActionInstance.self,
             TimeLetter.self,
+            EmpathyCopy.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

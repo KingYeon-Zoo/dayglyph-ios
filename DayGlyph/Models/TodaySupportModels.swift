@@ -219,3 +219,85 @@ nonisolated enum TimeLetterStore {
             .first
     }
 }
+
+nonisolated enum EmpathyReviewState: String, Codable {
+    case draft
+    case reviewing
+    case published
+    case responded
+    case failed
+}
+
+nonisolated enum EmpathyResponseState: String, Codable {
+    case none
+    case received
+}
+
+@Model
+final class EmpathyCopy {
+    var id: UUID = UUID()
+    var copyText: String
+    var sourceEntryId: UUID?
+    var reviewStateRawValue: String
+    var sentAt: Date?
+    var responseStateRawValue: String
+    var responseText: String?
+
+    init(
+        copyText: String,
+        sourceEntryId: UUID?,
+        reviewState: EmpathyReviewState = .draft,
+        sentAt: Date? = nil,
+        responseState: EmpathyResponseState = .none,
+        responseText: String? = nil
+    ) {
+        self.copyText = copyText
+        self.sourceEntryId = sourceEntryId
+        self.reviewStateRawValue = reviewState.rawValue
+        self.sentAt = sentAt
+        self.responseStateRawValue = responseState.rawValue
+        self.responseText = responseText
+    }
+
+    var reviewState: EmpathyReviewState {
+        get { EmpathyReviewState(rawValue: reviewStateRawValue) ?? .draft }
+        set { reviewStateRawValue = newValue.rawValue }
+    }
+
+    var responseState: EmpathyResponseState {
+        get { EmpathyResponseState(rawValue: responseStateRawValue) ?? .none }
+        set { responseStateRawValue = newValue.rawValue }
+    }
+}
+
+nonisolated enum EmpathyCopyError: LocalizedError, Equatable {
+    case emptyBody
+    case tooLong
+
+    var errorDescription: String? {
+        switch self {
+        case .emptyBody: "匿名副本不能为空。"
+        case .tooLong: "匿名副本最多 300 字。"
+        }
+    }
+}
+
+nonisolated enum EmpathyCopyStore {
+    static func makeDraft(text: String, sourceEntryId: UUID?) throws -> EmpathyCopy {
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard trimmed.isEmpty == false else { throw EmpathyCopyError.emptyBody }
+        guard trimmed.count <= 300 else { throw EmpathyCopyError.tooLong }
+        return EmpathyCopy(copyText: trimmed, sourceEntryId: sourceEntryId)
+    }
+
+    static func submit(_ copy: EmpathyCopy, at date: Date = .now) {
+        copy.sentAt = date
+        copy.reviewState = .reviewing
+    }
+
+    static func completeDemoReview(_ copy: EmpathyCopy) {
+        copy.reviewState = .responded
+        copy.responseState = .received
+        copy.responseText = "谢谢你把这句话放在这里。有人认真读到了它。"
+    }
+}
