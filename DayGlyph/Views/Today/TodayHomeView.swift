@@ -9,6 +9,8 @@ nonisolated enum TodayRoute: Hashable {
 struct TodayHomeView: View {
     @Query(sort: \DayEntry.date, order: .reverse) private var entries: [DayEntry]
 
+    var recordRequest: Int = 0
+
     @State private var path: [TodayRoute] = []
     @State private var draftText = ""
 
@@ -51,6 +53,10 @@ struct TodayHomeView: View {
                     }
                 }
             }
+        }
+        .onChange(of: recordRequest) {
+            guard todayEntry == nil else { return }
+            path = [.record]
         }
     }
 

@@ -3,17 +3,21 @@ import SwiftData
 
 struct AppRootView: View {
     @State private var selectedTab: AppTab = .today
+    @State private var todayRecordRequest = 0
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            TodayHomeView()
+            TodayHomeView(recordRequest: todayRecordRequest)
             .tabItem {
                 Label(AppTab.today.title, systemImage: AppTab.today.systemImage)
             }
             .tag(AppTab.today)
 
             NavigationStack {
-                UniversePlaceholderView()
+                UniverseView {
+                    todayRecordRequest += 1
+                    selectedTab = .today
+                }
             }
             .tabItem {
                 Label(AppTab.universe.title, systemImage: AppTab.universe.systemImage)
