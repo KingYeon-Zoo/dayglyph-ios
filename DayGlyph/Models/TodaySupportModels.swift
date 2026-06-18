@@ -64,6 +64,7 @@ final class ActionInstance {
     var id: UUID = UUID()
     var actionId: String
     var entryId: UUID?
+    var createdAt: Date
     var startedAt: Date?
     var completedAt: Date?
     var followUpAt: Date?
@@ -72,6 +73,7 @@ final class ActionInstance {
     init(
         actionId: String,
         entryId: UUID?,
+        createdAt: Date = .now,
         startedAt: Date?,
         completedAt: Date? = nil,
         followUpAt: Date? = nil,
@@ -79,6 +81,7 @@ final class ActionInstance {
     ) {
         self.actionId = actionId
         self.entryId = entryId
+        self.createdAt = createdAt
         self.startedAt = startedAt
         self.completedAt = completedAt
         self.followUpAt = followUpAt

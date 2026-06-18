@@ -13,6 +13,7 @@ struct DayGlyphApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             DayEntry.self,
+            ActionInstance.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

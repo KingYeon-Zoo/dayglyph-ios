@@ -23,6 +23,7 @@ struct TodayHomeView: View {
                         TodaySupportPlaceholders()
                     } else {
                         emptyState
+                        MicroActionSection(entry: nil)
                     }
                 }
                 .padding(.horizontal, 20)
@@ -98,5 +99,5 @@ struct TodayHomeView: View {
 
 #Preview {
     TodayHomeView()
-        .modelContainer(for: DayEntry.self, inMemory: true)
+        .modelContainer(for: [DayEntry.self, ActionInstance.self], inMemory: true)
 }
