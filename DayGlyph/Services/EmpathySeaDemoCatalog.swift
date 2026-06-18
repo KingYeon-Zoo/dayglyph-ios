@@ -49,4 +49,14 @@ nonisolated enum EmpathySeaDemoCatalog {
     static func isReported(postID: String, reportedIDs: Set<String>) -> Bool {
         reportedIDs.contains(postID)
     }
+
+    static func reportedIDs(from storedValue: String) -> Set<String> {
+        Set(storedValue.split(separator: "|").map(String.init).filter { $0.isEmpty == false })
+    }
+
+    static func addReported(postID: String, to storedValue: String) -> String {
+        var ids = reportedIDs(from: storedValue)
+        ids.insert(postID)
+        return ids.sorted().joined(separator: "|")
+    }
 }

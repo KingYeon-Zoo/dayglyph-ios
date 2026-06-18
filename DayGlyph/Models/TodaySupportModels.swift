@@ -210,13 +210,35 @@ nonisolated enum TimeLetterStore {
         )
     }
 
-    static func dueLetter(from letters: [TimeLetter], at date: Date = .now) -> TimeLetter? {
+    static func dueLetter(
+        from letters: [TimeLetter],
+        at date: Date = .now,
+        calendar: Calendar = .current
+    ) -> TimeLetter? {
         letters
             .filter { letter in
-                letter.notBefore <= date && (letter.state == .waiting || letter.state == .available)
+                guard letter.notBefore <= date else { return false }
+                if letter.state == .waiting || letter.state == .available { return true }
+                if letter.state == .hiddenToday, let hiddenAt = letter.hiddenAt {
+                    return calendar.isDate(hiddenAt, inSameDayAs: date) == false
+                }
+                return false
             }
             .sorted { $0.notBefore < $1.notBefore }
             .first
+    }
+
+    @MainActor
+    static func makePast(from entry: DayEntry, availableAt date: Date = .now) -> TimeLetter {
+        TimeLetter(
+            sourceType: .past,
+            sourceEntryId: entry.entryID,
+            body: entry.text,
+            recipeSummary: "当时的配方：\(entry.emotionRecipe.name)",
+            notBefore: date,
+            createdAt: date,
+            state: .available
+        )
     }
 }
 

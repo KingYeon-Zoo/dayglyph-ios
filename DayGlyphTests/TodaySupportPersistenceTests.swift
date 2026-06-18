@@ -103,4 +103,37 @@ struct TodaySupportPersistenceTests {
         letter.hideForToday()
         #expect(letter.state == .hiddenToday)
     }
+
+    @Test func hiddenLetterReturnsOnTheNextDay() throws {
+        let calendar = Calendar(identifier: .gregorian)
+        let firstDay = try #require(calendar.date(from: DateComponents(year: 2026, month: 6, day: 18)))
+        let nextDay = try #require(calendar.date(byAdding: .day, value: 1, to: firstDay))
+        let letter = TimeLetter(
+            sourceType: .past,
+            body: "来自过去",
+            notBefore: firstDay,
+            state: .waiting
+        )
+        letter.hideForToday(at: firstDay)
+
+        #expect(TimeLetterStore.dueLetter(from: [letter], at: firstDay, calendar: calendar) == nil)
+        #expect(TimeLetterStore.dueLetter(from: [letter], at: nextDay, calendar: calendar) === letter)
+    }
+
+    @Test func pastLetterCopiesHistoricalTextAndRecipeSummary() throws {
+        let entry = DayEntry(
+            date: Date(timeIntervalSince1970: 1_700_000_000),
+            text: "那天留下的一句话",
+            analysis: EmotionAnalyzer().analyze("那天留下的一句话"),
+            glyphSeed: 9
+        )
+
+        let letter = TimeLetterStore.makePast(from: entry, availableAt: Date(timeIntervalSince1970: 1_800_000_000))
+
+        #expect(letter.sourceType == .past)
+        #expect(letter.sourceEntryId == entry.entryID)
+        #expect(letter.body == entry.text)
+        #expect(letter.recipeSummary?.contains(entry.emotionRecipe.name) == true)
+        #expect(letter.state == .available)
+    }
 }

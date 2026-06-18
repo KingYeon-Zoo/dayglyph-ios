@@ -31,7 +31,9 @@ struct CocktailResultView: View {
         VStack(alignment: .leading, spacing: 18) {
             hero
             recipeDetails
-            weatherCard
+            if case .history = mode {
+                weatherCard
+            }
             actions
         }
         .overlay(alignment: .bottom) {

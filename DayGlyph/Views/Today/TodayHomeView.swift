@@ -20,10 +20,15 @@ struct TodayHomeView: View {
 
                     if let todayEntry {
                         CocktailResultView(entry: todayEntry, mode: .today)
-                        TodaySupportPlaceholders()
+                        WeatherQuoteSection(entry: todayEntry)
+                        MicroActionSection(entry: todayEntry)
+                        TimeLetterSection(entry: todayEntry)
+                        EmpathySeaSection(entry: todayEntry)
                     } else {
                         emptyState
                         MicroActionSection(entry: nil)
+                        TimeLetterSection(entry: nil)
+                        EmpathySeaSection(entry: nil)
                     }
                 }
                 .padding(.horizontal, 20)
@@ -99,5 +104,8 @@ struct TodayHomeView: View {
 
 #Preview {
     TodayHomeView()
-        .modelContainer(for: [DayEntry.self, ActionInstance.self], inMemory: true)
+        .modelContainer(
+            for: [DayEntry.self, ActionInstance.self, TimeLetter.self, EmpathyCopy.self],
+            inMemory: true
+        )
 }

@@ -4,6 +4,7 @@ import SwiftUI
 struct TimeLetterSection: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \TimeLetter.notBefore) private var letters: [TimeLetter]
+    @Query(sort: \DayEntry.date, order: .reverse) private var entries: [DayEntry]
 
     var entry: DayEntry?
 
@@ -30,6 +31,7 @@ struct TimeLetterSection: View {
         .sheet(isPresented: $showsComposer) {
             composer
         }
+        .task { seedPastLetterIfNeeded() }
     }
 
     private var emptyState: some View {
@@ -195,5 +197,18 @@ struct TimeLetterSection: View {
         draft = ""
         showsComposer = false
         savedMessage = "已经收好，会在未来某天出现"
+    }
+
+    private func seedPastLetterIfNeeded() {
+        let calendar = Calendar.current
+        guard letters.contains(where: { $0.sourceType == .past && calendar.isDate($0.createdAt, inSameDayAs: .now) }) == false,
+              let cutoff = calendar.date(byAdding: .day, value: -7, to: calendar.startOfDay(for: .now)),
+              let historical = entries.first(where: { candidate in
+                  candidate.date <= cutoff
+                      && letters.contains(where: { $0.sourceEntryId == candidate.entryID }) == false
+              }) else { return }
+
+        modelContext.insert(TimeLetterStore.makePast(from: historical))
+        try? modelContext.save()
     }
 }

@@ -54,15 +54,9 @@ struct MicroActionSection: View {
                 .accessibilityHint("开始这项行动")
             }
 
-            ViewThatFits(in: .horizontal) {
-                HStack(spacing: 10) {
-                    easierButton
-                    skipButton
-                }
-                VStack(spacing: 8) {
-                    easierButton
-                    skipButton
-                }
+            VStack(spacing: 8) {
+                easierButton
+                skipButton
             }
         }
     }
@@ -145,6 +139,7 @@ struct MicroActionSection: View {
     private var easierButton: some View {
         Button(action: replaceFirstCandidate) {
             Label("换成更容易的", systemImage: "arrow.triangle.2.circlepath")
+                .lineLimit(1)
                 .frame(maxWidth: .infinity, minHeight: 44)
         }
         .buttonStyle(.glass)
@@ -154,6 +149,7 @@ struct MicroActionSection: View {
     private var skipButton: some View {
         Button(action: skipToday) {
             Text("今天先不做")
+                .lineLimit(1)
                 .frame(maxWidth: .infinity, minHeight: 44)
         }
         .buttonStyle(.plain)

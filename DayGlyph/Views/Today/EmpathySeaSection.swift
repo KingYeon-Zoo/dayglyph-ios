@@ -42,7 +42,7 @@ private struct EmpathySeaView: View {
     var entry: DayEntry?
 
     @State private var postIndex = 0
-    @State private var reportedIDs: Set<String> = []
+    @AppStorage("empathySeaReportedIDs") private var reportedIDsBlob = ""
     @State private var chosenResponse: String?
     @State private var postPendingReport: EmpathySeaPost?
 
@@ -86,7 +86,10 @@ private struct EmpathySeaView: View {
         }
         .alert("确认举报这段内容？", isPresented: reportAlertBinding, presenting: postPendingReport) { selected in
             Button("举报", role: .destructive) {
-                reportedIDs.insert(selected.id)
+                reportedIDsBlob = EmpathySeaDemoCatalog.addReported(
+                    postID: selected.id,
+                    to: reportedIDsBlob
+                )
                 postPendingReport = nil
             }
             Button("取消", role: .cancel) { postPendingReport = nil }
@@ -213,6 +216,10 @@ private struct EmpathySeaView: View {
 
     private var reviewingCopy: EmpathyCopy? {
         copies.first { $0.reviewState == .reviewing }
+    }
+
+    private var reportedIDs: Set<String> {
+        EmpathySeaDemoCatalog.reportedIDs(from: reportedIDsBlob)
     }
 
     private var reportAlertBinding: Binding<Bool> {

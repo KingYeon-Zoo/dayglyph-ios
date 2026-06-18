@@ -62,4 +62,10 @@ struct EmpathySeaDemoTests {
         #expect(EmpathySeaDemoCatalog.isReported(postID: post.id, reportedIDs: [post.id]))
         #expect(EmpathySeaDemoCatalog.isReported(postID: post.id, reportedIDs: []) == false)
     }
+
+    @Test func reportedPostIDsRoundTripThroughLocalPreference() {
+        let updated = EmpathySeaDemoCatalog.addReported(postID: "sea-b", to: "sea-a")
+
+        #expect(EmpathySeaDemoCatalog.reportedIDs(from: updated) == ["sea-a", "sea-b"])
+    }
 }
