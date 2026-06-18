@@ -3,6 +3,7 @@ import SwiftData
 
 @Model
 final class DayEntry {
+    var entryID: UUID = UUID()
     var date: Date
     var text: String
     var emotionRawValue: String
