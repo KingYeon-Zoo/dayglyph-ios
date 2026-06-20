@@ -4,6 +4,35 @@ import Testing
 @testable import DayGlyph
 
 struct DayEntryStoreTests {
+    @Test func saveUsesGenerationEntryIDForNewEntry() throws {
+        let container = try ModelContainer(
+            for: DayEntry.self,
+            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+        )
+        let context = ModelContext(container)
+        let generationEntryID = UUID()
+        let analysis = EmotionAnalysis(
+            valence: 0.2,
+            arousal: 0.3,
+            dominance: 0.4,
+            emotionWeights: [EmotionWeight(anchor: .calm, value: 1)],
+            theme: .unknown,
+            keywords: ["平静"],
+            confidence: 0.8,
+            explanation: "AI 生成结果。",
+            source: .foundationModel
+        )
+
+        let entry = try DayEntryStore.saveEntry(
+            entryID: generationEntryID,
+            text: "今天安静了一会。",
+            analysis: analysis,
+            context: context
+        )
+
+        #expect(entry.entryID == generationEntryID)
+    }
+
     @Test func saveCreatesEntryWithAnalysisMetadata() throws {
         let container = try ModelContainer(
             for: DayEntry.self,

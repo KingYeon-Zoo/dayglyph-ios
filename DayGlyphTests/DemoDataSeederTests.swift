@@ -4,9 +4,31 @@ import Testing
 @testable import DayGlyph
 
 struct DemoDataSeederTests {
-    @Test func seedPreservesRealEntriesAndCreatesVersionTwoFixtures() throws {
+    /// 构造一组内存中的演示资产，避开 bundle 依赖。复用现成的丰富降级样本作为 manifest。
+    private func makeAssets(count: Int) throws -> [DemoAssetCatalog.Entry] {
+        let response = try #require(DemoFallbackCatalog.validatedRichSample())
+        let tmp = FileManager.default.temporaryDirectory
+            .appendingPathComponent(UUID().uuidString, isDirectory: true)
+        try FileManager.default.createDirectory(at: tmp, withIntermediateDirectories: true)
+        let pixel = Data([0xFF, 0xD8, 0xFF, 0xD9]) // 占位 JPEG 字节
+        return try (0 ..< count).map { index in
+            let cocktail = tmp.appendingPathComponent("c\(index).jpeg")
+            let planet = tmp.appendingPathComponent("p\(index).jpeg")
+            try pixel.write(to: cocktail)
+            try pixel.write(to: planet)
+            return DemoAssetCatalog.Entry(
+                slug: "demo-\(index)",
+                text: "演示记录 \(index)：今天交织着欣慰与疲惫。",
+                response: response,
+                cocktailURL: cocktail,
+                planetURL: planet
+            )
+        }
+    }
+
+    @Test func seedPreservesRealEntriesAndCreatesDemoFixtures() throws {
         let container = try ModelContainer(
-            for: DayEntry.self,
+            for: DayEntry.self, AIGenerationRecord.self,
             configurations: ModelConfiguration(isStoredInMemoryOnly: true)
         )
         let context = ModelContext(container)
@@ -29,7 +51,7 @@ struct DemoDataSeederTests {
             calendar: calendar
         )
 
-        DemoDataSeeder.seed(into: context, calendar: calendar)
+        DemoDataSeeder.seed(into: context, calendar: calendar, assets: try makeAssets(count: 8))
 
         let entries = try context.fetch(FetchDescriptor<DayEntry>())
         let demos = entries.filter(\.isDemo)
@@ -38,30 +60,35 @@ struct DemoDataSeederTests {
         #expect(preserved.persistentModelID == realEntry.persistentModelID)
         #expect(preserved.text == "这是一条真实记录。")
         #expect(preserved.isDemo == false)
-        #expect(demos.isEmpty == false)
+        #expect(demos.count == 8)
         #expect(demos.allSatisfy { $0.analysisVersion == 2 })
         #expect(demos.allSatisfy { $0.analysisSource == .demoFixture })
     }
 
-    @Test func fixturesCoverEveryEmotionAnchor() throws {
+    @Test func seedCreatesGenerationRecordWithSavedImages() throws {
         let container = try ModelContainer(
-            for: DayEntry.self,
+            for: DayEntry.self, AIGenerationRecord.self,
             configurations: ModelConfiguration(isStoredInMemoryOnly: true)
         )
         let context = ModelContext(container)
 
-        DemoDataSeeder.seed(into: context)
+        DemoDataSeeder.seed(into: context, assets: try makeAssets(count: 3))
 
-        let demos = try context.fetch(FetchDescriptor<DayEntry>())
-            .filter(\.isDemo)
-        let anchors = Set(demos.map(\.primaryEmotion))
+        let records = try context.fetch(FetchDescriptor<AIGenerationRecord>())
+        #expect(records.count == 3)
+        #expect(records.allSatisfy { $0.isDemoFallback })
+        #expect(records.allSatisfy { $0.cocktailStatus == .saved && $0.planetStatus == .saved })
+        #expect(records.allSatisfy { $0.status == .completed })
 
-        #expect(anchors == Set(EmotionAnchor.allCases))
+        // 清理：删除演示记录应连带删图片目录与生成记录。
+        DemoDataSeeder.clearDemoEntries(in: context)
+        #expect(try context.fetch(FetchDescriptor<AIGenerationRecord>()).isEmpty)
+        #expect(try context.fetch(FetchDescriptor<DayEntry>()).filter(\.isDemo).isEmpty)
     }
 
     @Test func clearingDemoEntriesNeverDeletesRealEntries() throws {
         let container = try ModelContainer(
-            for: DayEntry.self,
+            for: DayEntry.self, AIGenerationRecord.self,
             configurations: ModelConfiguration(isStoredInMemoryOnly: true)
         )
         let context = ModelContext(container)

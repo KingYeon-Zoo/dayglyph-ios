@@ -1,0 +1,224 @@
+{
+  "schema_version": "1.0",
+  "request_id": "demo-02",
+  "safety": {
+    "risk_level": "none",
+    "crisis_detected": false,
+    "rationale": "用户记录项目上线后团队共同庆祝的正向状态，无负面情绪或风险信号"
+  },
+  "emotion_analysis": {
+    "emotions": [
+      {
+        "term": "兴奋",
+        "family": "joy",
+        "intensity": 0.92,
+        "confidence": 0.97,
+        "evidence": "项目上线那一刻我激动得手都在抖"
+      },
+      {
+        "term": "喜悦",
+        "family": "joy",
+        "intensity": 0.87,
+        "confidence": 0.93,
+        "evidence": "项目成功上线，整个组都在欢呼庆祝"
+      },
+      {
+        "term": "温暖",
+        "family": "connection",
+        "intensity": 0.78,
+        "confidence": 0.9,
+        "evidence": "和整个团队共享项目落地的时刻"
+      },
+      {
+        "term": "自豪",
+        "family": "joy",
+        "intensity": 0.75,
+        "confidence": 0.88,
+        "evidence": "参与的项目顺利上线获得正向结果"
+      },
+      {
+        "term": "干劲",
+        "family": "drive",
+        "intensity": 0.83,
+        "confidence": 0.92,
+        "evidence": "脑子里全是接下来想做的新东西"
+      },
+      {
+        "term": "期待",
+        "family": "drive",
+        "intensity": 0.8,
+        "confidence": 0.91,
+        "evidence": "已经在畅想后续要推进的新内容"
+      }
+    ],
+    "other_emotions": [],
+    "dimensions": {
+      "valence": 0.91,
+      "arousal": 0.86,
+      "dominance": 0.72,
+      "energy": 0.9,
+      "tension": 0.08,
+      "certainty": 0.92,
+      "social_connection": 0.81
+    },
+    "relationships": [
+      {
+        "from": "兴奋",
+        "to": "干劲",
+        "kind": "amplifies"
+      },
+      {
+        "from": "温暖",
+        "to": "喜悦",
+        "kind": "coexists"
+      },
+      {
+        "from": "自豪",
+        "to": "期待",
+        "kind": "coexists"
+      }
+    ],
+    "summary": "你正处在项目上线的集体庆祝时刻，满溢的雀跃里混着和同伴共享的暖意，对后续新方向充满动力",
+    "uncertainties": []
+  },
+  "shared_visual_direction": {
+    "palette": [
+      "#FFE268",
+      "#FF9F7F",
+      "#FFD6A5",
+      "#B8F2E6"
+    ],
+    "contrast": 0.62,
+    "temperature": 0.81,
+    "light_softness": 0.73,
+    "spatial_density": 0.38,
+    "motion_impression": "细碎金光点缓慢向上浮动，带着轻跳的动感",
+    "symbols": [
+      "欢呼的小手",
+      "闪着光的代码星点",
+      "升空的小气泡"
+    ]
+  },
+  "cocktail": {
+    "name": "上线星闪",
+    "description": "入口是明亮的柑橘酸甜，尾调留着淡蜂蜜的暖香，盛满此刻雀跃的余韵",
+    "glass": "矮边阔口杯",
+    "glass_material": "polished_crystal",
+    "liquid_layers": [
+      {
+        "color": "#FFE268",
+        "boundary_style": "soft_diffusion"
+      },
+      {
+        "color": "#FF9F7F",
+        "boundary_style": "gradient"
+      }
+    ],
+    "garnish": [
+      "鲜橙皮卷",
+      "薄荷叶",
+      "碎金箔点缀"
+    ],
+    "particles": "细碎金闪在液体中缓慢上浮，轻轻晃动就泛起粼粼光纹",
+    "lighting": "暖金色侧光斜打在杯身，折射出细碎光斑",
+    "camera": "特写慢推镜头，聚焦杯中的浮动光点",
+    "background": "浅米黄色柔光背景，干净无多余杂物",
+    "composition": "中心居中构图，视觉焦点落在杯身"
+  },
+  "planet": {
+    "name": "跃星环",
+    "description": "承载着团队共同喜悦的迷你星球，表面浮着庆祝的细碎光点",
+    "silhouette": "圆润的小星球外围裹着一层淡柔光晕",
+    "surface": {
+      "material": "iridescent",
+      "detail": "表面分布着淡金色的细碎代码纹理，摸起来带着暖温"
+    },
+    "core": "暖黄色的柔和发光内核，向外散出淡淡的暖意",
+    "atmosphere": "薄而通透的蜜色柔光层，轻轻包裹住整个星球",
+    "rings": [
+      "淡金碎光环",
+      "浅橙雾状环"
+    ],
+    "satellites": [
+      "三颗迷你亮星，绕着星球缓慢转动"
+    ],
+    "particles": "空气中飘着极小的彩色气泡，慢悠悠向上浮",
+    "lighting": "暖调漫射光，整体明亮柔和没有硬阴影",
+    "camera": "远景缓缓拉近，慢慢聚焦到星球表面的光点",
+    "background": "深灰蓝色的柔化夜空，点缀着零星小星",
+    "composition": "居中平衡构图，星球占画面核心位置"
+  },
+  "daily_action": {
+    "title": "30秒晃动手腕庆祝",
+    "instruction": "站起来随当下的心情随便晃动手腕30秒，不用刻意摆姿势",
+    "duration_minutes": 1,
+    "difficulty": "easy",
+    "environment": "anywhere",
+    "reason": "把当下激动到手抖的鲜活体感，轻轻锚定留存下来"
+  },
+  "daily_message": {
+    "text": "所有熬过夜的付出都在这一刻亮起来，你值得这份满溢的开心。",
+    "attribution": "DayGlyph 今日寄语"
+  },
+  "emotional_weather": {
+    "title": "晴光跃动",
+    "explanation": "亮堂堂的晴朗好天气，雀跃的情绪像风一样轻快舒展",
+    "symbol": "clear"
+  },
+  "experience_copy": {
+    "image_generation_title": "项目上线庆祝的雀跃瞬间",
+    "cocktail_progress": "调配专属喜悦的亮闪饮品",
+    "planet_progress": "生成承载成就感的小星球"
+  },
+  "result_narrative": {
+    "cocktail_name": "上线星闪",
+    "planet_name": "跃星环",
+    "headline": "项目上线欢呼时刻，你满是向前的鲜活动力",
+    "explanation": "和团队共享成功的雀跃，连指尖的激动都藏着对新方向的满满期待"
+  },
+  "action_options": [
+    {
+      "level": "light",
+      "title": "碰一下身边小物件",
+      "instruction": "伸手碰一下桌面上你最常用的鼠标或水杯，停留2秒",
+      "duration_minutes": 1,
+      "difficulty": 1,
+      "environment": [
+        "室内"
+      ],
+      "reason": "用小动作锚定当下的开心体感，不用额外消耗精力",
+      "echo_question": "你当下最先摸到的东西是什么？"
+    },
+    {
+      "level": "standard",
+      "title": "写下一个小想法",
+      "instruction": "在便签上写下你脑子里冒出来的第一个新想法，不用写完整",
+      "duration_minutes": 5,
+      "difficulty": 2,
+      "environment": [
+        "anywhere"
+      ],
+      "reason": "把此刻满溢的干劲轻轻留存下来，方便后续随时翻看",
+      "echo_question": "你最想马上尝试的新内容是什么？"
+    },
+    {
+      "level": "active",
+      "title": "和同伴击个掌",
+      "instruction": "找身边一起做项目的伙伴击个掌，哪怕隔空比手势也可以",
+      "duration_minutes": 3,
+      "difficulty": 2,
+      "environment": [
+        "anywhere"
+      ],
+      "reason": "把集体的喜悦传递出去，放大此刻的开心感受",
+      "echo_question": "你最想和谁分享这份开心？"
+    }
+  ],
+  "share_card": {
+    "title": "此刻满是雀跃",
+    "caption": "项目上线的欢呼时刻，所有付出都闪着光",
+    "visual_focus": "cocktail",
+    "layout_variant": "square_centered",
+    "privacy_level": "emotion_only"
+  }
+}

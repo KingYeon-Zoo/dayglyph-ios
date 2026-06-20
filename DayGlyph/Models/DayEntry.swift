@@ -29,6 +29,7 @@ final class DayEntry {
     var isDemo: Bool
 
     init(
+        entryID: UUID = UUID(),
         date: Date,
         text: String,
         analysis: EmotionAnalysis,
@@ -37,6 +38,7 @@ final class DayEntry {
         updatedAt: Date = .now,
         isDemo: Bool = false
     ) {
+        self.entryID = entryID
         self.date = Calendar.current.startOfDay(for: date)
         self.text = text
         self.emotionRawValue = analysis.primaryEmotion.rawValue

@@ -42,6 +42,7 @@ struct AppRootView: View {
             .tag(AppTab.mine)
         }
         .tint(selectedTab.tint)
+        .preferredColorScheme(selectedTab.preferredColorScheme)
         .environment(\.locale, Locale(identifier: "zh_CN"))
         .fullScreenCover(isPresented: Binding(
             get: { !hasCompletedOnboarding },

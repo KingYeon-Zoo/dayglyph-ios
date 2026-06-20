@@ -1,0 +1,230 @@
+{
+  "schema_version": "1.0",
+  "request_id": "demo-01",
+  "safety": {
+    "risk_level": "none",
+    "crisis_detected": false,
+    "rationale": "用户仅描述完成拖延任务后的混合情绪，无高风险相关表述"
+  },
+  "emotion_analysis": {
+    "emotions": [
+      {
+        "term": "释然",
+        "family": "calm",
+        "intensity": 0.7,
+        "confidence": 0.9,
+        "evidence": "今天终于把拖了三周的方案交出去了，松了口气"
+      },
+      {
+        "term": "担忧",
+        "family": "fear",
+        "intensity": 0.5,
+        "confidence": 0.9,
+        "evidence": "但又有点担心反馈"
+      },
+      {
+        "term": "疲惫",
+        "family": "depletion",
+        "intensity": 0.6,
+        "confidence": 0.8,
+        "evidence": "此前为方案耗费三周精力，当晚睡得格外沉"
+      },
+      {
+        "term": "欣慰",
+        "family": "joy",
+        "intensity": 0.4,
+        "confidence": 0.7,
+        "evidence": "终于完成拖延许久的任务，生出明确的完成感"
+      },
+      {
+        "term": "期待",
+        "family": "drive",
+        "intensity": 0.3,
+        "confidence": 0.7,
+        "evidence": "对方案后续的反馈抱有正向预期"
+      },
+      {
+        "term": "平静",
+        "family": "calm",
+        "intensity": 0.6,
+        "confidence": 0.8,
+        "evidence": "交完方案后整体状态松弛，夜间睡眠质量好"
+      }
+    ],
+    "other_emotions": [],
+    "dimensions": {
+      "valence": 0.4,
+      "arousal": 0.3,
+      "dominance": 0.6,
+      "energy": 0.5,
+      "tension": 0.25,
+      "certainty": 0.6,
+      "social_connection": 0.2
+    },
+    "relationships": [
+      {
+        "from": "释然",
+        "to": "平静",
+        "kind": "amplifies"
+      },
+      {
+        "from": "担忧",
+        "to": "期待",
+        "kind": "coexists"
+      },
+      {
+        "from": "疲惫",
+        "to": "释然",
+        "kind": "conflicts"
+      }
+    ],
+    "summary": "你为拖延三周的方案投入大量精力，交付后生出松绑的轻松感，也夹杂对反馈的轻微顾虑，整体状态舒缓，睡眠质量明显变好",
+    "uncertainties": []
+  },
+  "shared_visual_direction": {
+    "palette": [
+      "#E8F4F8",
+      "#FFF1D6",
+      "#B8D8E8",
+      "#F2E9D8"
+    ],
+    "contrast": 0.3,
+    "temperature": 0.5,
+    "light_softness": 0.8,
+    "spatial_density": 0.3,
+    "motion_impression": "晚风轻拂晾晒的棉麻织物，缓慢舒展",
+    "symbols": [
+      "摊开的笔记本",
+      "半凉的温牛奶",
+      "软云朵"
+    ]
+  },
+  "cocktail": {
+    "name": "松绑小息",
+    "description": "消解积压三周的紧绷，带着浅淡期许的舒缓特调",
+    "glass": "矮款阔口杯",
+    "glass_material": "frosted_glass",
+    "liquid_layers": [
+      {
+        "color": "#E0F7FA",
+        "boundary_style": "soft_diffusion"
+      },
+      {
+        "color": "#FFE0B2",
+        "boundary_style": "gradient"
+      },
+      {
+        "color": "#FFF9C4",
+        "boundary_style": "swirl"
+      }
+    ],
+    "garnish": [
+      "薄荷叶1片",
+      "干橙皮碎",
+      "棉花糖碎"
+    ],
+    "particles": "细碎的闪金气泡缓慢上浮",
+    "lighting": "暖调柔光灯从侧上方落下",
+    "camera": "45度平视特写，焦点落在杯口",
+    "background": "浅米色哑光桌面",
+    "composition": "居中构图，留出大量留白"
+  },
+  "planet": {
+    "name": "缓息星",
+    "description": "专为完成阶段性任务的人停留的软质小星球，氛围松弛无压",
+    "silhouette": "圆润的扁圆形，边缘带着柔化光晕",
+    "surface": {
+      "material": "soft_ceramic",
+      "detail": "表面印着浅淡的细碎任务完成标记，触感温凉"
+    },
+    "core": "暖黄色的软光内核，持续散发热量",
+    "atmosphere": "半透明的淡蓝薄雾，裹着淡淡的柑橘香气",
+    "rings": [
+      "浅白的棉絮状环带",
+      "细碎的星光碎屑环"
+    ],
+    "satellites": [
+      "迷你睡眠云卫星",
+      "小份期待星子"
+    ],
+    "particles": "空气中飘着极细的闪光绒絮",
+    "lighting": "柔和的漫射天光，没有强烈阴影",
+    "camera": "远距离平视全景",
+    "background": "深灰蓝的丝绒感星空",
+    "composition": "居中构图，星球占画面1/3大小"
+  },
+  "daily_action": {
+    "title": "3次深呼吸舒展",
+    "instruction": "靠在椅背上慢慢做3次深呼吸，每一次吐气都把肩膀往下沉一点",
+    "duration_minutes": 1,
+    "difficulty": "easy",
+    "environment": "anywhere",
+    "reason": "帮你把残留的最后一点紧绷感彻底释放掉"
+  },
+  "daily_message": {
+    "text": "你花了三周走完的这段路，交出去的不只是方案，也是攒了很久的疲惫，好好歇一歇。",
+    "attribution": "DayGlyph 今日寄语"
+  },
+  "emotional_weather": {
+    "title": "晴间多云",
+    "explanation": "大部分时间松弛舒展，只有一小片担心反馈的小云朵飘着，不碍事。",
+    "symbol": "partly_cloudy"
+  },
+  "experience_copy": {
+    "image_generation_title": "交付方案后松弛的傍晚时刻",
+    "cocktail_progress": "消解三周紧绷的舒缓特调",
+    "planet_progress": "属于你的缓息休憩小星球"
+  },
+  "result_narrative": {
+    "cocktail_name": "松绑小息",
+    "planet_name": "缓息星",
+    "headline": "拖了三周的方案终于交付，松了口气还睡得格外沉",
+    "explanation": "完成阶段性任务的你卸下大半压力，只剩对反馈的浅浅顾虑，此刻最适合好好休息。"
+  },
+  "action_options": [
+    {
+      "level": "light",
+      "title": "瘫坐5分钟放空",
+      "instruction": "随便找个舒服的姿势瘫着，什么都不用想，也不用刷手机，就发呆",
+      "duration_minutes": 5,
+      "difficulty": 1,
+      "environment": [
+        "室内"
+      ],
+      "reason": "不用费任何力气，就能快速接住你剩下的疲惫",
+      "echo_question": "你现在最想先松解开身体的哪一处紧绷呀？"
+    },
+    {
+      "level": "standard",
+      "title": "慢喝一杯热饮",
+      "instruction": "给自己冲一杯喜欢的热饮，捧着杯子慢慢喝完，不看手机",
+      "duration_minutes": 10,
+      "difficulty": 2,
+      "environment": [
+        "室内",
+        "阳台"
+      ],
+      "reason": "温温热热的触感能把松弛感从手心传到全身",
+      "echo_question": "你第一口想尝到的是什么味道呀？"
+    },
+    {
+      "level": "active",
+      "title": "下楼散15分钟步",
+      "instruction": "换上舒服的鞋子，下楼随便走一走，吹吹晚风，不用走太远",
+      "duration_minutes": 15,
+      "difficulty": 3,
+      "environment": [
+        "室外"
+      ],
+      "reason": "走动起来能把积压的情绪彻底散出去",
+      "echo_question": "路上你打算顺路买个什么小奖励给自己呀？"
+    }
+  ],
+  "share_card": {
+    "title": "交付后的松弛时刻",
+    "caption": "卸下三周的重担，带着浅浅的期待好好歇会吧",
+    "visual_focus": "cocktail",
+    "layout_variant": "square_centered",
+    "privacy_level": "emotion_only"
+  }
+}

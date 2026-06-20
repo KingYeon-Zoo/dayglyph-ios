@@ -1,0 +1,220 @@
+{
+  "schema_version": "1.0",
+  "request_id": "demo-06",
+  "safety": {
+    "risk_level": "none",
+    "crisis_detected": false,
+    "rationale": "用户记录为正向温暖的人际互动体验，无负面高风险内容"
+  },
+  "emotion_analysis": {
+    "emotions": [
+      {
+        "term": "温暖",
+        "family": "connection",
+        "intensity": 0.9,
+        "confidence": 0.95,
+        "evidence": "朋友特意从城市另一头赶过来陪我吃了顿饭"
+      },
+      {
+        "term": "被理解",
+        "family": "connection",
+        "intensity": 0.82,
+        "confidence": 0.88,
+        "evidence": "什么大道理都没讲，不需要刻意倾诉就得到陪伴"
+      },
+      {
+        "term": "释然",
+        "family": "calm",
+        "intensity": 0.78,
+        "confidence": 0.85,
+        "evidence": "忽然觉得没那么孤单了"
+      },
+      {
+        "term": "愉悦",
+        "family": "joy",
+        "intensity": 0.7,
+        "confidence": 0.8,
+        "evidence": "收到远道而来的专属陪伴产生的正向感受"
+      },
+      {
+        "term": "踏实",
+        "family": "calm",
+        "intensity": 0.72,
+        "confidence": 0.82,
+        "evidence": "不用费力解释就被接住的松弛状态"
+      }
+    ],
+    "other_emotions": [],
+    "dimensions": {
+      "valence": 0.8,
+      "arousal": 0.4,
+      "dominance": 0.6,
+      "energy": 0.5,
+      "tension": 0.1,
+      "certainty": 0.9,
+      "social_connection": 0.9
+    },
+    "relationships": [
+      {
+        "from": "温暖",
+        "to": "被理解",
+        "kind": "coexists"
+      },
+      {
+        "from": "温暖",
+        "to": "释然",
+        "kind": "amplifies"
+      }
+    ],
+    "summary": "你收获了朋友无需多言的远道奔赴，原本的孤单感被轻轻消解，整个人被松弛的暖意包裹，状态舒展柔和。",
+    "uncertainties": []
+  },
+  "shared_visual_direction": {
+    "palette": [
+      "#FFF1E6",
+      "#FFE0B2",
+      "#FFCC80",
+      "#FFAB91",
+      "#FF8A65"
+    ],
+    "contrast": 0.3,
+    "temperature": 0.8,
+    "light_softness": 0.9,
+    "spatial_density": 0.4,
+    "motion_impression": "暖光缓缓漫开，无剧烈动态",
+    "symbols": [
+      "冒热气的餐盘",
+      "横跨城市的软线",
+      "软乎乎的抱枕"
+    ]
+  },
+  "cocktail": {
+    "name": "赴约晚风",
+    "description": "浅暖橙调柔和饮品，入口是绵密的鲜桃果香，像远道而来的陪伴的温度",
+    "glass": "矮脚宽口杯",
+    "glass_material": "frosted_glass",
+    "liquid_layers": [
+      {
+        "color": "#FFE4B5",
+        "boundary_style": "soft_diffusion"
+      },
+      {
+        "color": "#FFCBA4",
+        "boundary_style": "gradient"
+      },
+      {
+        "color": "#FF9E7B",
+        "boundary_style": "soft_diffusion"
+      }
+    ],
+    "garnish": [
+      "橙皮卷",
+      "薄荷叶点缀",
+      "糖渍金桔",
+      "细闪金箔"
+    ],
+    "particles": "极细的金橙色微光粒子在液体里缓慢上浮",
+    "lighting": "暖黄色侧柔光，打在杯壁透出柔雾感",
+    "camera": "45度俯拍特写，聚焦杯沿的细碎水汽",
+    "background": "浅米白色柔焦桌面，散落两三片干橙花",
+    "composition": "居中构图，留出大量空白给暖光晕染"
+  },
+  "planet": {
+    "name": "暖伴星",
+    "description": "散发柔和暖橙色柔光的小星球，表面布满细碎暖光纹路，记录所有温柔陪伴时刻",
+    "silhouette": "圆润无棱角的小行星轮廓",
+    "surface": {
+      "material": "translucent_mineral",
+      "detail": "半透蜜蜡色矿石表面，嵌着星星点点的细碎暖光晶簇"
+    },
+    "core": "暖融融的橙黄色核心，缓慢向外散发热量",
+    "atmosphere": "薄而软的浅橙色雾状大气层，飘着细碎光斑",
+    "rings": [
+      "浅金细环",
+      "橙粉雾环"
+    ],
+    "satellites": [
+      "两颗暖白色小卫星",
+      "细碎星尘带"
+    ],
+    "particles": "无数微米级暖金色光点在大气层里漂浮",
+    "lighting": "从星球核心向外漫出的柔光，无硬阴影",
+    "camera": "中远景镜头，捕捉星球整体柔光质感",
+    "background": "深黑色丝绒质感夜空，点缀几颗极淡小星",
+    "composition": "居中偏左构图，右侧留空给环绕的卫星轨迹"
+  },
+  "daily_action": {
+    "title": "留一张小便签",
+    "instruction": "随手写一句今天的小开心在便签上，下次见面带给朋友就好，不想写也可以只画个小太阳",
+    "duration_minutes": 5,
+    "difficulty": "easy",
+    "environment": "anywhere",
+    "reason": "把今天收到的暖意轻轻存下，不需要费力的仪式感"
+  },
+  "daily_message": {
+    "text": "无需多言的陪伴最是动人，你被好好接住的时刻，本身就足够珍贵。",
+    "attribution": "DayGlyph 今日寄语"
+  },
+  "emotional_weather": {
+    "title": "晴光拂面",
+    "explanation": "远道而来的暖意把孤单轻轻揉散，风里都裹着软乎乎的甜。",
+    "symbol": "breeze"
+  },
+  "experience_copy": {
+    "image_generation_title": "暖光下两人对坐的温馨小馆",
+    "cocktail_progress": "暖调雾感柑橘特调",
+    "planet_progress": "柔光暖伴小行星"
+  },
+  "result_narrative": {
+    "cocktail_name": "赴约晚风",
+    "planet_name": "暖伴星",
+    "headline": "收到了无需多言的远道陪伴，孤单感悄然散去",
+    "explanation": "恰到好处的陪伴不需要大道理，这份松弛的暖意，已经足够治愈当下的你。"
+  },
+  "action_options": [
+    {
+      "level": "light",
+      "title": "抿一口温温水",
+      "instruction": "慢慢喝一口手边的温水，感受暖意从喉咙滑到胃里",
+      "duration_minutes": 1,
+      "difficulty": 1,
+      "environment": [
+        "室内",
+        "户外"
+      ],
+      "reason": "用微小的体感呼应今天收到的暖意，完全没有负担",
+      "echo_question": "你现在手边的水是什么温度的？"
+    },
+    {
+      "level": "standard",
+      "title": "翻一翻旧合照",
+      "instruction": "点开手机里和这位朋友的旧合照，停留3秒就好，不用特意整理",
+      "duration_minutes": 3,
+      "difficulty": 2,
+      "environment": [
+        "anywhere"
+      ],
+      "reason": "把当下的开心和过往的联结轻轻勾连，留存小份美好",
+      "echo_question": "你第一眼看到的是哪张合照呀？"
+    },
+    {
+      "level": "active",
+      "title": "发个开心表情包",
+      "instruction": "随便挑一个你觉得很开心的表情包发给今天陪你吃饭的朋友，不用配长文字",
+      "duration_minutes": 2,
+      "difficulty": 2,
+      "environment": [
+        "anywhere"
+      ],
+      "reason": "把你收到的暖意轻轻递回给对方，双向的联结会更甜",
+      "echo_question": "你第一反应想发的表情包是什么样的？"
+    }
+  ],
+  "share_card": {
+    "title": "今日的温柔陪伴",
+    "caption": "不用大道理的奔赴，就足够消解所有孤单",
+    "visual_focus": "cocktail",
+    "layout_variant": "square_centered",
+    "privacy_level": "emotion_only"
+  }
+}

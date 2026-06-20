@@ -1,0 +1,219 @@
+{
+  "schema_version": "1.0",
+  "request_id": "demo-07",
+  "safety": {
+    "risk_level": "none",
+    "crisis_detected": false,
+    "rationale": "用户仅描述连续加班后的身心耗竭状态，无自伤、极端负面等危机相关表述"
+  },
+  "emotion_analysis": {
+    "emotions": [
+      {
+        "term": "疲惫",
+        "family": "depletion",
+        "intensity": 0.92,
+        "confidence": 0.96,
+        "evidence": "连着加了五天班，整个人像被掏空"
+      },
+      {
+        "term": "倦怠",
+        "family": "depletion",
+        "intensity": 0.85,
+        "confidence": 0.92,
+        "evidence": "回到家连灯都懒得开"
+      },
+      {
+        "term": "无力",
+        "family": "depletion",
+        "intensity": 0.88,
+        "confidence": 0.94,
+        "evidence": "对什么都提不起劲"
+      },
+      {
+        "term": "麻木",
+        "family": "depletion",
+        "intensity": 0.72,
+        "confidence": 0.87,
+        "evidence": "整个人像被掏空，对什么都提不起劲"
+      },
+      {
+        "term": "懒散",
+        "family": "depletion",
+        "intensity": 0.78,
+        "confidence": 0.91,
+        "evidence": "连灯都懒得开，不想做任何事"
+      },
+      {
+        "term": "失落",
+        "family": "sadness",
+        "intensity": 0.55,
+        "confidence": 0.78,
+        "evidence": "长期加班后对日常事物失去兴趣"
+      }
+    ],
+    "other_emotions": [],
+    "dimensions": {
+      "valence": -0.62,
+      "arousal": 0.18,
+      "dominance": -0.53,
+      "energy": 0.11,
+      "tension": 0.27,
+      "certainty": 0.72,
+      "social_connection": 0.21
+    },
+    "relationships": [
+      {
+        "from": "疲惫",
+        "to": "倦怠",
+        "kind": "amplifies"
+      },
+      {
+        "from": "无力",
+        "to": "懒散",
+        "kind": "coexists"
+      }
+    ],
+    "summary": "用户连续五天加班后身心高度耗竭，伴随多种低能量的低落状态，没有过激反应，仅需要温和的休息缓冲。",
+    "uncertainties": []
+  },
+  "shared_visual_direction": {
+    "palette": [
+      "#E8F4F8",
+      "#C8DCE5",
+      "#A7C4D6",
+      "#8FB8CF"
+    ],
+    "contrast": 0.3,
+    "temperature": 0.2,
+    "light_softness": 0.9,
+    "spatial_density": 0.3,
+    "motion_impression": "缓慢浮动的柔光细尘",
+    "symbols": [
+      "暖光落地灯轮廓",
+      "蓬松棉麻抱枕"
+    ]
+  },
+  "cocktail": {
+    "name": "卸力时刻",
+    "description": "专为加班掏空状态调配的低酒精度柔感饮品，入口绵柔无负担",
+    "glass": "矮胖宽口杯",
+    "glass_material": "frosted_glass",
+    "liquid_layers": [
+      {
+        "color": "#E0F7FA",
+        "boundary_style": "soft_diffusion"
+      },
+      {
+        "color": "#B2EBF2",
+        "boundary_style": "gradient"
+      }
+    ],
+    "garnish": [
+      "薄荷叶",
+      "盐渍青柠片",
+      "细碎椰蓉"
+    ],
+    "particles": "极细银白闪粉缓慢上浮",
+    "lighting": "桌面暖光侧打，柔和不刺眼",
+    "camera": "45度平视浅景深",
+    "background": "浅米色绒面桌面",
+    "composition": "居中构图，留大量留白"
+  },
+  "planet": {
+    "name": "缓息星",
+    "description": "专为疲惫的人停靠的低重力软质小行星，没有繁重任务要求",
+    "silhouette": "圆滚滚钝边球形",
+    "surface": {
+      "material": "soft_ceramic",
+      "detail": "覆盖绒感浅蓝凹凸纹理，踩上去会陷下浅浅印子"
+    },
+    "core": "无灼热感的暖黄色柔和光团",
+    "atmosphere": "半透明淡雾状，飘着细碎白色小光点",
+    "rings": [
+      "淡蓝色薄纱环",
+      "浅银星光环"
+    ],
+    "satellites": [
+      "暖黄色小卫星A",
+      "暖黄色小卫星B"
+    ],
+    "particles": "空气中飘着棉絮状细碎光点",
+    "lighting": "整体漫反射柔光，无强烈阴影",
+    "camera": "远距离平视带轻微虚化",
+    "background": "深灰蓝色静谧星空",
+    "composition": "居中构图，星球占画面三分之一"
+  },
+  "daily_action": {
+    "title": "5分钟瘫坐放空",
+    "instruction": "直接瘫在沙发上，什么都不用做，不用强迫自己收拾，发5分钟呆即可",
+    "duration_minutes": 5,
+    "difficulty": "easy",
+    "environment": "anywhere",
+    "reason": "刚加班到家不需要立刻启动任何任务，先给身体留个缓冲空隙"
+  },
+  "daily_message": {
+    "text": "你已经撑过了五天连轴转，允许自己先松口气，不用急着立刻恢复状态。",
+    "attribution": "DayGlyph 今日寄语"
+  },
+  "emotional_weather": {
+    "title": "无风雾天",
+    "explanation": "整个人裹着一层软雾，提不起劲也没关系，慢慢缓就好",
+    "symbol": "fog"
+  },
+  "experience_copy": {
+    "image_generation_title": "加班晚归卸下疲惫的松弛时刻",
+    "cocktail_progress": "调配专属卸力舒缓饮品",
+    "planet_progress": "前往缓息小行星停靠"
+  },
+  "result_narrative": {
+    "cocktail_name": "卸力时刻",
+    "planet_name": "缓息星",
+    "headline": "连加五天班后回到家，你终于可以彻底卸下紧绷感",
+    "explanation": "不用逼自己立刻打起精神，此刻的放空和慵懒都是你应得的休息"
+  },
+  "action_options": [
+    {
+      "level": "light",
+      "title": "摸软物30秒",
+      "instruction": "伸手摸身边最近的软东西，比如抱枕、毛毯，蹭两下就完成",
+      "duration_minutes": 1,
+      "difficulty": 1,
+      "environment": [
+        "室内"
+      ],
+      "reason": "极低门槛的小接触，能快速给你一点松弛感",
+      "echo_question": "你身边现在最近的软乎乎的东西是什么呀？"
+    },
+    {
+      "level": "standard",
+      "title": "温一杯热饮",
+      "instruction": "倒一杯温牛奶或蜂蜜水，慢慢喝完，不用刷手机",
+      "duration_minutes": 10,
+      "difficulty": 2,
+      "environment": [
+        "室内"
+      ],
+      "reason": "温热液体滑过喉咙，能快速消解身体积攒的疲惫",
+      "echo_question": "你最近最想喝的热饮是什么味道的？"
+    },
+    {
+      "level": "active",
+      "title": "10分钟温水泡脚",
+      "instruction": "接不烫脚的温水，泡10分钟脚，泡完直接躺平",
+      "duration_minutes": 15,
+      "difficulty": 3,
+      "environment": [
+        "室内"
+      ],
+      "reason": "温水能快速放松紧绷一整天的肌肉，帮你更快恢复精力",
+      "echo_question": "你泡脚的时候最喜欢加一点什么小材料？"
+    }
+  ],
+  "share_card": {
+    "title": "今日缓息时刻",
+    "caption": "连轴转的疲惫，都值得被温柔接住",
+    "visual_focus": "cocktail",
+    "layout_variant": "square_centered",
+    "privacy_level": "emotion_only"
+  }
+}

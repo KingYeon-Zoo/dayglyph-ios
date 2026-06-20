@@ -27,6 +27,12 @@ struct CocktailResultView: View {
 
     @State private var showsImageToast = false
 
+    /// 历史模式下读取真实生成的鸡尾酒图；今日模式与无真图时为 nil（回退程序化绘制）。
+    private var generatedCocktailImage: UIImage? {
+        guard case .history = mode else { return nil }
+        return GeneratedImageProvider(context: modelContext).images(for: entry).cocktail
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
             hero
@@ -62,7 +68,7 @@ struct CocktailResultView: View {
                     .foregroundStyle(DayGlyphStyle.textSecondary)
             }
 
-            CocktailHeroView(recipe: entry.emotionRecipe, visual: entry.cocktailVisual)
+            CocktailHeroView(recipe: entry.emotionRecipe, visual: entry.cocktailVisual, generatedImage: generatedCocktailImage)
 
             if entry.emotionRecipe.keywords.isEmpty == false {
                 HStack(spacing: 8) {

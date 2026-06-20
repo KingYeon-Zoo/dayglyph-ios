@@ -1,0 +1,238 @@
+{
+  "schema_version": "1.0",
+  "request_id": "demo-04",
+  "safety": {
+    "risk_level": "none",
+    "crisis_detected": false,
+    "rationale": "用户仅表达公开汇报前的正常忐忑情绪，无危险相关表述"
+  },
+  "emotion_analysis": {
+    "emotions": [
+      {
+        "term": "紧张",
+        "family": "fear",
+        "intensity": 0.82,
+        "confidence": 0.96,
+        "evidence": "明天要在全公司面前汇报，越想越紧张"
+      },
+      {
+        "term": "不安",
+        "family": "fear",
+        "intensity": 0.76,
+        "confidence": 0.92,
+        "evidence": "心一直悬着"
+      },
+      {
+        "term": "担忧",
+        "family": "fear",
+        "intensity": 0.71,
+        "confidence": 0.89,
+        "evidence": "反复改了七八遍稿子还是觉得不够好"
+      },
+      {
+        "term": "挫败",
+        "family": "anger",
+        "intensity": 0.63,
+        "confidence": 0.85,
+        "evidence": "改了七八遍稿子仍达不到自己的预期"
+      },
+      {
+        "term": "疲惫",
+        "family": "depletion",
+        "intensity": 0.58,
+        "confidence": 0.81,
+        "evidence": "反复改了七八遍稿子"
+      },
+      {
+        "term": "自责",
+        "family": "shame",
+        "intensity": 0.48,
+        "confidence": 0.73,
+        "evidence": "多轮修改后仍觉得稿子不够好"
+      }
+    ],
+    "other_emotions": [],
+    "dimensions": {
+      "valence": -0.42,
+      "arousal": 0.71,
+      "dominance": -0.31,
+      "energy": 0.52,
+      "tension": 0.78,
+      "certainty": 0.32,
+      "social_connection": 0.21
+    },
+    "relationships": [
+      {
+        "from": "紧张",
+        "to": "不安",
+        "kind": "coexists"
+      },
+      {
+        "from": "紧张",
+        "to": "担忧",
+        "kind": "amplifies"
+      },
+      {
+        "from": "挫败",
+        "to": "自责",
+        "kind": "coexists"
+      },
+      {
+        "from": "紧张",
+        "to": "疲惫",
+        "kind": "amplifies"
+      }
+    ],
+    "summary": "用户因即将进行全公司公开汇报，反复多轮改稿仍不满意，交织着多种焦虑忐忑情绪，伴随改稿后的疲惫，是公开任务前非常普遍的状态。",
+    "uncertainties": []
+  },
+  "shared_visual_direction": {
+    "palette": [
+      "#FFF8E7",
+      "#FFE2B8",
+      "#FFB380",
+      "#E8F4F8"
+    ],
+    "contrast": 0.41,
+    "temperature": 0.62,
+    "light_softness": 0.83,
+    "spatial_density": 0.32,
+    "motion_impression": "暖光缓慢扫过纸面，文字边缘轻轻浮动",
+    "symbols": [
+      "半开的演讲稿",
+      "暖黄小灯",
+      "细碎星芒",
+      "软边便签"
+    ]
+  },
+  "cocktail": {
+    "name": "纸边松弦",
+    "description": "浅暖黄调柔和饮品，入口带清甜柑橘香，慢慢卸下紧绷神经",
+    "glass": "矮款阔口杯",
+    "glass_material": "frosted_glass",
+    "liquid_layers": [
+      {
+        "color": "#FFF9C4",
+        "boundary_style": "soft_diffusion"
+      },
+      {
+        "color": "#FFCC80",
+        "boundary_style": "gradient"
+      },
+      {
+        "color": "#FFAB91",
+        "boundary_style": "soft_diffusion"
+      }
+    ],
+    "garnish": [
+      "干橙片",
+      "薄荷叶",
+      "细碎银糖粒",
+      "白巧克力便签"
+    ],
+    "particles": "极细金箔碎在液体中缓慢上浮",
+    "lighting": "侧方柔暖光打在杯身，透出温润光晕",
+    "camera": "45度俯拍带轻微虚化前景",
+    "background": "浅米白色棉麻纹理背景",
+    "composition": "居中构图，周围留大量留白"
+  },
+  "planet": {
+    "name": "松弦星",
+    "description": "悬浮在暖雾中的柔和小星球，表面印着淡半透明的文字纹理",
+    "silhouette": "圆润近圆形，边缘带毛茸茸的光晕",
+    "surface": {
+      "material": "translucent_mineral",
+      "detail": "表面嵌着浅银白的类似改稿痕迹的细碎纹路，带磨砂质感"
+    },
+    "core": "暖橙色柔和光点，缓慢散发热量",
+    "atmosphere": "淡橘色薄雾状大气层，轻轻包裹星球",
+    "rings": [
+      "半透银白细环",
+      "飘着碎便签的淡橙环"
+    ],
+    "satellites": [
+      "迷你小月亮卫星",
+      "迷你纸飞机卫星"
+    ],
+    "particles": "周围飘着极细金闪粒子，缓慢浮动",
+    "lighting": "斜后方打来暖柔光，把星球边缘晕出软边",
+    "camera": "中焦镜头，焦点落在星球表面",
+    "background": "深灰蓝丝绒感夜空",
+    "composition": "画面居中偏上，下方留少量空白"
+  },
+  "daily_action": {
+    "title": "3次腹式呼吸",
+    "instruction": "停下改稿，坐直，手放腹部，慢慢深呼吸3次，不用做任何修改",
+    "duration_minutes": 1,
+    "difficulty": "easy",
+    "environment": "anywhere",
+    "reason": "快速缓解胸口紧绷感，不给自己增加新任务"
+  },
+  "daily_message": {
+    "text": "你已经反复打磨了这么多遍，准备的心意早就藏在每一页内容里了，慢慢来就好。",
+    "attribution": "DayGlyph 今日寄语"
+  },
+  "emotional_weather": {
+    "title": "微风多云",
+    "explanation": "心里挂着一点小忐忑，风轻轻吹着，很快就能舒展开。",
+    "symbol": "partly_cloudy"
+  },
+  "experience_copy": {
+    "image_generation_title": "暖光下改稿桌面的松弛瞬间",
+    "cocktail_progress": "正在调配纸边松弦特调",
+    "planet_progress": "正在生成松弦小星球"
+  },
+  "result_narrative": {
+    "cocktail_name": "纸边松弦",
+    "planet_name": "松弦星",
+    "headline": "汇报前的忐忑时刻，认真的你已经做得足够好",
+    "explanation": "多轮改稿的用心都作数，不用逼自己百分百完美，放松一点也没关系。"
+  },
+  "action_options": [
+    {
+      "level": "light",
+      "title": "指尖松筋",
+      "instruction": "停下手里的事，逐根舒展十个手指，再甩手腕10次",
+      "duration_minutes": 1,
+      "difficulty": 1,
+      "environment": [
+        "室内",
+        "anywhere"
+      ],
+      "reason": "快速释放攥笔或握鼠标积累的肌肉紧绷感",
+      "echo_question": "你现在指尖有没有慢慢放松下来？"
+    },
+    {
+      "level": "standard",
+      "title": "三句预演",
+      "instruction": "对着空处慢慢说出汇报开头的三句话，不用追求流畅",
+      "duration_minutes": 3,
+      "difficulty": 2,
+      "environment": [
+        "室内"
+      ],
+      "reason": "提前小声开口试一遍，能大幅降低公开表达的陌生感",
+      "echo_question": "开口说第一句的时候，你有没有觉得没那么慌了？"
+    },
+    {
+      "level": "active",
+      "title": "窗边舒展",
+      "instruction": "走到窗边，盯着远处一个移动物体看3分钟，再做2次扩胸伸展",
+      "duration_minutes": 5,
+      "difficulty": 2,
+      "environment": [
+        "室内",
+        "outdoor"
+      ],
+      "reason": "把注意力从稿子细节拉回现实空间，缓解过度紧绷",
+      "echo_question": "看完远处之后，你有没有觉得心稍微落下来一点？"
+    }
+  ],
+  "share_card": {
+    "title": "此刻的小忐忑",
+    "caption": "认真准备的你已经超棒啦，慢慢来就好",
+    "visual_focus": "cocktail",
+    "layout_variant": "square_centered",
+    "privacy_level": "emotion_only"
+  }
+}

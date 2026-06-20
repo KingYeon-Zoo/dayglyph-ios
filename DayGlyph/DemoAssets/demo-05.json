@@ -1,0 +1,227 @@
+{
+  "schema_version": "1.0",
+  "request_id": "demo-05",
+  "safety": {
+    "risk_level": "none",
+    "crisis_detected": false,
+    "rationale": "用户仅因合作方反复推翻已确认需求产生工作相关情绪波动，无极端倾向"
+  },
+  "emotion_analysis": {
+    "emotions": [
+      {
+        "term": "愤怒",
+        "family": "anger",
+        "intensity": 0.8,
+        "confidence": 0.9,
+        "evidence": "合作方又一次临时推翻已经签字确认的需求，压着火且愤怒散不掉"
+      },
+      {
+        "term": "委屈",
+        "family": "anger",
+        "intensity": 0.75,
+        "confidence": 0.9,
+        "evidence": "明确提到自己的委屈情绪一直散不掉"
+      },
+      {
+        "term": "不满",
+        "family": "anger",
+        "intensity": 0.7,
+        "confidence": 0.85,
+        "evidence": "对合作方反复打破已签字约定的行为产生抵触"
+      },
+      {
+        "term": "烦躁",
+        "family": "anger",
+        "intensity": 0.6,
+        "confidence": 0.8,
+        "evidence": "压着火回复邮件后情绪久久无法平复"
+      },
+      {
+        "term": "疲惫",
+        "family": "depletion",
+        "intensity": 0.5,
+        "confidence": 0.7,
+        "evidence": "处理不合理的突发状况消耗了大量情绪精力"
+      },
+      {
+        "term": "不安",
+        "family": "fear",
+        "intensity": 0.4,
+        "confidence": 0.6,
+        "evidence": "担心后续项目推进节奏被进一步打乱"
+      }
+    ],
+    "other_emotions": [],
+    "dimensions": {
+      "valence": -0.6,
+      "arousal": 0.7,
+      "dominance": -0.3,
+      "energy": 0.5,
+      "tension": 0.7,
+      "certainty": 0.4,
+      "social_connection": 0.2
+    },
+    "relationships": [
+      {
+        "from": "愤怒",
+        "to": "委屈",
+        "kind": "coexists"
+      },
+      {
+        "from": "愤怒",
+        "to": "烦躁",
+        "kind": "amplifies"
+      },
+      {
+        "from": "委屈",
+        "to": "疲惫",
+        "kind": "coexists"
+      }
+    ],
+    "summary": "你因合作方反复推翻已签字确认的需求积压了诸多情绪，压着火回复邮件后仍未平复，属于工作场景下非常常见的正常情绪波动",
+    "uncertainties": []
+  },
+  "shared_visual_direction": {
+    "palette": [
+      "#E87461",
+      "#F5D0A9",
+      "#A9C4DA",
+      "#F8F4E9"
+    ],
+    "contrast": 0.6,
+    "temperature": 0.6,
+    "light_softness": 0.7,
+    "spatial_density": 0.4,
+    "motion_impression": "暖调柔化色块缓慢流动，逐步消解尖锐紧绷感",
+    "symbols": [
+      "揉皱的便签纸",
+      "半开的邮件弹窗"
+    ]
+  },
+  "cocktail": {
+    "name": "余温缓",
+    "description": "浅橘红基底叠着淡奶白的柔和分层，入口带微酸果香慢慢散开，消解积压的火气",
+    "glass": "古典杯",
+    "glass_material": "frosted_glass",
+    "liquid_layers": [
+      {
+        "color": "#F26B5C",
+        "boundary_style": "soft_diffusion"
+      },
+      {
+        "color": "#FFE0B2",
+        "boundary_style": "gradient"
+      },
+      {
+        "color": "#FFFFFF",
+        "boundary_style": "soft_diffusion"
+      }
+    ],
+    "garnish": [
+      "一片薄橙皮",
+      "细碎干洋甘菊",
+      "半颗冻干树莓"
+    ],
+    "particles": "极细金箔碎在液体里缓慢上浮，几乎没有扰动",
+    "lighting": "侧方暖光打在杯壁，透出柔和光晕",
+    "camera": "45度平视特写，对焦在分层边界",
+    "background": "浅米白色柔光桌面",
+    "composition": "居中构图，留出少量留白"
+  },
+  "planet": {
+    "name": "绪平星",
+    "description": "裹着暖橘调薄雾的小星球，表面是磨砂质感的暖晶矿，慢慢散出柔和微光",
+    "silhouette": "圆润无棱角的软边小星球轮廓",
+    "surface": {
+      "material": "soft_ceramic",
+      "detail": "分布着细碎浅橙纹理，触感细腻磨砂"
+    },
+    "core": "淡暖黄色的柔和内核，持续散出不刺眼的微光",
+    "atmosphere": "半透明浅橘色薄雾，轻轻环绕星球表层",
+    "rings": [
+      "一圈淡奶白色的细环"
+    ],
+    "satellites": [
+      "两颗极小的暖灰色伴星"
+    ],
+    "particles": "零星细闪尘埃在大气层里缓慢漂浮",
+    "lighting": "漫射暖光从侧后方打来",
+    "camera": "远景平视，对焦在星球主体",
+    "background": "深灰蓝色的干净星空",
+    "composition": "居中构图，四周留出充足星空留白"
+  },
+  "daily_action": {
+    "title": "30秒松开攥紧的手",
+    "instruction": "慢慢把攥紧的拳头松开，一根一根舒展手指，感受掌心的紧绷感散开",
+    "duration_minutes": 1,
+    "difficulty": "easy",
+    "environment": "anywhere",
+    "reason": "快速释放当下积压的紧绷情绪，不需要额外准备"
+  },
+  "daily_message": {
+    "text": "那些没发出去的火气不用硬憋着，允许自己留一小段时间慢慢消化就好。",
+    "attribution": "DayGlyph 今日寄语"
+  },
+  "emotional_weather": {
+    "title": "午后闷雷",
+    "explanation": "积攒的情绪还没散，风里带着点燥意，很快就会凉下来",
+    "symbol": "partly_cloudy"
+  },
+  "experience_copy": {
+    "image_generation_title": "柔化积压情绪的暖调视觉画面",
+    "cocktail_progress": "消解火气的分层特调制作中",
+    "planet_progress": "暖调情绪小星球渲染中"
+  },
+  "result_narrative": {
+    "cocktail_name": "余温缓",
+    "planet_name": "绪平星",
+    "headline": "你压下了火气处理工作，积压的小情绪值得被看见",
+    "explanation": "临时变卦的糟心事谁遇到都不舒服，不用逼自己立刻完全平复"
+  },
+  "action_options": [
+    {
+      "level": "light",
+      "title": "指尖舒展练习",
+      "instruction": "停下手上的事，逐根舒展手指，活动手腕10秒",
+      "duration_minutes": 1,
+      "difficulty": 1,
+      "environment": [
+        "室内",
+        "户外"
+      ],
+      "reason": "快速释放肢体上的紧绷感，零成本无负担",
+      "echo_question": "你现在攥紧的拳头松开了吗？"
+    },
+    {
+      "level": "standard",
+      "title": "喝一口温凉水",
+      "instruction": "拿起手边的杯子，慢慢喝三口温凉的水，感受水流过喉咙",
+      "duration_minutes": 3,
+      "difficulty": 2,
+      "environment": [
+        "室内"
+      ],
+      "reason": "用感官的清凉感快速平复翻涌的情绪",
+      "echo_question": "水的温度刚好让你觉得舒服吗？"
+    },
+    {
+      "level": "active",
+      "title": "写下吐槽便签",
+      "instruction": "在便签上随便写几句想吐槽的话，写完直接揉掉丢进垃圾桶",
+      "duration_minutes": 5,
+      "difficulty": 3,
+      "environment": [
+        "室内"
+      ],
+      "reason": "把没处说的情绪具象化扔掉，彻底清空积压的不快",
+      "echo_question": "你最想吐槽的第一句话是什么？"
+    }
+  ],
+  "share_card": {
+    "title": "情绪慢慢散",
+    "caption": "工作里的糟心事不用硬扛，允许自己慢慢消化",
+    "visual_focus": "cocktail",
+    "layout_variant": "square_centered",
+    "privacy_level": "emotion_only"
+  }
+}

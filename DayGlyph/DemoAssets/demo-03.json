@@ -1,0 +1,230 @@
+{
+  "schema_version": "1.0",
+  "request_id": "demo-03",
+  "safety": {
+    "risk_level": "none",
+    "crisis_detected": false,
+    "rationale": "用户仅记录被家人问候触发的柔软日常情绪，无高风险内容"
+  },
+  "emotion_analysis": {
+    "emotions": [
+      {
+        "term": "想念",
+        "family": "sadness",
+        "intensity": 0.7,
+        "confidence": 0.9,
+        "evidence": "接到妈妈的问候后独自在工位坐了很久鼻子发酸"
+      },
+      {
+        "term": "温暖",
+        "family": "connection",
+        "intensity": 0.6,
+        "confidence": 0.85,
+        "evidence": "妈妈特意来电询问日常吃饭情况，传递细碎关心"
+      },
+      {
+        "term": "孤独",
+        "family": "connection",
+        "intensity": 0.6,
+        "confidence": 0.8,
+        "evidence": "挂掉电话后独自留在工位，身边没有陪伴的人"
+      },
+      {
+        "term": "疲惫",
+        "family": "depletion",
+        "intensity": 0.55,
+        "confidence": 0.75,
+        "evidence": "日常工位久坐的状态下被情绪裹挟停留许久"
+      },
+      {
+        "term": "踏实",
+        "family": "calm",
+        "intensity": 0.45,
+        "confidence": 0.7,
+        "evidence": "来自家人的细碎问候带来了确定的安心感"
+      },
+      {
+        "term": "失落",
+        "family": "sadness",
+        "intensity": 0.4,
+        "confidence": 0.7,
+        "evidence": "被亲情击中后生出当下独处的细碎落差"
+      }
+    ],
+    "other_emotions": [],
+    "dimensions": {
+      "valence": -0.2,
+      "arousal": 0.3,
+      "dominance": 0.1,
+      "energy": 0.2,
+      "tension": 0.1,
+      "certainty": 0.8,
+      "social_connection": 0.7
+    },
+    "relationships": [
+      {
+        "from": "想念",
+        "to": "孤独",
+        "kind": "coexists"
+      },
+      {
+        "from": "温暖",
+        "to": "踏实",
+        "kind": "amplifies"
+      },
+      {
+        "from": "孤独",
+        "to": "疲惫",
+        "kind": "coexists"
+      }
+    ],
+    "summary": "你在工位接到妈妈的日常问候，挂电话后独自静坐泛起鼻酸，交织着被关心的暖意、想家的软意，还有独处的细碎怅然",
+    "uncertainties": []
+  },
+  "shared_visual_direction": {
+    "palette": [
+      "#FFF5E6",
+      "#FFE0B2",
+      "#D4E8F7",
+      "#F8F9FA"
+    ],
+    "contrast": 0.3,
+    "temperature": 0.6,
+    "light_softness": 0.9,
+    "spatial_density": 0.2,
+    "motion_impression": "暖光慢慢在桌面漫开，没有明显流动",
+    "symbols": [
+      "热茶水汽",
+      "旧便签",
+      "手机屏幕微光",
+      "窗边晚风"
+    ]
+  },
+  "cocktail": {
+    "name": "家的余温",
+    "description": "浅淡暖调分层饮品，入口是微甜的蜜香，后味带着若有似无的轻酸，像被问候击中的软瞬间",
+    "glass": "矮胖直身杯",
+    "glass_material": "frosted_glass",
+    "liquid_layers": [
+      {
+        "color": "#FFF8DC",
+        "boundary_style": "soft_diffusion"
+      },
+      {
+        "color": "#FFE4C4",
+        "boundary_style": "gradient"
+      },
+      {
+        "color": "#F0E68C",
+        "boundary_style": "swirl"
+      }
+    ],
+    "garnish": [
+      "干橙片",
+      "茉莉花瓣",
+      "细碎桂花"
+    ],
+    "particles": "细碎金闪粒子缓慢上浮，像暖光里浮动的微尘",
+    "lighting": "侧方柔暖台灯光，落在杯身漫开雾感",
+    "camera": "平视角度对焦杯身，轻微虚化背景",
+    "background": "浅米白色桌面，散落半张空白便签",
+    "composition": "居中构图，留出大量空白"
+  },
+  "planet": {
+    "name": "暖星隅",
+    "description": "永远飘着浅橘色软雾的小星球，表面覆盖半透奶白结晶，永远停留傍晚六点的暖光",
+    "silhouette": "圆润小星球，边缘带着细碎柔光",
+    "surface": {
+      "material": "ice_crystal",
+      "detail": "铺着细滑奶白冰晶，踩上去会留下软乎乎的浅脚印"
+    },
+    "core": "暖黄色柔光核心，像永远亮着的小台灯",
+    "atmosphere": "半透明浅橘色薄雾，裹着整颗星球",
+    "rings": [
+      "淡金细光环",
+      "奶白软云环"
+    ],
+    "satellites": [
+      "迷你暖光小卫星，像旧手机指示灯"
+    ],
+    "particles": "细碎暖光粒子在大气层里慢悠悠漂浮",
+    "lighting": "从星球核心向外漫出的柔光，没有硬阴影",
+    "camera": "远距离平视拍摄，捕捉星球整体柔光晕",
+    "background": "深灰蓝色干净夜空，没有多余杂星",
+    "composition": "居中偏左构图，留出大片夜空留白"
+  },
+  "daily_action": {
+    "title": "喝一口温热水",
+    "instruction": "停下手里的事，拿起手边的温水慢慢喝三口，不用赶进度",
+    "duration_minutes": 2,
+    "difficulty": "easy",
+    "environment": "anywhere",
+    "reason": "承接此刻漫上来的软情绪，给身体一点即时的暖意"
+  },
+  "daily_message": {
+    "text": "来自家人的细碎问候，是藏在日常里的小糖，哪怕只尝一秒，也够暖很久。",
+    "attribution": "DayGlyph 今日寄语"
+  },
+  "emotional_weather": {
+    "title": "风携暖意",
+    "explanation": "软风裹着家里的味道吹过来，鼻尖有点酸，心底却慢慢软下来",
+    "symbol": "breeze"
+  },
+  "experience_copy": {
+    "image_generation_title": "工位接妈妈电话的软柔瞬间",
+    "cocktail_progress": "暖调微甜的余温饮品",
+    "planet_progress": "飘着橘雾的暖光小星球"
+  },
+  "result_narrative": {
+    "cocktail_name": "家的余温",
+    "planet_name": "暖星隅",
+    "headline": "接到妈妈的问候后，你在工位静静接住了漫上来的软情绪",
+    "explanation": "细碎关心撞进日常，暖意在心口漫开，带着一点想家的轻酸"
+  },
+  "action_options": [
+    {
+      "level": "light",
+      "title": "摸一摸手机壳",
+      "instruction": "指尖慢慢划过手机壳的纹理，停留10秒什么都不用想",
+      "duration_minutes": 1,
+      "difficulty": 1,
+      "environment": [
+        "室内"
+      ],
+      "reason": "用触觉锚定此刻的软情绪，不用强迫自己立刻投入工作",
+      "echo_question": "你有没有一瞬间想立刻给妈妈回个消息呀？"
+    },
+    {
+      "level": "standard",
+      "title": "写下一句碎念",
+      "instruction": "在便签上随便写一句此刻想到的和家有关的小事",
+      "duration_minutes": 5,
+      "difficulty": 2,
+      "environment": [
+        "室内",
+        "anywhere"
+      ],
+      "reason": "把此刻的软情绪轻轻落下来，不用写得工整漂亮",
+      "echo_question": "你最先想到的是家里的哪一道热饭呀？"
+    },
+    {
+      "level": "active",
+      "title": "给妈妈发个小消息",
+      "instruction": "拍一张你手边的东西发给妈妈，随便说一句无关紧要的小事",
+      "duration_minutes": 10,
+      "difficulty": 3,
+      "environment": [
+        "anywhere"
+      ],
+      "reason": "把你此刻感受到的暖意，轻轻回传给在意你的人",
+      "echo_question": "你第一反应想拍给她看的是什么？"
+    }
+  ],
+  "share_card": {
+    "title": "此刻的软意",
+    "caption": "被妈妈的一句吃饭没击中，心底漫开细碎暖意",
+    "visual_focus": "cocktail",
+    "layout_variant": "square_centered",
+    "privacy_level": "emotion_only"
+  }
+}

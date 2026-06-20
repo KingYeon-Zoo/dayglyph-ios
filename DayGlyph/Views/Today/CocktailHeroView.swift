@@ -3,8 +3,38 @@ import SwiftUI
 struct CocktailHeroView: View {
     var recipe: EmotionRecipe
     var visual: CocktailVisual
+    /// 历史记录的真实生成图（存在时优先显示，否则回退程序化绘制）。
+    var generatedImage: UIImage?
 
     var body: some View {
+        if let generatedImage {
+            realImageHero(generatedImage)
+        } else {
+            proceduralHero
+        }
+    }
+
+    private func realImageHero(_ image: UIImage) -> some View {
+        ZStack(alignment: .bottomLeading) {
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFill()
+                .frame(maxWidth: .infinity)
+                .frame(height: 360)
+                .clipShape(RoundedRectangle(cornerRadius: DayGlyphStyle.heroRadius, style: .continuous))
+
+            Text(recipe.name)
+                .font(.title2.weight(.semibold))
+                .foregroundStyle(.white)
+                .shadow(color: .black.opacity(0.5), radius: 6, y: 1)
+                .padding(18)
+        }
+        .frame(maxWidth: .infinity)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(recipe.name)，\(recipe.primary.title)配方")
+    }
+
+    private var proceduralHero: some View {
         ZStack {
             RoundedRectangle(cornerRadius: DayGlyphStyle.heroRadius, style: .continuous)
                 .fill(

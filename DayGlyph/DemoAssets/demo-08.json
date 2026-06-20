@@ -1,0 +1,217 @@
+{
+  "schema_version": "1.0",
+  "request_id": "demo-08",
+  "safety": {
+    "risk_level": "none",
+    "crisis_detected": false,
+    "rationale": "用户记录为晨间散步的平和日常体验，无负面风险内容"
+  },
+  "emotion_analysis": {
+    "emotions": [
+      {
+        "term": "平静",
+        "family": "calm",
+        "intensity": 0.92,
+        "confidence": 0.96,
+        "evidence": "沿着河边慢慢走了四十分钟，风很轻，什么也没想，难得感到一种踏实的平静"
+      },
+      {
+        "term": "踏实",
+        "family": "calm",
+        "intensity": 0.87,
+        "confidence": 0.91,
+        "evidence": "难得感到一种踏实的平静"
+      },
+      {
+        "term": "舒缓",
+        "family": "calm",
+        "intensity": 0.78,
+        "confidence": 0.85,
+        "evidence": "清晨沿着河边慢慢走了四十分钟，风很轻"
+      },
+      {
+        "term": "愉悦",
+        "family": "joy",
+        "intensity": 0.65,
+        "confidence": 0.77,
+        "evidence": "卸下所有杂念，享受完全松弛的独处时光"
+      },
+      {
+        "term": "满足",
+        "family": "joy",
+        "intensity": 0.62,
+        "confidence": 0.73,
+        "evidence": "获得了平时很难得的无负担松弛体验"
+      }
+    ],
+    "other_emotions": [],
+    "dimensions": {
+      "valence": 0.82,
+      "arousal": 0.28,
+      "dominance": 0.61,
+      "energy": 0.39,
+      "tension": 0.08,
+      "certainty": 0.92,
+      "social_connection": 0.21
+    },
+    "relationships": [
+      {
+        "from": "平静",
+        "to": "踏实",
+        "kind": "coexists"
+      },
+      {
+        "from": "舒缓",
+        "to": "平静",
+        "kind": "amplifies"
+      }
+    ],
+    "summary": "用户在晨间河畔慢走的独处时光里卸下杂念，收获了久违的松弛平和，整个人处于舒展舒适的低压力状态",
+    "uncertainties": []
+  },
+  "shared_visual_direction": {
+    "palette": [
+      "#E0F7FA",
+      "#81D4FA",
+      "#B2EBF2",
+      "#FFFFFF"
+    ],
+    "contrast": 0.3,
+    "temperature": 0.3,
+    "light_softness": 0.9,
+    "spatial_density": 0.2,
+    "motion_impression": "柔风拂过水面泛起细碎涟漪，缓慢流动",
+    "symbols": [
+      "河畔芦苇",
+      "软风",
+      "淡金晨光",
+      "波纹"
+    ]
+  },
+  "cocktail": {
+    "name": "河上风吟",
+    "description": "清透浅蓝调低度数清爽饮品，带着淡薄荷与白桃香气，适配晨间松弛状态",
+    "glass": "矮款阔口杯",
+    "glass_material": "frosted_glass",
+    "liquid_layers": [
+      {
+        "color": "#F0F9FF",
+        "boundary_style": "soft_diffusion"
+      },
+      {
+        "color": "#B3E5FC",
+        "boundary_style": "gradient"
+      },
+      {
+        "color": "#81D4FA",
+        "boundary_style": "soft_diffusion"
+      }
+    ],
+    "garnish": [
+      "薄荷叶尖",
+      "一片白桃切片",
+      "细芦苇干花"
+    ],
+    "particles": "极细的银白闪粉缓慢在液体中浮动",
+    "lighting": "侧方柔淡的晨光漫射",
+    "camera": "低角度平视拍摄",
+    "background": "模糊的河畔浅草色",
+    "composition": "居中留白构图"
+  },
+  "planet": {
+    "name": "静波星",
+    "description": "悬浮在淡蓝星云里的柔和小星球，表面覆着薄冰般的水纹，永远吹着轻软的风",
+    "silhouette": "圆润无棱角的软边球形",
+    "surface": {
+      "material": "ice_crystal",
+      "detail": "表面覆着半透明的浅蓝冰纹，像凝固的河面涟漪"
+    },
+    "core": "暖白色的柔和光核",
+    "atmosphere": "极薄的淡青色雾状大气层",
+    "rings": [
+      "细碎的银白水汽环"
+    ],
+    "satellites": [
+      "一颗米粒大的淡银色小卫星"
+    ],
+    "particles": "零星的水色光点缓慢环绕星球浮动",
+    "lighting": "来自远处的淡金晨光均匀铺洒",
+    "camera": "远距离缓慢环绕拍摄",
+    "background": "淡紫色的柔和深空",
+    "composition": "居中舒展构图"
+  },
+  "daily_action": {
+    "title": "1分钟指尖触风",
+    "instruction": "走到窗边伸出手，感受3秒吹过的风的温度",
+    "duration_minutes": 1,
+    "difficulty": "easy",
+    "environment": "anywhere",
+    "reason": "延续当下松弛的感知，把平静的小体验拉长一点"
+  },
+  "daily_message": {
+    "text": "不必追赶什么，风轻的时候，慢慢走就很好。",
+    "attribution": "DayGlyph 今日寄语"
+  },
+  "emotional_weather": {
+    "title": "柔风晴日",
+    "explanation": "整个人浸在软乎乎的松弛里，没有杂念，脚步都很轻",
+    "symbol": "breeze"
+  },
+  "experience_copy": {
+    "image_generation_title": "清晨河畔慢走的松弛瞬间",
+    "cocktail_progress": "河上风吟饮品渲染完成",
+    "planet_progress": "静波星绘制完成"
+  },
+  "result_narrative": {
+    "cocktail_name": "河上风吟",
+    "planet_name": "静波星",
+    "headline": "晨间河畔漫步，收获久违的踏实平静",
+    "explanation": "你卸下所有待办杂念，在四十分钟慢走里完全舒展，状态松弛舒适"
+  },
+  "action_options": [
+    {
+      "level": "light",
+      "title": "指尖接风",
+      "instruction": "伸出手，感受当下风拂过指缝的触感，停留10秒",
+      "duration_minutes": 1,
+      "difficulty": 1,
+      "environment": [
+        "室内",
+        "室外"
+      ],
+      "reason": "不用费力就能接住此刻的松弛感",
+      "echo_question": "你现在摸到的风是凉的还是暖的？"
+    },
+    {
+      "level": "standard",
+      "title": "慢走三百步",
+      "instruction": "换上鞋在附近安静的地方慢慢走三百步，不用看手机",
+      "duration_minutes": 5,
+      "difficulty": 2,
+      "environment": [
+        "室外"
+      ],
+      "reason": "延续刚才散步的舒适状态，让身体彻底放松",
+      "echo_question": "你路上会留意到什么之前没注意的小细节？"
+    },
+    {
+      "level": "active",
+      "title": "写下松弛瞬间",
+      "instruction": "拿出便签写下刚才散步时最让你舒服的一个小细节，贴在显眼的地方",
+      "duration_minutes": 10,
+      "difficulty": 3,
+      "environment": [
+        "anywhere"
+      ],
+      "reason": "把这份难得的踏实感留存下来，之后可以随时回看",
+      "echo_question": "你第一个想到的舒服细节是什么？"
+    }
+  ],
+  "share_card": {
+    "title": "风轻步缓的清晨",
+    "caption": "不用急着赶路，享受当下的平静就足够好",
+    "visual_focus": "cocktail",
+    "layout_variant": "square_centered",
+    "privacy_level": "emotion_only"
+  }
+}

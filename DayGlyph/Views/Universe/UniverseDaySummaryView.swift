@@ -2,11 +2,17 @@ import SwiftUI
 
 struct UniverseDaySummaryView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
 
     var day: UniverseDaySummary
     var entry: DayEntry?
     var previousAction: (() -> Void)?
     var nextAction: (() -> Void)?
+
+    private var generatedPlanetImage: UIImage? {
+        guard let entry else { return nil }
+        return GeneratedImageProvider(context: modelContext).images(for: entry).planet
+    }
 
     var body: some View {
         NavigationStack {
@@ -25,7 +31,8 @@ struct UniverseDaySummaryView: View {
                             rotationSpeed: day.planet.rotationSpeed,
                             recordDots: []
                         ),
-                        size: 180
+                        size: 180,
+                        generatedImage: generatedPlanetImage
                     )
                     .frame(height: 160)
 

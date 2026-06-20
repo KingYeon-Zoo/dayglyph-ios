@@ -1,3 +1,4 @@
+import SwiftUI
 import Testing
 @testable import DayGlyph
 
@@ -10,5 +11,12 @@ struct AppShellTests {
             "dot.radiowaves.left.and.right",
             "person.crop.circle"
         ])
+    }
+
+    @Test func onlyUniverseRequestsDarkAppearance() {
+        #expect(AppTab.today.preferredColorScheme == .light)
+        #expect(AppTab.universe.preferredColorScheme == .dark)
+        #expect(AppTab.echo.preferredColorScheme == .light)
+        #expect(AppTab.mine.preferredColorScheme == .light)
     }
 }

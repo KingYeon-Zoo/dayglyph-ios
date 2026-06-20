@@ -24,7 +24,6 @@ struct UniverseView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(.hidden, for: .navigationBar)
-        .preferredColorScheme(.dark)
         .onAppear(perform: selectInitialMonth)
         .onChange(of: months.map(\.id)) { validateSelection() }
         .sheet(item: $selectedDay) { day in

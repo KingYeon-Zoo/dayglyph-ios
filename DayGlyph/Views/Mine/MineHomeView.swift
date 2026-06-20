@@ -7,11 +7,33 @@ struct MineHomeView: View {
     @Query(sort: \ActionResponse.createdAt, order: .reverse) private var responses: [ActionResponse]
 
     @AppStorage("profileNickname") private var nickname = ""
+    @AppStorage("announcedAchievements") private var announcedAchievementsBlob = ""
     @State private var editingNickname = false
     @State private var nicknameDraft = ""
+    @State private var unlockToast: EmotionAchievement?
 
     private var achievements: [EmotionAchievement] {
         MineAggregator.achievements(entries: entries, actions: actions, responses: responses)
+    }
+
+    /// 已弹过解锁提示的成就 ID 集合。
+    private var announcedIDs: Set<String> {
+        Set(announcedAchievementsBlob.split(separator: "|").map(String.init))
+    }
+
+    /// 检测新解锁的 .live 成就，弹一次提示后记录，避免重复。
+    private func detectUnlocks() {
+        let newlyUnlocked = achievements.filter { $0.kind == .live && $0.isUnlocked && !announcedIDs.contains($0.id) }
+        guard let first = newlyUnlocked.first else { return }
+        let updated = announcedIDs.union(newlyUnlocked.map(\.id))
+        announcedAchievementsBlob = updated.sorted().joined(separator: "|")
+        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+            unlockToast = first
+        }
+        Task {
+            try? await Task.sleep(for: .seconds(2.5))
+            withAnimation(.easeOut(duration: 0.3)) { unlockToast = nil }
+        }
     }
 
     private var recordDays: Int {
@@ -34,6 +56,15 @@ struct MineHomeView: View {
         .background(DayGlyphBackground())
         .navigationTitle("我的")
         .navigationBarTitleDisplayMode(.inline)
+        .task { detectUnlocks() }
+        .overlay(alignment: .top) {
+            if let toast = unlockToast {
+                AchievementUnlockToast(achievement: toast)
+                    .padding(.horizontal, 20)
+                    .padding(.top, 8)
+                    .transition(.move(edge: .top).combined(with: .opacity))
+            }
+        }
         .alert("编辑昵称", isPresented: $editingNickname) {
             TextField("情绪旅人", text: $nicknameDraft)
             Button("取消", role: .cancel) {}

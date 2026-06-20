@@ -20,8 +20,12 @@ final class GenerationProgressViewModel {
     init(text: String, context: ModelContext, configuration: AIConfiguration = .demo) {
         self.recordText = text
         self.context = context
-        // entryID 预生成，贯穿 orchestrator 与 DayEntry。
-        let entryID = UUID()
+        // 同一天重新生成时复用 DayEntry ID；新记录则让该 ID 贯穿 AI 记录与首页记录。
+        let startOfDay = Calendar.current.startOfDay(for: .now)
+        let descriptor = FetchDescriptor<DayEntry>(
+            predicate: #Predicate { $0.date == startOfDay }
+        )
+        let entryID = (try? context.fetch(descriptor).first?.entryID) ?? UUID()
         self.orchestrator = DayGenerationOrchestrator(
             entryID: entryID,
             context: context,
@@ -148,7 +152,12 @@ final class GenerationProgressViewModel {
         guard !didPersistEntry, let response = orchestrator.response, !isBlockedBySafety else { return }
         let analysis = GenerationAnalysisMapper.makeAnalysis(from: response)
         do {
-            let saved = try DayEntryStore.saveEntry(text: recordText, analysis: analysis, context: context)
+            let saved = try DayEntryStore.saveEntry(
+                entryID: orchestrator.entryID,
+                text: recordText,
+                analysis: analysis,
+                context: context
+            )
             self.entry = saved
             didPersistEntry = true
         } catch {

@@ -3,6 +3,7 @@ import SwiftData
 
 enum DayEntryStore {
     static func saveEntry(
+        entryID: UUID? = nil,
         text: String,
         date: Date = .now,
         analysis: EmotionAnalysis,
@@ -29,6 +30,7 @@ enum DayEntryStore {
         }
 
         let entry = DayEntry(
+            entryID: entryID ?? UUID(),
             date: startOfDay,
             text: trimmed,
             analysis: analysis,

@@ -34,4 +34,8 @@ nonisolated enum AppTab: String, CaseIterable, Identifiable {
         case .mine: DayGlyphStyle.mine
         }
     }
+
+    var preferredColorScheme: ColorScheme {
+        self == .universe ? .dark : .light
+    }
 }

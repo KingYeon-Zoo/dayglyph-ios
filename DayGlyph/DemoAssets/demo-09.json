@@ -1,0 +1,220 @@
+{
+  "schema_version": "1.0",
+  "request_id": "demo-09",
+  "safety": {
+    "risk_level": "none",
+    "crisis_detected": false,
+    "rationale": "用户得知体检结果正常后感到放松舒展，无任何高风险内容"
+  },
+  "emotion_analysis": {
+    "emotions": [
+      {
+        "term": "释然",
+        "family": "calm",
+        "intensity": 0.9,
+        "confidence": 0.98,
+        "evidence": "体检报告出来一切正常，那一瞬间像卸下一块大石头"
+      },
+      {
+        "term": "愉悦",
+        "family": "joy",
+        "intensity": 0.75,
+        "confidence": 0.9,
+        "evidence": "拿到全正常的体检结果，整个人变得轻快放松"
+      },
+      {
+        "term": "懊悔",
+        "family": "shame",
+        "intensity": 0.45,
+        "confidence": 0.85,
+        "evidence": "有点想笑自己之前担心得太多"
+      },
+      {
+        "term": "满足",
+        "family": "joy",
+        "intensity": 0.6,
+        "confidence": 0.8,
+        "evidence": "确认身体无异常，当下状态安稳合意"
+      },
+      {
+        "term": "不安",
+        "family": "fear",
+        "intensity": 0.2,
+        "confidence": 0.7,
+        "evidence": "此前一直为体检结果悬着心，直到此刻才彻底落地"
+      }
+    ],
+    "other_emotions": [],
+    "dimensions": {
+      "valence": 0.8,
+      "arousal": 0.4,
+      "dominance": 0.7,
+      "energy": 0.5,
+      "tension": 0.1,
+      "certainty": 0.9,
+      "social_connection": 0.3
+    },
+    "relationships": [
+      {
+        "from": "释然",
+        "to": "愉悦",
+        "kind": "amplifies"
+      },
+      {
+        "from": "释然",
+        "to": "懊悔",
+        "kind": "coexists"
+      },
+      {
+        "from": "不安",
+        "to": "释然",
+        "kind": "masks"
+      }
+    ],
+    "summary": "你拿到全正常的体检报告瞬间卸下心理重担，既舒展放松，又忍不住笑自己之前过度担忧，多种轻快情绪交织在一起",
+    "uncertainties": []
+  },
+  "shared_visual_direction": {
+    "palette": [
+      "#E8F4F8",
+      "#A8D5E5",
+      "#FFEFD5",
+      "#FFF8DC"
+    ],
+    "contrast": 0.3,
+    "temperature": 0.6,
+    "light_softness": 0.9,
+    "spatial_density": 0.2,
+    "motion_impression": "轻风吹走压在胸口的薄云，没有多余扰动",
+    "symbols": [
+      "卸下的小石块",
+      "舒展的软云",
+      "体检报告单",
+      "向阳窗台"
+    ]
+  },
+  "cocktail": {
+    "name": "云落轻安",
+    "description": "清透浅蓝调气泡饮品，入口是细碎气泡的轻快，余味带着淡甜，像卸下重担的松弛感",
+    "glass": "矮脚宽口杯",
+    "glass_material": "frosted_glass",
+    "liquid_layers": [
+      {
+        "color": "#E0F7FA",
+        "boundary_style": "soft_diffusion"
+      },
+      {
+        "color": "#B3E5FC",
+        "boundary_style": "gradient"
+      }
+    ],
+    "garnish": [
+      "薄荷叶",
+      "鲜柠檬片",
+      "细白盐边",
+      "小朵洋甘菊"
+    ],
+    "particles": "细碎银白气泡慢悠悠从杯底向上浮起",
+    "lighting": "窗边柔暖自然光斜照，透出液体通透质感",
+    "camera": "45度平视浅景深，聚焦杯口浮动的气泡",
+    "background": "浅米白桌面，模糊的绿植浅影",
+    "composition": "居中构图，画面干净舒展"
+  },
+  "planet": {
+    "name": "释星",
+    "description": "一颗飘着软云的淡蓝小星，表面铺满细碎浅白晶体，没有厚重尘埃",
+    "silhouette": "圆润柔和的球形",
+    "surface": {
+      "material": "ice_crystal",
+      "detail": "表面嵌着星星点点的暖光碎晶，触感凉润细腻"
+    },
+    "core": "暖黄色的柔和光团，向外散出均匀柔光",
+    "atmosphere": "半透明的淡青薄雾，轻轻包裹星球表面",
+    "rings": [
+      "一圈银白细光环",
+      "一圈浅蓝薄纱环"
+    ],
+    "satellites": [
+      "两颗迷你暖白小卫星"
+    ],
+    "particles": "零星飘着细小白絮状微尘",
+    "lighting": "柔和侧光，整体亮度均匀舒适",
+    "camera": "远景平视，带少量环绕云絮入镜",
+    "background": "深黑色干净星空，散落极淡的星点",
+    "composition": "居中构图，星球占画面三分之一大小"
+  },
+  "daily_action": {
+    "title": "30秒舒展肩膀",
+    "instruction": "坐着慢慢把肩膀向上抬，再向后绕圈放下，重复3次即可",
+    "duration_minutes": 1,
+    "difficulty": "easy",
+    "environment": "anywhere",
+    "reason": "帮你把卸下重担的松弛感延伸到身体上，彻底舒展"
+  },
+  "daily_message": {
+    "text": "悬着的心终于落地，你值得这份踏踏实实的轻松，好好享受当下的舒展时刻。",
+    "attribution": "DayGlyph 今日寄语"
+  },
+  "emotional_weather": {
+    "title": "风消云散",
+    "explanation": "之前攒的担心全被吹走，只剩晴日里软乎乎的舒适感",
+    "symbol": "breeze"
+  },
+  "experience_copy": {
+    "image_generation_title": "卸下重担的松弛治愈时刻",
+    "cocktail_progress": "轻安气泡特调正在生成",
+    "planet_progress": "释星小星球正在构建"
+  },
+  "result_narrative": {
+    "cocktail_name": "云落轻安",
+    "planet_name": "释星",
+    "headline": "体检结果全正常，悬着的心终于彻底落地",
+    "explanation": "你卸下攒了许久的心理负担，整个人都变得轻快舒展，享受这份虚惊一场的安心"
+  },
+  "action_options": [
+    {
+      "level": "light",
+      "title": "自嘲两句翻篇",
+      "instruction": "对着空气笑着说一句“之前真的白担心啦”",
+      "duration_minutes": 1,
+      "difficulty": 1,
+      "environment": [
+        "室内",
+        "户外"
+      ],
+      "reason": "把多余的担忧直接说出来，彻底和之前的焦虑告别",
+      "echo_question": "你之前为体检脑补过什么离谱的小剧情呀？"
+    },
+    {
+      "level": "standard",
+      "title": "买杯小甜水奖励自己",
+      "instruction": "顺路去便利店挑一款平时舍不得买的甜饮料，慢慢喝完",
+      "duration_minutes": 15,
+      "difficulty": 2,
+      "environment": [
+        "户外"
+      ],
+      "reason": "用一点小确幸庆祝这份虚惊一场的安心",
+      "echo_question": "你第一反应想到的想喝的饮品是什么？"
+    },
+    {
+      "level": "active",
+      "title": "下楼慢走十分钟",
+      "instruction": "换上舒服的鞋子出门慢慢走，不用赶时间，看看路边的风景",
+      "duration_minutes": 10,
+      "difficulty": 3,
+      "environment": [
+        "户外"
+      ],
+      "reason": "让身体也跟着这份放松的情绪完全舒展",
+      "echo_question": "你最近一次慢悠悠散步是什么时候呀？"
+    }
+  ],
+  "share_card": {
+    "title": "卸下重担的安心时刻",
+    "caption": "虚惊一场的轻松，是最值得珍惜的小确幸",
+    "visual_focus": "cocktail",
+    "layout_variant": "square_centered",
+    "privacy_level": "emotion_only"
+  }
+}
