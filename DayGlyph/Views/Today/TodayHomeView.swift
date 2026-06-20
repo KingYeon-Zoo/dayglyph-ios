@@ -47,7 +47,7 @@ struct TodayHomeView: View {
                         path.append(.generating(text))
                     }
                 case .generating(let text):
-                    EmotionGeneratingView(text: text) { _ in
+                    DayGenerationView(text: text) { _ in
                         draftText = ""
                         path.removeAll()
                     }
