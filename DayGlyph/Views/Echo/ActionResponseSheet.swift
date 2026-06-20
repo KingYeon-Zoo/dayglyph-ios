@@ -27,6 +27,10 @@ struct ActionResponseSheet: View {
                 }
 
                 Section("后来感受如何") {
+                    Text(action.resolvedEchoQuestion)
+                        .font(.subheadline)
+                        .foregroundStyle(DayGlyphStyle.textSecondary)
+                        .listRowBackground(Color.clear)
                     ForEach(ActionResponseKind.allCases) { kind in
                         Button {
                             selection = kind

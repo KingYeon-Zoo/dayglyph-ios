@@ -59,6 +59,24 @@ nonisolated enum ActionInstanceState: String, Codable {
     case skipped
 }
 
+/// AI 三档微行动档位（contextual personalization spec 5.3）。
+nonisolated enum ActionOptionLevel: String, Codable, CaseIterable {
+    case light
+    case standard
+    case active
+
+    var title: String {
+        switch self {
+        case .light: "轻量"
+        case .standard: "标准"
+        case .active: "主动"
+        }
+    }
+}
+
+/// 行动回声缺省问题（spec 第 10 节：回声问题非法时的固定中性问题）。
+nonisolated let defaultEchoQuestion = "做完之后，你现在感觉怎么样？"
+
 @Model
 final class ActionInstance {
     var id: UUID = UUID()
@@ -73,6 +91,19 @@ final class ActionInstance {
     var categoryRawValue: String?
     var isDemo: Bool = false
 
+    // MARK: - AI 行动快照（spec 5.3、§9：保存完整快照而非数组索引，离线可用、回声一致）
+    // 全部带默认值以兼容旧记录（spec 第 12.1 条 10）。
+    /// 行动指令（AI 行动时为模型指令，本地行动时为空）。
+    var actionInstruction: String = ""
+    /// 推荐原因快照。
+    var actionReason: String = ""
+    /// 档位 raw value（light/standard/active）；本地目录行动为空。
+    var actionLevelRawValue: String?
+    /// 仅针对该行动的回声问题快照；为空时由 UI 回退固定中性问题。
+    var echoQuestion: String = ""
+    /// 预估时长（分钟）。
+    var durationMinutes: Int = 0
+
     init(
         actionId: String,
         entryId: UUID?,
@@ -83,6 +114,11 @@ final class ActionInstance {
         completedAt: Date? = nil,
         followUpAt: Date? = nil,
         state: ActionInstanceState,
+        actionInstruction: String = "",
+        actionReason: String = "",
+        actionLevel: ActionOptionLevel? = nil,
+        echoQuestion: String = "",
+        durationMinutes: Int = 0,
         isDemo: Bool = false
     ) {
         self.actionId = actionId
@@ -94,6 +130,11 @@ final class ActionInstance {
         self.actionTitle = actionTitle
         self.categoryRawValue = category?.rawValue
         self.stateRawValue = state.rawValue
+        self.actionInstruction = actionInstruction
+        self.actionReason = actionReason
+        self.actionLevelRawValue = actionLevel?.rawValue
+        self.echoQuestion = echoQuestion
+        self.durationMinutes = durationMinutes
         self.isDemo = isDemo
     }
 
@@ -104,6 +145,16 @@ final class ActionInstance {
 
     var category: MicroActionCategory? {
         categoryRawValue.flatMap(MicroActionCategory.init(rawValue:))
+    }
+
+    var actionLevel: ActionOptionLevel? {
+        actionLevelRawValue.flatMap(ActionOptionLevel.init(rawValue:))
+    }
+
+    /// 展示用回声问题：快照非空则用快照，否则回退固定中性问题（spec 第 10 节）。
+    var resolvedEchoQuestion: String {
+        let trimmed = echoQuestion.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.isEmpty ? defaultEchoQuestion : trimmed
     }
 
     func complete(at date: Date = .now) {

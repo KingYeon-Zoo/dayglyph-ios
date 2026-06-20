@@ -18,6 +18,20 @@ nonisolated struct DayGenerationResponse: Codable, Equatable, Sendable {
     var dailyMessage: DailyMessageSpec
     var emotionalWeather: EmotionalWeatherSpec
 
+    // MARK: - 即时情境个性化扩展（contextual personalization spec 第 5 节）
+    //
+    // 以下字段全部可选：任一缺失或非法都不得阻塞核心情绪 + 双图结果（spec 第 10 节）。
+    // 解码层只做结构化；合法性与降级由 `GenerationExtrasValidator` 非抛错清洗。
+
+    /// 双图生成阶段的过程文案（spec 5.1）。缺失时客户端用固定阶段文案。
+    var experienceCopy: ExperienceCopySpec?
+    /// 结果叙事：连接情绪分析与双图视觉的命名与解释（spec 5.2）。
+    var resultNarrative: ResultNarrativeSpec?
+    /// 轻量 / 标准 / 主动三档微行动（spec 5.3）。必须恰好三档且档位唯一，否则整组丢弃回退本地目录。
+    var actionOptions: [ActionOptionSpec]?
+    /// 当日分享卡内容规格（spec 5.4）。AI 只给内容，不控制像素排版。
+    var shareCard: ShareCardSpec?
+
     enum CodingKeys: String, CodingKey {
         case schemaVersion = "schema_version"
         case requestID = "request_id"
@@ -29,6 +43,10 @@ nonisolated struct DayGenerationResponse: Codable, Equatable, Sendable {
         case dailyAction = "daily_action"
         case dailyMessage = "daily_message"
         case emotionalWeather = "emotional_weather"
+        case experienceCopy = "experience_copy"
+        case resultNarrative = "result_narrative"
+        case actionOptions = "action_options"
+        case shareCard = "share_card"
     }
 }
 
@@ -212,4 +230,76 @@ nonisolated struct EmotionalWeatherSpec: Codable, Equatable, Sendable {
     var explanation: String
     /// 符号，如 partly_cloudy / clear / drizzle。
     var symbol: String
+}
+
+// MARK: - 即时情境个性化扩展规格（contextual personalization spec 第 5 节）
+
+/// 过程文案（spec 5.1）：只描述正在进行的生成动作，不声称知道未表达的原因、不显示虚假百分比。
+nonisolated struct ExperienceCopySpec: Codable, Equatable, Sendable {
+    var imageGenerationTitle: String
+    var cocktailProgress: String
+    var planetProgress: String
+
+    enum CodingKeys: String, CodingKey {
+        case imageGenerationTitle = "image_generation_title"
+        case cocktailProgress = "cocktail_progress"
+        case planetProgress = "planet_progress"
+    }
+}
+
+/// 结果叙事（spec 5.2）：鸡尾酒名与星球名同语义方向但不相同；标题表达当下状态，不写成稳定人格。
+nonisolated struct ResultNarrativeSpec: Codable, Equatable, Sendable {
+    var cocktailName: String
+    var planetName: String
+    var headline: String
+    var explanation: String
+
+    enum CodingKeys: String, CodingKey {
+        case cocktailName = "cocktail_name"
+        case planetName = "planet_name"
+        case headline
+        case explanation
+    }
+}
+
+/// 三档微行动之一（spec 5.3）。`level` 必须为 light / standard / active，三档差异真实。
+nonisolated struct ActionOptionSpec: Codable, Equatable, Sendable {
+    /// 档位：light / standard / active。
+    var level: String
+    var title: String
+    var instruction: String
+    var durationMinutes: Int
+    /// 难度 1～5。
+    var difficulty: Int
+    /// 环境标签，如 ["室内", "独处"]。
+    var environment: [String]
+    var reason: String
+    /// 仅针对该行动的回声问题（spec 5.3、第 9 节）。
+    var echoQuestion: String
+
+    enum CodingKeys: String, CodingKey {
+        case level, title, instruction
+        case durationMinutes = "duration_minutes"
+        case difficulty, environment, reason
+        case echoQuestion = "echo_question"
+    }
+}
+
+/// 当日分享卡内容规格（spec 5.4）。`visual_focus` / `layout_variant` / `privacy_level` 来自受控枚举。
+nonisolated struct ShareCardSpec: Codable, Equatable, Sendable {
+    var title: String
+    var caption: String
+    /// 主视觉：cocktail / planet。
+    var visualFocus: String
+    /// 版式：portrait_centered / square_centered / minimal。
+    var layoutVariant: String
+    /// 隐私层级：emotion_only（默认仅情绪向）。
+    var privacyLevel: String
+
+    enum CodingKeys: String, CodingKey {
+        case title, caption
+        case visualFocus = "visual_focus"
+        case layoutVariant = "layout_variant"
+        case privacyLevel = "privacy_level"
+    }
 }

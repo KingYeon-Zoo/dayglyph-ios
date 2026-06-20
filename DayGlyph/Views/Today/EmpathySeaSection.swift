@@ -235,13 +235,20 @@ private struct EmpathyCopyEditor: View {
     @Environment(\.modelContext) private var modelContext
 
     var entry: DayEntry?
+    var rewriteService: any EmpathyRewriting = EmpathyRewriteService()
 
     @State private var text: String
     @State private var acknowledgesPublicCopy = false
     @State private var showsSubmitConfirmation = false
 
-    init(entry: DayEntry?) {
+    // 匿名改写状态（spec 第 6 节）。
+    @State private var isRewriting = false
+    @State private var rewriteDraft: String?
+    @State private var rewriteError: String?
+
+    init(entry: DayEntry?, rewriteService: any EmpathyRewriting = EmpathyRewriteService()) {
         self.entry = entry
+        self.rewriteService = rewriteService
         _text = State(initialValue: String((entry?.text ?? "").prefix(300)))
     }
 
@@ -278,6 +285,8 @@ private struct EmpathyCopyEditor: View {
                     .foregroundStyle(DayGlyphStyle.textSecondary)
                     .frame(maxWidth: .infinity, alignment: .trailing)
 
+                rewriteControls
+
                 if warnings.isEmpty == false {
                     Label(
                         "检测到可能的\(warnings.joined(separator: "、"))。发送前请确认是否移除。内容不会被自动修改。",
@@ -311,11 +320,75 @@ private struct EmpathyCopyEditor: View {
         .background(DayGlyphBackground())
         .navigationTitle("匿名副本")
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(item: rewriteDraftBinding) { draft in
+            EmpathyRewriteConfirmView(draft: draft.value) { confirmed in
+                text = confirmed
+                rewriteDraft = nil
+            } onKeepEditing: {
+                rewriteDraft = nil
+            }
+        }
         .alert("确认放入共情海？", isPresented: $showsSubmitConfirmation) {
             Button("放入海中") { submit() }
             Button("再检查一下", role: .cancel) {}
         } message: {
             Text("发送的是当前编辑副本，不是原始日记。演示内容只保存在本机。")
+        }
+        .alert("匿名改写未完成", isPresented: rewriteErrorBinding) {
+            Button("好的", role: .cancel) { rewriteError = nil }
+        } message: {
+            Text(rewriteError ?? "请稍后再试，或手动编辑。")
+        }
+    }
+
+    @ViewBuilder
+    private var rewriteControls: some View {
+        Button {
+            requestRewrite()
+        } label: {
+            HStack {
+                if isRewriting {
+                    ProgressView().tint(DayGlyphStyle.universe)
+                }
+                Label("帮我匿名表达", systemImage: "wand.and.sparkles")
+            }
+            .frame(maxWidth: .infinity, minHeight: 44)
+        }
+        .buttonStyle(.glass)
+        .disabled(isRewriting || text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+
+        Text("AI 会生成一份去身份化草稿，改写后必须由你确认，不会自动放入海中。")
+            .font(.footnote)
+            .foregroundStyle(DayGlyphStyle.textSecondary)
+            .lineSpacing(3)
+    }
+
+    private var rewriteDraftBinding: Binding<IdentifiableString?> {
+        Binding(
+            get: { rewriteDraft.map(IdentifiableString.init) },
+            set: { if $0 == nil { rewriteDraft = nil } }
+        )
+    }
+
+    private var rewriteErrorBinding: Binding<Bool> {
+        Binding(
+            get: { rewriteError != nil },
+            set: { if $0 == false { rewriteError = nil } }
+        )
+    }
+
+    private func requestRewrite() {
+        let source = text
+        isRewriting = true
+        rewriteError = nil
+        Task {
+            defer { isRewriting = false }
+            do {
+                let draft = try await rewriteService.rewrite(source)
+                rewriteDraft = draft
+            } catch {
+                rewriteError = error.localizedDescription
+            }
         }
     }
 
@@ -326,4 +399,77 @@ private struct EmpathyCopyEditor: View {
         try? modelContext.save()
         dismiss()
     }
+}
+
+/// 改写确认页（spec 第 6 节：默认主操作是“继续编辑”，“确认此版本”作为独立操作）。
+private struct EmpathyRewriteConfirmView: View {
+    @Environment(\.dismiss) private var dismiss
+
+    var draft: String
+    var onConfirm: (String) -> Void
+    var onKeepEditing: () -> Void
+
+    @State private var editable: String
+
+    init(draft: String, onConfirm: @escaping (String) -> Void, onKeepEditing: @escaping () -> Void) {
+        self.draft = draft
+        self.onConfirm = onConfirm
+        self.onKeepEditing = onKeepEditing
+        _editable = State(initialValue: draft)
+    }
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 18) {
+                    Text("这是匿名改写草稿。请逐字确认，再决定是否采用。")
+                        .font(.subheadline)
+                        .foregroundStyle(DayGlyphStyle.textSecondary)
+                        .lineSpacing(4)
+
+                    TextEditor(text: $editable)
+                        .frame(minHeight: 220)
+                        .padding(12)
+                        .background(DayGlyphStyle.surface, in: RoundedRectangle(cornerRadius: 16))
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 16).stroke(DayGlyphStyle.divider, lineWidth: 1)
+                        }
+
+                    // 主操作：继续编辑（默认、最显眼）。
+                    Button {
+                        onKeepEditing()
+                        dismiss()
+                    } label: {
+                        Label("继续编辑", systemImage: "pencil")
+                            .font(.headline)
+                            .frame(maxWidth: .infinity, minHeight: 52)
+                    }
+                    .buttonStyle(.glassProminent)
+                    .tint(DayGlyphStyle.universe)
+
+                    // 独立的次要操作：确认此版本。
+                    Button {
+                        onConfirm(editable)
+                        dismiss()
+                    } label: {
+                        Text("确认此版本")
+                            .frame(maxWidth: .infinity, minHeight: 44)
+                    }
+                    .buttonStyle(.glass)
+                    .disabled(editable.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                }
+                .padding(20)
+            }
+            .background(DayGlyphBackground())
+            .navigationTitle("确认改写")
+            .navigationBarTitleDisplayMode(.inline)
+        }
+    }
+}
+
+private struct IdentifiableString: Identifiable {
+    var id = UUID()
+    var value: String
+
+    init(_ value: String) { self.value = value }
 }

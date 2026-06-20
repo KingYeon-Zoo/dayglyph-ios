@@ -54,9 +54,14 @@ struct DayGenerationView: View {
             // 文本就绪：情绪先行展示。
             EmotionDetailSection(payload: response.emotionAnalysis)
 
-            // 双图独立揭示。
+            // 结果叙事标题（spec 5.2，缺失则跳过，不阻塞）。
+            if let narrative = vm.resultNarrative {
+                narrativeCard(narrative)
+            }
+
+            // 双图独立揭示，命名优先用结果叙事。
             FrostedImageCard(
-                title: response.cocktail.name.isEmpty ? "今日鸡尾酒" : response.cocktail.name,
+                title: vm.cocktailDisplayName,
                 aspectRatio: 4.0 / 5.0,
                 status: vm.orchestrator.cocktailStatus,
                 image: vm.orchestrator.cocktailImage,
@@ -65,7 +70,7 @@ struct DayGenerationView: View {
             )
 
             FrostedImageCard(
-                title: response.planet.name.isEmpty ? "今日星球" : response.planet.name,
+                title: vm.planetDisplayName,
                 aspectRatio: 1.0,
                 status: vm.orchestrator.planetStatus,
                 image: vm.orchestrator.planetImage,
@@ -76,9 +81,22 @@ struct DayGenerationView: View {
             // 支持内容。
             weatherCard(response.emotionalWeather)
             messageCard(response.dailyMessage)
-            actionCard(response.dailyAction)
+
+            // 三档微行动（spec 5.3）：合法则展示三档，否则回退单档 AI 行动卡。
+            if let options = vm.actionOptions {
+                AIActionOptionsSection(options: options, entryID: vm.entry?.entryID)
+            } else {
+                actionCard(response.dailyAction)
+            }
 
             if vm.orchestrator.status == .completed || vm.orchestrator.status == .partiallyReady {
+                // 分享卡入口（spec 5.4）：用户主动点击才渲染与分享。
+                ShareCardSection(
+                    spec: vm.resolvedShareCard,
+                    cocktailImage: vm.orchestrator.cocktailImage,
+                    planetImage: vm.orchestrator.planetImage
+                )
+
                 Button("完成") { onComplete(vm.entry) }
                     .buttonStyle(.glassProminent)
                     .tint(DayGlyphStyle.today)
@@ -134,6 +152,26 @@ struct DayGenerationView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 40)
+    }
+
+    private func narrativeCard(_ narrative: ResultNarrativeSpec) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(narrative.headline)
+                .font(.title3.weight(.semibold))
+                .foregroundStyle(DayGlyphStyle.textPrimary)
+                .lineSpacing(4)
+                .fixedSize(horizontal: false, vertical: true)
+            if !narrative.explanation.isEmpty {
+                Text(narrative.explanation)
+                    .font(.subheadline)
+                    .foregroundStyle(DayGlyphStyle.textSecondary)
+                    .lineSpacing(4)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(18)
+        .paperCard(cornerRadius: DayGlyphStyle.largeRadius)
     }
 
     private func weatherCard(_ weather: EmotionalWeatherSpec) -> some View {

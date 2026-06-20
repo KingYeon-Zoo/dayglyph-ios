@@ -104,7 +104,15 @@ enum GenerationPromptBuilder {
       },
       "daily_action": { "title": "标题", "instruction": "明确、低压力、可跳过的指令", "duration_minutes": 1到120, "difficulty": "easy|medium", "environment": "indoor|outdoor|anywhere", "reason": "推荐原因" },
       "daily_message": { "text": "不超过80字的原创寄语", "attribution": "DayGlyph 今日寄语" },
-      "emotional_weather": { "title": "标题", "explanation": "不超过80字", "symbol": "clear|partly_cloudy|cloudy|drizzle|rain|fog|breeze" }
+      "emotional_weather": { "title": "标题", "explanation": "不超过80字", "symbol": "clear|partly_cloudy|cloudy|drizzle|rain|fog|breeze" },
+      "experience_copy": { "image_generation_title": "不超过24字的过程标题", "cocktail_progress": "不超过24字", "planet_progress": "不超过24字" },
+      "result_narrative": { "cocktail_name": "不超过12字", "planet_name": "不超过12字且与鸡尾酒名不同", "headline": "不超过40字的当下状态", "explanation": "不超过80字，能回到原文" },
+      "action_options": [
+        { "level": "light", "title": "标题", "instruction": "明确指令", "duration_minutes": 1到120, "difficulty": 1到5, "environment": ["室内"], "reason": "推荐原因", "echo_question": "只针对该行动的回声问题" },
+        { "level": "standard", "title": "...", "instruction": "...", "duration_minutes": 1到120, "difficulty": 1到5, "environment": ["..."], "reason": "...", "echo_question": "..." },
+        { "level": "active", "title": "...", "instruction": "...", "duration_minutes": 1到120, "difficulty": 1到5, "environment": ["..."], "reason": "...", "echo_question": "..." }
+      ],
+      "share_card": { "title": "不超过16字", "caption": "不超过40字的当日短句", "visual_focus": "cocktail|planet", "layout_variant": "portrait_centered|square_centered|minimal", "privacy_level": "emotion_only" }
     }
 
     字段约束：
@@ -112,5 +120,10 @@ enum GenerationPromptBuilder {
     - liquid_layers 至多 5 项；garnish、rings、satellites 各至多 4 项，避免无限堆叠。
     - palette 为 1～6 个十六进制颜色。
     - cocktail.name/description 与 planet.name/description 仅用于 UI，不进入生图提示词。
+    - experience_copy 只描述正在进行的生成动作，不声称知道用户未表达的原因，不出现百分比。
+    - result_narrative 的 cocktail_name 与 planet_name 必须属于同一语义方向但不相同；不把单日状态写成稳定人格。
+    - action_options 必须恰好三项，level 分别为 light、standard、active，且三档在时长或主动程度上有真实差异，不能只换标题。
+    - 每个行动必须用明确指令、可跳过、不要求购买/饮酒/服药/驾驶/进入危险环境；echo_question 只针对该行动。
+    - share_card 的 visual_focus / layout_variant / privacy_level 只能取上面列出的受控值；不要输出日记原文、识别依据、置信度或风险信息。
     """
 }

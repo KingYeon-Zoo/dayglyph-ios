@@ -84,6 +84,56 @@ enum DemoFallbackCatalog {
             title: "多云转晴",
             explanation: "情绪像被云层遮住的阳光，光一直都在，只是需要一点时间透出来。",
             symbol: "partly_cloudy"
+        ),
+        experienceCopy: ExperienceCopySpec(
+            imageGenerationTitle: "正在让余温沉入杯底",
+            cocktailProgress: "把克制与疲惫调成层次",
+            planetProgress: "凝结一颗需要喘息的星球"
+        ),
+        resultNarrative: ResultNarrativeSpec(
+            cocktailName: "微光余温",
+            planetName: "缓慢回声",
+            headline: "今天的你，在坚持与疲惫之间找空间",
+            explanation: "你仍在努力维持前进，同时也需要为疲惫留出一点位置。"
+        ),
+        actionOptions: [
+            ActionOptionSpec(
+                level: "light",
+                title: "松开肩膀",
+                instruction: "把肩膀向上抬起，再缓慢放下三次。",
+                durationMinutes: 1,
+                difficulty: 1,
+                environment: ["室内", "独处"],
+                reason: "当前记录呈现出较高的紧绷感。",
+                echoQuestion: "做完后，肩颈的紧绷有没有一点变化？"
+            ),
+            ActionOptionSpec(
+                level: "standard",
+                title: "写下一件占注意力的事",
+                instruction: "用一句话写下此刻最占注意力的那件事，不评价。",
+                durationMinutes: 5,
+                difficulty: 2,
+                environment: ["室内", "独处"],
+                reason: "把模糊的疲惫落到具体的一件事上会更轻一点。",
+                echoQuestion: "写下来之后，那件事看起来有没有变得清楚一些？"
+            ),
+            ActionOptionSpec(
+                level: "active",
+                title: "到窗边走动一会儿",
+                instruction: "走到窗边或门口，感受十次缓慢的呼吸再回来。",
+                durationMinutes: 10,
+                difficulty: 3,
+                environment: ["室内"],
+                reason: "连日的紧绷适合用一点温和的移动来松动。",
+                echoQuestion: "回到座位后，身体的感觉和刚才相比怎么样？"
+            )
+        ],
+        shareCard: ShareCardSpec(
+            title: "微光余温",
+            caption: "今天不必立刻抵达平静。",
+            visualFocus: "cocktail",
+            layoutVariant: "portrait_centered",
+            privacyLevel: "emotion_only"
         )
     )
 
