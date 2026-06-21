@@ -10,7 +10,6 @@ struct UniverseView: View {
 
     @State private var selectedMonthStart: Date?
     @State private var selectedDay: UniverseDaySummary?
-    @State private var sceneFailed = false
 
     var body: some View {
         ZStack {
@@ -207,27 +206,27 @@ struct UniverseView: View {
     private func planetExperience(_ month: MonthlyUniverseSummary) -> some View {
         switch UniverseRenderingPolicy.mode(
             voiceOver: UIAccessibility.isVoiceOverRunning,
-            reduceMotion: reduceMotion,
-            lowPower: ProcessInfo.processInfo.isLowPowerModeEnabled,
-            sceneFailed: sceneFailed
+            lowPower: ProcessInfo.processInfo.isLowPowerModeEnabled
         ) {
-        case .realityKit:
-            UniverseRealityView(
-                visual: month.visual,
+        case .starMap:
+            StarMapView(
+                month: month,
+                selectedDate: selectedDay?.date,
+                reduceMotion: reduceMotion,
                 onSelectDate: { date in
                     selectedDay = month.days.first { $0.date == date }
-                },
-                onSceneFailure: { sceneFailed = true }
+                }
             )
-            .id(month.id)
             .frame(height: 330)
+            .gesture(monthSwipeGesture)
             .overlay(alignment: .bottom) {
-                Text("拖动旋转 · 双指缩放 · 点击光点查看日期")
+                Text("每颗星是一天 · 点击查看当天记录")
                     .font(.caption)
                     .foregroundStyle(.white.opacity(0.62))
                     .padding(.horizontal, 12)
                     .padding(.vertical, 7)
                     .background(.black.opacity(0.24), in: Capsule())
+                    .padding(.bottom, 10)
             }
         case .accessible2D:
             UniversePlanetView(visual: month.visual)

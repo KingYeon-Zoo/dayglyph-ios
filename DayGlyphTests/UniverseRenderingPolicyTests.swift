@@ -3,43 +3,44 @@ import Testing
 @testable import DayGlyph
 
 struct UniverseRenderingPolicyTests {
-    @Test func accessibilityAndFailureStatesUseTheCompleteTwoDimensionalPath() {
-        #expect(UniverseRenderingPolicy.mode(voiceOver: true, reduceMotion: false, lowPower: false, sceneFailed: false) == .accessible2D)
-        #expect(UniverseRenderingPolicy.mode(voiceOver: false, reduceMotion: true, lowPower: false, sceneFailed: false) == .accessible2D)
-        #expect(UniverseRenderingPolicy.mode(voiceOver: false, reduceMotion: false, lowPower: true, sceneFailed: false) == .accessible2D)
-        #expect(UniverseRenderingPolicy.mode(voiceOver: false, reduceMotion: false, lowPower: false, sceneFailed: true) == .accessible2D)
+    @Test func accessibilityAndLowPowerUseTheTwoDimensionalPath() {
+        #expect(UniverseRenderingPolicy.mode(voiceOver: true, lowPower: false) == .accessible2D)
+        #expect(UniverseRenderingPolicy.mode(voiceOver: false, lowPower: true) == .accessible2D)
     }
 
-    @Test func ordinaryEnvironmentUsesRealityKit() {
-        #expect(UniverseRenderingPolicy.mode(voiceOver: false, reduceMotion: false, lowPower: false, sceneFailed: false) == .realityKit)
+    @Test func ordinaryEnvironmentUsesStarMap() {
+        #expect(UniverseRenderingPolicy.mode(voiceOver: false, lowPower: false) == .starMap)
+    }
+}
+
+struct StarMapLayoutTests {
+    private func date(_ day: Int) -> Date {
+        Calendar(identifier: .gregorian)
+            .date(from: DateComponents(year: 2026, month: 6, day: day))!
     }
 
-    @Test func sceneDescriptorCreatesOneStableTargetForEveryRecordedDay() throws {
-        let calendar = Calendar(identifier: .gregorian)
-        let dates = [
-            try #require(calendar.date(from: DateComponents(year: 2026, month: 6, day: 2))),
-            try #require(calendar.date(from: DateComponents(year: 2026, month: 6, day: 8))),
-            try #require(calendar.date(from: DateComponents(year: 2026, month: 6, day: 18)))
-        ]
-        let visual = MonthlyPlanetVisual(
-            seed: 42,
-            baseHue: 350,
-            secondaryHue: 20,
-            textureComplexity: 0.5,
-            glow: 0.7,
-            sizeScale: 1,
-            rings: 2,
-            satellites: 1,
-            rotationSpeed: 0.04,
-            recordDots: dates
-        )
+    @Test func placesOneStarPerRecordedDay() {
+        let dates = [date(2), date(8), date(18), date(25)]
+        let placements = StarMapLayout.placements(dates: dates, seed: 42)
+        #expect(placements.count == dates.count)
+        #expect(Set(placements.map(\.date)) == Set(dates))
+    }
 
-        let first = UniverseSceneDescriptor.make(visual: visual, calendar: calendar)
-        let second = UniverseSceneDescriptor.make(visual: visual, calendar: calendar)
-
+    @Test func layoutIsDeterministicForSameSeedAndDates() {
+        let dates = [date(2), date(8), date(18)]
+        let first = StarMapLayout.placements(dates: dates, seed: 42)
+        let second = StarMapLayout.placements(dates: dates, seed: 42)
         #expect(first == second)
-        #expect(first.recordDots.count == dates.count)
-        #expect(Set(first.recordDots.map(\.entityName)).count == dates.count)
-        #expect(first.recordDots.allSatisfy { $0.hitRadius >= 0.12 })
+    }
+
+    @Test func everyStarStaysWithinCanvasBounds() {
+        let dates = (1 ... 28).map { date($0) }
+        let placements = StarMapLayout.placements(dates: dates, seed: 7)
+        #expect(placements.allSatisfy { $0.unitPosition.x >= 0 && $0.unitPosition.x <= 1 })
+        #expect(placements.allSatisfy { $0.unitPosition.y >= 0 && $0.unitPosition.y <= 1 })
+    }
+
+    @Test func emptyInputProducesNoPlacements() {
+        #expect(StarMapLayout.placements(dates: [], seed: 1).isEmpty)
     }
 }

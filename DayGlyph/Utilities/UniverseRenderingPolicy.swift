@@ -1,18 +1,16 @@
 nonisolated enum UniverseRenderingMode: Equatable {
-    case realityKit
+    case starMap
     case accessible2D
 }
 
 enum UniverseRenderingPolicy {
     static func mode(
         voiceOver: Bool,
-        reduceMotion: Bool,
-        lowPower: Bool,
-        sceneFailed: Bool
+        lowPower: Bool
     ) -> UniverseRenderingMode {
-        if voiceOver || reduceMotion || lowPower || sceneFailed {
+        if voiceOver || lowPower {
             return .accessible2D
         }
-        return .realityKit
+        return .starMap
     }
 }
