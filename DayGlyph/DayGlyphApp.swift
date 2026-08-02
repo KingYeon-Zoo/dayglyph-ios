@@ -10,7 +10,26 @@ import SwiftData
 
 @main
 struct DayGlyphApp: App {
-    var sharedModelContainer: ModelContainer = {
+    let sharedModelContainer: ModelContainer
+
+    init() {
+        let container = Self.makeModelContainer()
+        let launchOptions = DemoLaunchOptions(arguments: CommandLine.arguments)
+
+        if launchOptions.skipsOnboarding {
+            UserDefaults.standard.set(true, forKey: "hasCompletedOnboarding")
+        }
+
+        if launchOptions.seedsDemoData {
+            let context = ModelContext(container)
+            DemoDataSeeder.seed(into: context)
+            DemoDataSeeder.seedSupportData(into: context)
+        }
+
+        sharedModelContainer = container
+    }
+
+    private static func makeModelContainer() -> ModelContainer {
         let schema = Schema([
             DayEntry.self,
             ActionInstance.self,
@@ -26,7 +45,7 @@ struct DayGlyphApp: App {
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
-    }()
+    }
 
     var body: some Scene {
         WindowGroup {

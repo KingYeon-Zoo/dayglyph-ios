@@ -22,6 +22,11 @@ DayGlyph 是一款本地优先、非医疗化的 iOS 情绪记录与自我观察
   <img src="images/readme/preview-mine.jpg" width="30%" alt="DayGlyph 我的页面" />
 </p>
 
+## 产品资料
+
+- [产品文档（PDF）](docs/product/DayGlyph-产品文档.pdf)：产品定位、用户需求、竞品分析、技术可行性、创新点与应用前景。
+- [4K 产品演示视频](https://github.com/KingYeon-Zoo/dayglyph-ios/releases/download/showcase-2026/DayGlyph-Product-Demo-4K.mp4)：完整展示一句话记录、情绪生成、微行动、回声与长期回顾流程。
+
 ## 核心体验
 
 ```text
@@ -165,6 +170,30 @@ xcodebuild build \
   -scheme DayGlyph \
   -destination 'generic/platform=iOS Simulator'
 ```
+
+### 一键启动演示环境
+
+仓库根目录提供录屏启动脚本。默认会启动 iPhone 17 Pro 模拟器、清空该 App
+原有沙盒、填充确定性的演示月数据、跳过新手引导，并把状态栏固定为适合录屏的样式：
+
+```bash
+./run-demo.sh
+```
+
+也可以初始化为空白首页，或从新手引导开始录制：
+
+```bash
+./run-demo.sh --mode clean
+./run-demo.sh --mode onboarding
+```
+
+使用其他已安装的模拟器：
+
+```bash
+./run-demo.sh --device "iPhone 17 Pro Max"
+```
+
+脚本会卸载模拟器中现有的 DayGlyph，因此该模拟器里的 DayGlyph 本地数据会被清空。
 
 ## 测试
 
