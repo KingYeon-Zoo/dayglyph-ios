@@ -14,6 +14,12 @@
 
 DayGlyph 是一款本地优先、非医疗化的 iOS 情绪记录与自我观察应用。写下一句话，应用会把当下的感受整理成情绪结构，生成专属的情绪鸡尾酒与日星球，并通过微行动、延迟回声和长期趋势，让情绪变得可见、可做、可回看。
 
+## 产品海报
+
+<p align="center">
+  <img src="images/readme/dayglyph-product-poster.png" width="70%" alt="DayGlyph 产品海报：把说不清的情绪，变成看得见的印记" />
+</p>
+
 ## 产品预览
 
 <p align="center">
