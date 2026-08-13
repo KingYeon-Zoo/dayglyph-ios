@@ -12,6 +12,11 @@ xcuserdata/
 DerivedData/
 build/
 
+# 本地文档渲染、临时打包与解释器缓存（均可重新生成）
+.docx_render/
+tmp/
+tools/__pycache__/
+
 # 豆包演示密钥（仅本地，不入库；演示构建时本地保留真实值）
 DayGlyph/Services/AISecrets.swift
 
