@@ -76,7 +76,7 @@ cd dayglyph-ios
 
 ## 项目工作与资料
 
-这是一个独立开发项目，工作覆盖产品需求、视觉交互、SwiftUI 客户端、本地数据模型、情绪视觉映射与测试。Apple Intelligence 和豆包提供模型能力，项目侧负责数据表示、交互流程、生成控制与长期记录。
+项目覆盖产品需求、视觉交互、SwiftUI 客户端、本地数据模型、情绪视觉映射与测试。Apple Intelligence 和豆包提供模型能力，项目侧负责数据表示、交互流程、生成控制与长期记录。
 
 更多界面可查看[今日体验](images/readme/feature-today.jpg)、[宇宙与趋势](images/readme/feature-universe.jpg)、[行动回声](images/readme/feature-echo.jpg)。
 
