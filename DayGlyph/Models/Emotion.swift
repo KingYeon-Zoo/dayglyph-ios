@@ -121,6 +121,7 @@ enum DayTheme: String, CaseIterable, Codable, Identifiable {
 
 enum AnalysisSource: String, Codable, CaseIterable, Identifiable {
     case foundationModel
+    case cloudModel
     case demoFixture
     case localRules
     case fallback
@@ -130,6 +131,7 @@ enum AnalysisSource: String, Codable, CaseIterable, Identifiable {
     var title: String {
         switch self {
         case .foundationModel: "Apple Intelligence 已参与理解"
+        case .cloudModel: "在线模型已参与理解"
         case .demoFixture: "策展情绪样本"
         case .localRules: "本地理解"
         case .fallback: "已使用本地回退"

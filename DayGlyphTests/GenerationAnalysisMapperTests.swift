@@ -14,7 +14,17 @@ struct GenerationAnalysisMapperTests {
         #expect(analysis.emotionWeights.count == EmotionAnchor.allCases.count)
         let total = analysis.emotionWeights.reduce(0) { $0 + $1.value }
         #expect(abs(total - 1) < 0.001)
-        #expect(analysis.source == .foundationModel)
+        #expect(analysis.source.rawValue == "cloudModel")
+        #expect(!analysis.source.title.contains("Apple"))
+    }
+
+    @Test func preservesExistingSourceValues() throws {
+        for source in AnalysisSource.allCases {
+            let data = try JSONEncoder().encode(source)
+            #expect(try JSONDecoder().decode(AnalysisSource.self, from: data) == source)
+        }
+        #expect(AnalysisSource(rawValue: "foundationModel") == .foundationModel)
+        #expect(AnalysisSource.foundationModel.title == "Apple Intelligence 已参与理解")
     }
 
     @Test func carriesDimensionsThrough() {

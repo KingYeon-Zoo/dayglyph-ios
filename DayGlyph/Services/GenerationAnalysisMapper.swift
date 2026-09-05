@@ -42,7 +42,7 @@ enum GenerationAnalysisMapper {
             keywords: keywords,
             confidence: confidence,
             explanation: payload.summary,
-            source: .foundationModel
+            source: .cloudModel
         )
     }
 

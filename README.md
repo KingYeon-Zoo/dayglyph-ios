@@ -14,7 +14,7 @@
   <img src="images/readme/preview-mine.jpg" width="30%" alt="实际应用界面：历史与个人记录" />
 </p>
 
-[观看演示](https://github.com/KingYeon-Zoo/dayglyph-ios/releases/download/showcase-2026/DayGlyph-Product-Demo-4K.mp4) · [产品文档](docs/product/DayGlyph-产品文档.pdf) · [核心设计](#核心设计) · [运行与测试](docs/运行与测试.md)
+[观看演示](https://github.com/KingYeon-Zoo/dayglyph-ios/releases/download/showcase-2026/DayGlyph-Product-Demo-4K.mp4) · [产品文档](docs/product/DayGlyph-产品文档.pdf) · [核心设计](#核心设计) · [运行与测试](docs/运行与测试.md) · [核心逻辑复核](docs/reviews/2026-09-05-core-review.md)
 
 ## 记录之后，还能做什么
 
