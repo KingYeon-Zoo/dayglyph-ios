@@ -1,244 +1,83 @@
 <p align="center">
-  <img src="images/readme/dayglyph-logo.png" width="152" alt="DayGlyph Logo" />
+  <img src="images/readme/dayglyph-logo.png" width="96" alt="DayGlyph 日迹" />
 </p>
 
-<h1 align="center">DayGlyph</h1>
+# DayGlyph 日迹
+
+**用情绪鸡尾酒、日星球和长期星图，记录一天中难以用单一标签概括的感受。**
+
+写下一段话，留下当日情绪与一个可选择的微行动。过一段时间再记录行动后的感受，把离散日记连成可以回看的个人历史。
 
 <p align="center">
-  把难以描述的感受，转化为一枚可收藏的每日情绪印记。
+  <img src="images/readme/preview-today.jpg" width="30%" alt="实际应用界面：今日记录与情绪印记" />
+  <img src="images/readme/preview-universe.jpg" width="30%" alt="实际应用界面：个人情绪宇宙" />
+  <img src="images/readme/preview-mine.jpg" width="30%" alt="实际应用界面：历史与个人记录" />
 </p>
 
-<p align="center">
-  <strong>SwiftUI · SwiftData · AI 情绪叙事 · iOS</strong>
-</p>
+[观看演示](https://github.com/KingYeon-Zoo/dayglyph-ios/releases/download/showcase-2026/DayGlyph-Product-Demo-4K.mp4) · [产品文档](docs/product/DayGlyph-产品文档.pdf) · [核心设计](#核心设计) · [运行与测试](docs/运行与测试.md)
 
-DayGlyph 是一款本地优先、非医疗化的 iOS 情绪记录与自我观察应用。写下一句话，应用会把当下的感受整理成情绪结构，生成专属的情绪鸡尾酒与日星球，并通过微行动、延迟回声和长期趋势，让情绪变得可见、可做、可回看。
+## 记录之后，还能做什么
 
-## 产品海报
+- **今日：** 记录文字，查看情绪构成、鸡尾酒与日星球，选择适合当下的微行动。
+- **宇宙：** 按月浏览记录与星图，查看较长时间内的情绪变化。
+- **回声：** 留下行动后的真实感受，回看个人历史中的关联。
+- **我的：** 浏览历史、管理偏好，导出或清除本地数据。
 
-<p align="center">
-  <img src="images/readme/dayglyph-product-poster.png" width="70%" alt="DayGlyph 产品海报：把说不清的情绪，变成看得见的印记" />
-</p>
+产品不做心理诊断，不承诺疗效，也不用连续签到制造压力。趋势与行动反馈只呈现观察到的关联。
 
-## 产品预览
+## 核心设计
 
-<p align="center">
-  <img src="images/readme/preview-today.jpg" width="30%" alt="DayGlyph 今日页面" />
-  <img src="images/readme/preview-universe.jpg" width="30%" alt="DayGlyph 情绪宇宙页面" />
-  <img src="images/readme/preview-mine.jpg" width="30%" alt="DayGlyph 我的页面" />
-</p>
+### 用连续空间表达复合情绪
 
-## 产品资料
+情绪分析以 VAD（愉悦度、唤醒度、支配感）和 12 个情绪锚点权重表示。多个感受可以同时存在，后续视觉与统计共享这份结构化表示。
 
-- [产品文档（PDF）](docs/product/DayGlyph-产品文档.pdf)：产品定位、用户需求、竞品分析、技术可行性、创新点与应用前景。
-- [4K 产品演示视频](https://github.com/KingYeon-Zoo/dayglyph-ios/releases/download/showcase-2026/DayGlyph-Product-Demo-4K.mp4)：完整展示一句话记录、情绪生成、微行动、回声与长期回顾流程。
+本地视觉映射将情绪权重转换为鸡尾酒配比、颜色和星球参数。固定输入与日期产生稳定种子，历史星图的布局不会在每次打开时随机改变。在线生成的图片则保存为独立产物，不等同于确定性的程序化视觉。
 
-## 核心体验
+### 端侧分析与在线生成各有入口
 
-```text
-记录当下 → 理解情绪 → 生成印记 → 选择一小步 → 留下回声 → 回顾长期变化
-```
-
-### 今日
-
-从一句话开始，DayGlyph 会生成结构化的情绪分析、结果叙事、情绪天气、每日寄语、三档微行动，以及相互呼应的鸡尾酒和日星球图像。生成中的文字与两张图片独立呈现，单项失败可以单独重试，不必从头开始。
-
-<p align="center">
-  <img src="images/readme/feature-today.jpg" width="100%" alt="DayGlyph 今日体验：情绪鸡尾酒、日星球、微行动与支持内容" />
-</p>
-
-### 宇宙
-
-每天的印记会成为个人情绪宇宙中的一颗星。用户可以按月份浏览记录光点、进入月星球详情，并查看月度、季度和年度趋势。界面同时提供减少动态、VoiceOver 与二维可访问降级路径。
-
-<p align="center">
-  <img src="images/readme/feature-universe.jpg" width="100%" alt="DayGlyph 情绪宇宙、趋势与月星球详情" />
-</p>
-
-### 回声
-
-完成微行动后，用户可以在合适的时候记录真实感受：轻松了一点、没什么变化、比想象中困难，或其他体验。当同类记录足够时，应用只总结个人历史中的关联，不推断因果，也不承诺改善。
-
-<p align="center">
-  <img src="images/readme/feature-echo.jpg" width="72%" alt="DayGlyph 行动回声与反馈记录" />
-</p>
-
-### 我的
-
-集中查看记录天数、日星球、回声、情绪成就、历史与统计，并管理提醒、行动偏好和本地数据。个人资料无需注册；记录可导出，也可以按范围清除。
-
-<p align="center">
-  <img src="images/readme/feature-mine.jpg" width="100%" alt="DayGlyph 我的、情绪成就、历史与隐私设置" />
-</p>
-
-## 产品特点
-
-- **一句话开始**：不要求先准确命名情绪，也不使用量表给情绪评分。
-- **生成式情绪印记**：一次文本生成组织完整叙事，再生成风格一致的鸡尾酒与日星球。
-- **低压力行动**：提供轻量、标准、主动三档选择，允许跳过，也接受任何结果。
-- **长期个人宇宙**：把离散记录组织成月星球、日期光点和长期趋势。
-- **本地数据主权**：日记、分析、行动和回声使用 SwiftData 保存在设备本地，无需账号。
-- **明确的产品边界**：不诊断、不治疗、不进行风险分级，不用连续签到制造压力。
-- **系统级入口**：支持 App Intents 与 Shortcuts 快速打开或记录今天。
-- **可访问设计**：包含 VoiceOver 描述、减少动态、大字体适配和图表文字替代。
-
-## 工作方式
-
-DayGlyph 将生成能力与本地记录分离：
-
-```text
-SwiftUI 界面
-    ↓
-生成编排与安全预检
-    ├── 豆包 Seed 2.0 Lite：结构化情绪内容与叙事
-    └── 豆包 Seedream：情绪鸡尾酒与日星球图像
-    ↓
-响应校验与单项降级
-    ↓
-SwiftData + 本地图片存储
-    ↓
-宇宙聚合、趋势、回声、成就与导出
-```
-
-文本响应会经过结构、情绪比例、行动选项与扩展内容校验；生成图片下载后立即保存到本地，持久化模型只记录状态和相对路径。仓库内还包含确定性的演示数据与降级素材，用于网络不可用时维持可运行体验。
-
-## 技术栈
-
-| 能力 | 实现 |
+| 路径 | 实现与数据去向 |
 | --- | --- |
-| 界面与导航 | SwiftUI |
-| 本地持久化 | SwiftData |
-| 生成式文本 | 豆包 Seed 2.0 Lite |
-| 生成式图像 | 豆包 Seedream |
-| 情绪宇宙 | SwiftUI Canvas、确定性星图布局 |
-| 数据可视化 | Swift Charts、ImageRenderer |
-| 系统集成 | UserNotifications、App Intents |
-| 测试 | Swift Testing、XCTest UI Testing |
+| Apple 端侧情绪分析 | `FoundationEmotionAnalyzer` 通过 Foundation Models 生成结构化结果，在支持 Apple Intelligence 的设备上执行。仓库保留该分析实现及测试。 |
+| 本地规则分析 | `EmotionAnalyzer` 使用中文规则生成分析结果，供本地分析流程在模型不可用时使用。 |
+| 豆包增强生成 | 当前主界面生成流程通过 Seed 文本模型与 Seedream 图像模型生成叙事、鸡尾酒及日星球图片，相关输入会发送至火山方舟。 |
 
-## 项目结构
+记录与生成产物通过 SwiftData 和本地图片文件保存。端侧分析与在线生成是不同实现路径，当前在线生成失败不等于会自动切换为完整的 Apple 端侧体验。
 
-```text
-DayGlyph/
-├── Models/              # 持久化模型与业务值类型
-├── Services/            # AI 客户端、生成编排、校验、聚合、通知与导出
-├── Utilities/           # 日历、宇宙呈现与交互策略
-├── Views/
-│   ├── Today/           # 记录、生成结果、微行动、来信与分享卡
-│   ├── Universe/        # 星图、月星球、日期摘要与趋势
-│   ├── Echo/            # 行动回声与个人发现
-│   ├── Mine/            # 成就、历史、统计与个人主页
-│   └── Onboarding/      # 首次使用引导
-├── Intents/             # App Intents 与 Shortcuts
-├── DemoAssets/          # 本地演示响应与生成图片
-└── Assets.xcassets/     # 应用图标与颜色资源
+### 把每日记录接到长期回顾
 
-DayGlyphTests/           # 单元、持久化与业务规则测试
-DayGlyphUITests/         # 启动与关键界面流程测试
-images/                  # 产品截图与 README 视觉素材
-docs/                    # 设计、实施与专项测试文档
-```
+微行动、延迟回声与趋势统计围绕本地记录展开。聚合逻辑集中在服务层，界面读取计算结果；生成任务分别记录文本与图片状态，单项失败可独立重试。
 
-## 运行项目
+界面支持减少动态、VoiceOver 与文字替代，情绪宇宙同时保留二维可访问路径。
 
-### 环境要求
+## 代码导览
 
-- macOS
-- Xcode 26.5 或兼容版本
-- iOS 26.5 Simulator Runtime 或兼容真机
-- 可用的火山方舟 ARK API Key（在线生成所需）
+| 设计 | 实现入口 |
+| --- | --- |
+| VAD 与情绪权重 | [Emotion.swift](DayGlyph/Models/Emotion.swift) |
+| 稳定种子与视觉参数 | [GlyphSignature.swift](DayGlyph/Glyph/GlyphSignature.swift) |
+| Apple 端侧结构化分析 | [FoundationEmotionAnalyzer.swift](DayGlyph/Services/FoundationEmotionAnalyzer.swift) |
+| 本地规则分析 | [EmotionAnalyzer.swift](DayGlyph/Services/EmotionAnalyzer.swift) |
+| 在线生成状态与单项重试 | [DayGenerationOrchestrator.swift](DayGlyph/Services/DayGenerationOrchestrator.swift) |
+| 生成结果映射回情绪模型 | [GenerationAnalysisMapper.swift](DayGlyph/Services/GenerationAnalysisMapper.swift) |
+| 核心测试 | [情绪权重](DayGlyphTests/EmotionAnalysisTests.swift)、[确定性映射](DayGlyphTests/GlyphSignatureTests.swift)、[模型响应映射](DayGlyphTests/GenerationAnalysisMapperTests.swift) |
 
-### 配置 AI 密钥
+## 本地运行
 
-真实密钥文件已被 `.gitignore` 排除。新建 `DayGlyph/Services/AISecrets.swift`：
-
-```swift
-import Foundation
-
-nonisolated enum AISecrets {
-    static let arkAPIKey = "PUT_YOUR_ARK_API_KEY_HERE"
-}
-```
-
-不要把真实密钥提交到仓库。客户端内置密钥只适用于本地开发和演示；面向公开发行时，应改为由受控服务端代理请求。
-
-### 构建与启动
-
-1. 使用 Xcode 打开 `DayGlyph.xcodeproj`。
-2. 选择 `DayGlyph` Scheme。
-3. 选择兼容的 iOS 模拟器或真机。
-4. 构建并运行。
-
-命令行构建：
+使用兼容项目目标的 Xcode 与 iOS 运行环境。当前工程目标为 iOS 26.5，在线生成需要自行配置火山方舟凭证。
 
 ```bash
-xcodebuild build \
-  -project DayGlyph.xcodeproj \
-  -scheme DayGlyph \
-  -destination 'generic/platform=iOS Simulator'
+git clone https://github.com/KingYeon-Zoo/dayglyph-ios.git
+cd dayglyph-ios
 ```
 
-### 一键启动演示环境
+按[运行与测试说明](docs/运行与测试.md)创建本地密钥文件，再打开 `DayGlyph.xcodeproj` 构建。真实密钥文件已排除出版本控制。
 
-仓库根目录提供录屏启动脚本。默认会启动 iPhone 17 Pro 模拟器、清空该 App
-原有沙盒、填充确定性的演示月数据、跳过新手引导，并把状态栏固定为适合录屏的样式：
+演示启动脚本会重置所选模拟器中的应用数据，使用前请阅读说明。端侧模型可用性取决于设备与系统条件，不能用模拟器构建成功代替端侧模型验证。
 
-```bash
-./run-demo.sh
-```
+## 项目工作与资料
 
-也可以初始化为空白首页，或从新手引导开始录制：
+这是一个独立开发项目，工作覆盖产品需求、视觉交互、SwiftUI 客户端、本地数据模型、情绪视觉映射与测试。Apple Intelligence 和豆包提供模型能力，项目侧负责数据表示、交互流程、生成控制与长期记录。
 
-```bash
-./run-demo.sh --mode clean
-./run-demo.sh --mode onboarding
-```
+更多界面可查看[今日体验](images/readme/feature-today.jpg)、[宇宙与趋势](images/readme/feature-universe.jpg)、[行动回声](images/readme/feature-echo.jpg)。
 
-使用其他已安装的模拟器：
-
-```bash
-./run-demo.sh --device "iPhone 17 Pro Max"
-```
-
-脚本会卸载模拟器中现有的 DayGlyph，因此该模拟器里的 DayGlyph 本地数据会被清空。
-
-## 测试
-
-构建全部测试目标：
-
-```bash
-xcodebuild build-for-testing \
-  -project DayGlyph.xcodeproj \
-  -scheme DayGlyph \
-  -destination 'generic/platform=iOS Simulator'
-```
-
-在已安装的模拟器上运行单元测试：
-
-```bash
-xcodebuild test \
-  -project DayGlyph.xcodeproj \
-  -scheme DayGlyph \
-  -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.5' \
-  -only-testing:DayGlyphTests
-```
-
-## 隐私与安全
-
-- 日记原文、分析结果、行动、回声和个人资料默认保存在本机。
-- 在线生成会把本次输入所需内容发送至配置的火山方舟接口；这部分不是纯设备端处理。
-- 共情海的匿名表达包含本地初筛、AI 去身份化改写与返回后的隐私校验，用户仍需逐字确认；当前仓库使用本地审核样本与固定回应，不包含公开社区服务。
-- 高风险文本会进入安全支持路径，不生成普通情绪内容。
-- DayGlyph 是情绪记录与自我观察工具，不提供心理疾病诊断、治疗建议或紧急援助。
-
-## 参与贡献
-
-欢迎通过 Issue 报告问题或讨论改进。提交代码前，请确保：
-
-1. 改动保持本地优先、非医疗化与低压力原则。
-2. 新增行为包含与风险相称的测试。
-3. 不提交 API Key、个人记录、生成缓存或其他敏感数据。
-4. Swift 代码能够通过项目现有构建与测试目标。
-
-## 许可证
-
-当前仓库尚未附带开源许可证。在许可证文件加入前，代码仍受默认版权保护，不应视为已获得复制、修改或分发授权。
+仓库尚未附带开源许可证，保留现有版权状态。
